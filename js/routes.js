@@ -1,0 +1,4 @@
+PD.routes =
+{
+    "default" : "principal"
+};
