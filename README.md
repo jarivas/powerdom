@@ -22,6 +22,6 @@ Component
 · El controlador es único por página, por ejemplo para index es principal
 
 · El layer base va a ser el propio index.html aunque también puede cargar algún js
-situado /js/tpl/layer/nombre_componente/layers
+situado /js/tpl/nombre_componente/layers
 
 · 
