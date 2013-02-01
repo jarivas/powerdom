@@ -6,16 +6,29 @@ var PD = {
     currentComponent : null,
     routesFile  : '/js/routes.js',
     strings : new Array(),
+
+    init : function(){
+
+    },
+
+    getComponentNameFromCurrentUrl : function(){
+        var patt = /#([a-z]|_)+/i;
+
+        return patt.exec(document.location.href)[0];
+    },
+
+    loadComponentFromCurrentUrl : function(){
+        PD.loadComponent( PD.getComponentNameFromCurrentUrl() );
+    },
     
-    loadComponent : function(url){
+    loadComponent : function(componentName){
         var result = false;
-        var componentName = "";
       
         PD.loadJSFile(PD.routesFile);
         try
         {
-            PD.loadJSFile("/js/components/" + PD.components[url]);
-            PD.currentComponent = PD.components[url];
+            PD.loadJSFile("/js/components/" + PD.components[componentName]);
+            PD.currentComponent = componentName;
             result = true;
         }
         catch(err)
@@ -25,6 +38,7 @@ var PD = {
       
         return result;
     },
+
     loadJSFile : function(file){
         if(document.getElementById(file) == undefined)
         {
@@ -63,10 +77,12 @@ var PD = {
             PD.head.appendChild(css);
         }
     },
+
     getExtension : function(file){
         var pattern = /js/g;
         return (pattern.test(file)) ? 'js' : 'css';
     },
+
     translateString : function(str){
         var patt = /%%([\w]+)%%/i;
         var result = patt.exec(str);
@@ -80,14 +96,4 @@ var PD = {
         return str;
     }
         
-};
-
-String.prototype.format = function() {
-var args = arguments;
-return this.replace(/{(\d+)}/g, function(match, number) { 
-    return typeof args[number] != 'undefined'
-        ? args[number]
-    : match
-    ;
-});
 };
