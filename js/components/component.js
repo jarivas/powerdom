@@ -7,10 +7,6 @@ function Component(){
         PD.loadJSFile(this._templatePath + this._className + this._nodes[idNode] + ".js");
     };
     
-    Component.prototype.getData = function(){
-        alert("Implementar Component.getData");
-    };
-    
     Component.prototype.render = function(){
         alert("Implementar Component.render");
     }

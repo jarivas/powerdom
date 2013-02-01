@@ -8,7 +8,8 @@ var PD = {
     strings : new Array(),
 
     init : function(){
-
+        PD.loadComponentFromCurrentUrl();
+        PD.currentComponent
     },
 
     getComponentNameFromCurrentUrl : function(){
@@ -20,15 +21,20 @@ var PD = {
     loadComponentFromCurrentUrl : function(){
         PD.loadComponent( PD.getComponentNameFromCurrentUrl() );
     },
+
+    getInstance : function(){
+
+    },
     
-    loadComponent : function(componentName){
+    loadComponent : function(ajaxUrl){
         var result = false;
-      
+        var componentName = PD.components[ajaxUrl];
+
         PD.loadJSFile(PD.routesFile);
         try
         {
-            PD.loadJSFile("/js/components/" + PD.components[componentName]);
-            PD.currentComponent = componentName;
+            PD.loadJSFile("/js/components/" + componentName);
+            PD.currentComponent = PD.getInstance(componentName);
             result = true;
         }
         catch(err)
