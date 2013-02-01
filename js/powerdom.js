@@ -1,39 +1,26 @@
 var PD = {
     lang : 'es-ES',
     head : document.getElementsByTagName('head')[0],
-    body : '',
-    components : '',
-    currentComponent : '',
+    body : null,
+    components : null,
+    currentComponent : null,
     routesFile  : '/js/routes.js',
     strings : new Array(),
     
-    getCurrentComponenet : function(){
-        //Se recorta la url ajax con el #
-        var sharpIndex = window.location.href.indexOf('#');
-        var url = 'default';
-			
-        if (sharpIndex != -1)
-            url = window.location.href.substr(sharpIndex + 1);
-        
-        return PD.getComponenet(url);
-    },
-    getComponenet : function(url){
-        var result = {
-            "componenet" : null,
-            "errors" : []
-        };
+    loadComponent : function(url){
+        var result = false;
         var componentName = "";
       
         PD.loadJSFile(PD.routesFile);
         try
         {
-            componentName = PD.componenets[url];
-            PD.loadJSFile("/js/components/" + componentName);
-            result.componenet = eval("new " + componentName +"()");
+            PD.loadJSFile("/js/components/" + PD.components[url]);
+            PD.currentComponent = PD.components[url];
+            result = true;
         }
         catch(err)
         {
-            result.errors[0] = "Error en getComponenet url => " + url + " | " + err.message;
+            result = "Error en getComponent url => " + url + " | " + err.message;
         }
       
         return result;
@@ -76,22 +63,22 @@ var PD = {
             PD.head.appendChild(css);
         }
     },
-getExtension : function(file){
-    var pattern = /js/g;
-    return (pattern.test(file)) ? 'js' : 'css';
-},
-translateString : function(str){
-    var patt = /%%([\w]+)%%/i;
-    var result = patt.exec(str);
-		
-    while (result != null)
-    {
-        eval("str = str.replace('" + result[0] + "', PD.strings[PD.lang]['"  + result[1] + "'])");
-        result = patt.exec(str);
-    }
+    getExtension : function(file){
+        var pattern = /js/g;
+        return (pattern.test(file)) ? 'js' : 'css';
+    },
+    translateString : function(str){
+        var patt = /%%([\w]+)%%/i;
+        var result = patt.exec(str);
+    		
+        while (result != null)
+        {
+            eval("str = str.replace('" + result[0] + "', PD.strings[PD.lang]['"  + result[1] + "'])");
+            result = patt.exec(str);
+        }
 
-    return str;
-}
+        return str;
+    }
         
 };
 

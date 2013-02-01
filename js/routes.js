@@ -1,4 +1,4 @@
-PD.routes =
+PD.components =
 {
     "default" : "principal"
 };
