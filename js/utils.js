@@ -1,10 +1,8 @@
-//Incluir en la clase nativa String la funcion sprintf de php
+//Incluir en la clase nativa String la funcion format de .net
 String.prototype.format = function() {
 var args = arguments;
 return this.replace(/{(\d+)}/g, function(match, number) { 
     return typeof args[number] != 'undefined'
-        ? args[number]
-    : match
-    ;
-});
+        ? args[number] : match;
+    });
 };

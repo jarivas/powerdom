@@ -1,17 +1,19 @@
 var Principal = {
-	prototype : Object.create(Component.prototype),
+    prototype : Object.create(Component.prototype),
 
-	_className = "Principal",
+    _className : "Principal",
 
-	//idNode templatePath
+    //idNode : templateName
     nodes : {
         "banner" : "banner",
         "featured" : "featured",
         "content" : "content",
         "blogroll" : "blogroll",
         "social" : "social",
-        "contentinfo" : "contentinfo",
+        "contentinfo" : "contentinfo"
     },
-
-
+    
+    getDataNode_banner : function(){
+        
+    }
 }

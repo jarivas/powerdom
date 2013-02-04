@@ -4,13 +4,26 @@ function Component(){
 
     _className = "Component";
 
-    _nodes = null;
+    nodes = null;
     
-    Component.prototype.loadViewNode = function(templateName){
-        PD.loadJSFile(_templatePath + _className + templateName + ".js");
+    Component.prototype.loadTemplate = function(templateName){
+        PD.loadJSFile(Component._templatePath + Component._className + templateName + ".js");
+    };
+    
+    Component.prototype.getDataTemplate = function(idNode){
+        var method = 'getDataNode_[0]();';
+        method = method.format(idNode);
+        return eval(invoke);
     };
     
     Component.prototype.render = function(){
-        alert('Implentar Component.render');
-    }
+        var tpl = null;
+        var dataTemplate = null;
+        
+        for(idNode in nodes){
+            dataTemplate = Component.getDataTemplate(idNode);
+            tpl = Component.loadTemplate(Component.nodes[idNode]);
+            tpl.render(dataTemplate);
+        }
+    };
 }

@@ -77,19 +77,6 @@ var PD = {
     getExtension : function(file){
         var pattern = /js/g;
         return (pattern.test(file)) ? 'js' : 'css';
-    },
-
-    translateString : function(str){
-        var patt = /%%([\w]+)%%/i;
-        var result = patt.exec(str);
-    		
-        while (result != null)
-        {
-            str = str.replace(result[0], PD.strings[PD.lang][result[1]]);
-            result = patt.exec(str);
-        }
-
-        return str;
     }
         
 };
