@@ -9,40 +9,30 @@ var PD = {
 
     init : function(){
         PD.loadComponentFromCurrentUrl();
-        PD.currentComponent
-    },
-
-    getComponentNameFromCurrentUrl : function(){
-        var patt = /#([a-z]|_)+/i;
-
-        return patt.exec(document.location.href)[0];
     },
 
     loadComponentFromCurrentUrl : function(){
         PD.loadComponent( PD.getComponentNameFromCurrentUrl() );
     },
 
-    getInstance : function(){
+    getComponentNameFromCurrentUrl : function(){
+        var patt = /#([a-z]|_)+/i;
+        var componentName = patt.exec(document.location.href)[0];
 
+        return (componentName != null) ? componentName : 'default';
     },
     
-    loadComponent : function(ajaxUrl){
-        var result = false;
-        var componentName = PD.components[ajaxUrl];
-
-        PD.loadJSFile(PD.routesFile);
+    loadComponent : function(componentName){        
         try
         {
+            PD.loadJSFile(PD.routesFile);
             PD.loadJSFile("/js/components/" + componentName);
-            PD.currentComponent = PD.getInstance(componentName);
-            result = true;
         }
         catch(err)
         {
-            result = "Error en getComponent url => " + url + " | " + err.message;
+            alert("Error en loadComponent url => " + url + " | " + err.message);
+            break;
         }
-      
-        return result;
     },
 
     loadJSFile : function(file){
@@ -95,7 +85,7 @@ var PD = {
     		
         while (result != null)
         {
-            eval("str = str.replace('" + result[0] + "', PD.strings[PD.lang]['"  + result[1] + "'])");
+            str = str.replace(result[0], PD.strings[PD.lang][result[1]]);
             result = patt.exec(str);
         }
 

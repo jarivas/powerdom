@@ -1,13 +1,16 @@
 function Component(){
-    this._nodes = null;
-    this._templatePath = "/js/tpl/";
-    this._className = "Component";
+    //Only change this when need it and do it private whithout prototype
+    _templatePath = "/js/tpl/";
+
+    _className = "Component";
+
+    _nodes = null;
     
-    Component.prototype.loadViewNode = function(idNode){
-        PD.loadJSFile(this._templatePath + this._className + this._nodes[idNode] + ".js");
+    Component.prototype.loadViewNode = function(templateName){
+        PD.loadJSFile(_templatePath + _className + templateName + ".js");
     };
     
     Component.prototype.render = function(){
-        alert("Implementar Component.render");
+        alert('Implentar Component.render');
     }
 }
