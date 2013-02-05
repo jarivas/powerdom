@@ -3,9 +3,6 @@ powerdom
 
 TODO:
 	· Html.js
-	- Terminar for de ul
-	- Arreglar for de render
-
 
 INFO:
 
