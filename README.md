@@ -1,5 +1,14 @@
 powerdom
 ========
+
+TODO:
+	· Html.js
+	- Terminar for de ul
+	- Arreglar for de render
+
+
+INFO:
+
 Este proyecto está en desarrollo y este fichero sirve como
 anotaciones para el mismo.
 
@@ -35,3 +44,6 @@ se sobreescribe globalmente, esta práctica no está recomendada ya que obligar�
 Component si este comportamiento no es deseado
 
 · Cada template es una clase 'static like' que hereda de Template
+
+· Para facilitar el pintado de html existe una clase 'static like' que general etiquetas
+aunque obvia añadir eventos de JS para que se genere código no obstrusivo
