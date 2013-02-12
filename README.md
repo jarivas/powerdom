@@ -2,7 +2,7 @@ powerdom
 ========
 
 TODO:
-	· Html.js
+	· banner.js hace el replace bien, falta pintarlo
 
 INFO:
 

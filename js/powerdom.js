@@ -4,11 +4,12 @@ var PD = {
     body : null,
     components : null,
     currentComponent : null,
-    routesFile  : '/js/routes.js',
+    routesFile  : 'js/routes.js',
     strings : new Array(),
 
     init : function(){
         PD.loadComponentFromCurrentUrl();
+        PD.currentComponent.render();
     },
 
     loadComponentFromCurrentUrl : function(){
@@ -17,21 +18,27 @@ var PD = {
 
     getComponentNameFromCurrentUrl : function(){
         var patt = /#([a-z]|_)+/i;
-        var componentName = patt.exec(document.location.href)[0];
+        var componentName = patt.exec(document.location.href);
 
-        return (componentName != null) ? componentName : 'default';
+        return (componentName != null) ? componentName[0] : 'principal';
+    },
+
+    setCurrentComponent : function(componentName){
+        var className = componentName[0].toUpperCase() + componentName.substr(1);
+        eval('PD.currentComponent = ' + className);
     },
     
     loadComponent : function(componentName){        
         try
         {
             PD.loadJSFile(PD.routesFile);
-            PD.loadJSFile("/js/components/" + componentName);
+            PD.loadJSFile("/js/components/" + componentName + '.js');
+            PD.setCurrentComponent(componentName);
         }
         catch(err)
         {
-            alert("Error en loadComponent url => " + url + " | " + err.message);
-            break;
+            alert("Error en loadComponent url => " + componentName + " | " + err.message);
+            return 0;
         }
     },
 

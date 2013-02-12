@@ -1,19 +1,21 @@
-var Principal = {
-    prototype : Object.create(Component.prototype),
-
-    _className : "Principal",
-
-    //idNode : templateName
-    nodes : {
-        "banner" : "banner",
-        "featured" : "featured",
-        "content" : "content",
-        "blogroll" : "blogroll",
-        "social" : "social",
-        "contentinfo" : "contentinfo"
-    },
+function principal(){
+    this.className = 'principal';
+    this.nodes = {
+            "banner" : "banner"
+    };
     
-    getDataNode_banner : function(){
+    this.getDataNode_banner = function(){
+        var headerTitle = Html.a({"href":"#"},'Smashing Simple Page Interface');
+        var nav_menu = Banner.nav_menu();
         
-    }
+        return {
+            "headerTitle" : headerTitle,
+            "nav_menu" : nav_menu
+        }
+    };
+    
 }
+
+principal.prototype = new Component();
+
+Principal = new principal();
