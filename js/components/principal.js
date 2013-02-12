@@ -5,7 +5,7 @@ function principal(){
     };
     
     this.getDataNode_banner = function(){
-        var headerTitle = Html.a({"href":"#"},'Smashing Simple Page Interface');
+        var headerTitle = 'Smashing <strong>Simple Page Interface</strong>';
         var nav_menu = Banner.nav_menu();
         
         return {

@@ -8,6 +8,7 @@ var PD = {
     strings : new Array(),
 
     init : function(){
+        PD.body = document.getElementsByTagName('body')[0];
         PD.loadComponentFromCurrentUrl();
         PD.currentComponent.render();
     },

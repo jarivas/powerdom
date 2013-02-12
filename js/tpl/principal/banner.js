@@ -1,7 +1,7 @@
 function banner(){
     this.html = '<header id="banner" class="body">'+
-        '<h1><a href="#">%%headerTitle%%></a></h1>'+
-        '<nav>%%nav_menu%%</nav>'+
+        '<h1><a href="#">%%headerTitle%%</a></h1>'+
+        '%%nav_menu%%'+
 	'</header><!-- /#banner -->';
 
     this.nav_menu = function(){
@@ -10,16 +10,16 @@ function banner(){
     	var list_items = [
     		{
     			"attributes" : {"class" : "active"},
-    			"text"  : "Home"
+    			"text"  : Html.a({"href":"#"},"Home")
     		},
     		{
-    			"text"  : "portfolio"
+    			"text"  : Html.a({"href":"#"},"portfolio")
     		},
     		{
-    			"text"  : "blog"
+    			"text"  : Html.a({"href":"#"},"blog")
     		},
     		{
-    			"text"  : "contact"
+    			"text"  : Html.a({"href":"#"},"contact")
     		},
     	];
 

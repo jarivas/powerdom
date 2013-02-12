@@ -6,13 +6,9 @@ var Html = {
             result += ' '+ attr + '="' + attributes[attr] + '"';
 
         if ( (text == undefined) && (children == undefined) )
-        {
             result += '/>';
-        }
         else if ( (children == undefined) && (text != undefined))
-        {
             result += '>' + text + '</' + tag + '>';
-        }
         else if ( (children != undefined) && (text == undefined))
         {
             result += '>';
@@ -22,8 +18,7 @@ var Html = {
 
             result += '</' + tag + '>';
         }
-			
-
+        
         return result;
     },
 

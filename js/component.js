@@ -7,7 +7,7 @@ function Component(){
     this.setCurrentTemplate = function(templateName){
         var className = templateName[0].toUpperCase() + templateName.substr(1);
         eval('this.currentTemplate = ' + className);
-    },
+    };
     
     this.getTemplate = function(templateName){
         PD.loadJSFile(this.templatePath + this.className + "/" + templateName + ".js");
@@ -21,11 +21,12 @@ function Component(){
     
     this.render = function(){
         var dataTemplate = null;
+        var el = null;
 
         for(var idNode in this.nodes){
             this.getTemplate(this.nodes[idNode]);
             dataTemplate = this.getDataTemplate(idNode);
-            this.currentTemplate.render(dataTemplate);
+            this.currentTemplate.render(dataTemplate, idNode);
         }
     };
 }
