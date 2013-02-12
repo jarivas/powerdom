@@ -1,7 +1,8 @@
 function principal(){
     this.className = 'principal';
     this.nodes = {
-            "banner" : "banner"
+            "banner" : "banner",
+            "featured" : "featured"
     };
     
     this.getDataNode_banner = function(){
@@ -11,6 +12,14 @@ function principal(){
         return {
             "headerTitle" : headerTitle,
             "nav_menu" : nav_menu
+        }
+    };
+
+    this.getDataNode_featured = function(){
+        return {
+            "cabecera" : "PowerDOM",
+            "subCabecera" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá",
+            "contenido" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá"
         }
     };
     
