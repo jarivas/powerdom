@@ -88,11 +88,6 @@ var PD = {
 	 
             PD.head.appendChild(css);
         }
-    },
-
-    getExtension : function(file){
-        var pattern = /js/g;
-        return (pattern.test(file)) ? 'js' : 'css';
     }
         
 };
