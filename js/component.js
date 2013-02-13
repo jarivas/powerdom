@@ -10,7 +10,7 @@ function Component(){
     };
     
     this.getTemplate = function(templateName){
-        PD.loadJSFile(this.templatePath + this.className + "/" + templateName + ".js");
+        PD.loadJSClass(this.templatePath + this.className + "/" + templateName + ".js");
         this.setCurrentTemplate(templateName);
     };
     

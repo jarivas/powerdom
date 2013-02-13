@@ -33,7 +33,7 @@ var PD = {
         try
         {
             PD.loadJSFile(PD.routesFile);
-            PD.loadJSFile("js/components/" + componentName + '.js');
+            PD.loadJSClass("js/components/" + componentName + '.js');
             PD.setCurrentComponent(componentName);
         }
         catch(err)
@@ -41,6 +41,14 @@ var PD = {
             alert("Error en loadComponent url => " + componentName + " | " + err.message);
             return 0;
         }
+    },
+    
+    loadJSClass : function(file){
+        var req = new XMLHttpRequest();
+        req.open('GET', file, false);
+        req.send();
+        eval(req.responseText);
+		
     },
 
     loadJSFile : function(file){

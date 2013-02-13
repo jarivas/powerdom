@@ -1,5 +1,5 @@
-function principal(){
-    this.className = 'principal';
+function portfolio(){
+    this.className = 'portfolio';
     this.nodes = {
         "banner" : "banner",
         "featured" : "featured"
@@ -25,6 +25,6 @@ function principal(){
     
 }
 
-principal.prototype = new Component();
+portfolio.prototype = new Component();
 
-Principal = new principal();
+Portfolio = new portfolio();

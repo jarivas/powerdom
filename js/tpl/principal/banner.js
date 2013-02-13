@@ -13,7 +13,7 @@ function banner(){
     			"text"  : Html.a({"href":"#"},"Home")
     		},
     		{
-    			"text"  : Html.a({"href":"#"},"portfolio")
+    			"text"  : Html.a({"href":"#", "onclick" : "PD.go('portfolio');"},"portfolio")
     		},
     		{
     			"text"  : Html.a({"href":"#"},"blog")
