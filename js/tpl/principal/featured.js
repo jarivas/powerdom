@@ -10,14 +10,6 @@ function featured(){
 		'</hgroup>'+
 		'<p>%%contenido%%</p>'+
 	'</article></aside><!-- /#featured -->';
-    
-    this.getData = function(){
-        return {
-            "cabecera" : "PowerDOM",
-            "subCabecera" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá",
-            "contenido" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá"
-        }
-    };
 
 }
 

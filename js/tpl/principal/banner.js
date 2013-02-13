@@ -27,16 +27,6 @@ function banner(){
 
     	return result;
     };
-    
-    this.getData = function(){
-        var headerTitle = 'Smashing <strong>Simple Page Interface</strong>';
-        var nav_menu = Banner.nav_menu();
-        
-        return {
-            "headerTitle" : headerTitle,
-            "nav_menu" : nav_menu
-        }
-    };
 
 }
 

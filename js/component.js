@@ -14,11 +14,19 @@ function Component(){
         this.setCurrentTemplate(templateName);
     };
     
+    this.getDataTemplate = function(idNode){
+        var method = 'this.getDataNode_idNode();'.replace('idNode', idNode);
+        return eval(method);
+    };
+    
     this.render = function(){
+        var dataTemplate = null;
+        var el = null;
 
         for(var idNode in this.nodes){
             this.getTemplate(this.nodes[idNode]);
-            this.currentTemplate.render(idNode);
+            dataTemplate = this.getDataTemplate(idNode);
+            this.currentTemplate.render(dataTemplate, idNode);
         }
     };
 }
