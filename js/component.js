@@ -14,11 +14,6 @@ function Component(){
         this.setCurrentTemplate(templateName);
     };
     
-    this.getDataTemplate = function(idNode){
-        var method = 'this.getDataNode_idNode();'.replace('idNode', idNode);
-        return eval(method);
-    };
-    
     this.render = function(){
 
         for(var idNode in this.nodes){
