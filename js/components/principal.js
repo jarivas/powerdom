@@ -19,7 +19,7 @@ function principal(){
         return {
             "cabecera" : "PowerDOM",
             "subCabecera" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá",
-            "contenido" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá"
+            "contenido" : "Contenido de principal"
         }
     };
     

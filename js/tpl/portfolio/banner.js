@@ -9,10 +9,10 @@ function banner(){
 
     	var list_items = [
             {
-                "attributes" : {"class" : "active"},
                 "text"  : Html.a({"href":"#home"},"Home")
             },
             {
+                "attributes" : {"class" : "active"},
                 "text"  : Html.a({"href":"#portfolio"},"portfolio")
             },
             {
