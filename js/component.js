@@ -1,6 +1,6 @@
 function Component(){
     this.className = 'Component';
-    this.templatePath = "/js/tpl/";
+    this.templatePath = "js/tpl/";
     this.nodes = null;
     this.currentTemplate = null;
 
@@ -20,13 +20,10 @@ function Component(){
     };
     
     this.render = function(){
-        var dataTemplate = null;
-        var el = null;
 
         for(var idNode in this.nodes){
             this.getTemplate(this.nodes[idNode]);
-            dataTemplate = this.getDataTemplate(idNode);
-            this.currentTemplate.render(dataTemplate, idNode);
+            this.currentTemplate.render(idNode);
         }
     };
 }

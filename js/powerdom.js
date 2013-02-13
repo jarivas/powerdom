@@ -33,7 +33,7 @@ var PD = {
         try
         {
             PD.loadJSFile(PD.routesFile);
-            PD.loadJSFile("/js/components/" + componentName + '.js');
+            PD.loadJSFile("js/components/" + componentName + '.js');
             PD.setCurrentComponent(componentName);
         }
         catch(err)
