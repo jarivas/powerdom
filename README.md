@@ -29,7 +29,7 @@ son sólo reescrituras:
 · El controlador es un clase que hereda de Component
 
 · El controlador es único por página, por ejemplo para index.html es Principal,
-y se carga del elemento default del archivo de rutas
+y se carga del elemento home del archivo de rutas
 
 · El controlador es un tipo 'static like' (mirar principal.js)
 

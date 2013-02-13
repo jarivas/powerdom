@@ -18,6 +18,26 @@ function Component(){
         var method = 'this.getDataNode_idNode();'.replace('idNode', idNode);
         return eval(method);
     };
+
+    this.updateAjaxLinks = function(){
+        var links = document.getElementsByTagName("a");
+        var sharpPos = -1;
+        var domainPos = -1;
+        var dummy = null;
+
+        for(var i = 0; i < links.length; ++i){
+            sharpPos = links[i].href.indexOf('#');
+
+            if(sharpPos != -1){
+                domainPos = links[i].href.indexOf(document.domain);
+
+                if(domainPos != -1){
+                    links[i].onclick = function(){PD.go(this.href)};
+                }
+            }
+        }
+
+    };
     
     this.render = function(){
         var dataTemplate = null;
@@ -28,5 +48,7 @@ function Component(){
             dataTemplate = this.getDataTemplate(idNode);
             this.currentTemplate.render(dataTemplate, idNode);
         }
+
+        this.updateAjaxLinks();
     };
 }

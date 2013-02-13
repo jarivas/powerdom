@@ -8,7 +8,6 @@ var PD = {
     strings : new Array(),
 
     init : function(){
-        PD.body = document.getElementsByTagName('body')[0];
         PD.loadComponentFromCurrentUrl();
         PD.currentComponent.render();
     },
@@ -17,11 +16,19 @@ var PD = {
         PD.loadComponent( PD.getComponentNameFromCurrentUrl() );
     },
 
-    getComponentNameFromCurrentUrl : function(){
-        var patt = /#([a-z]|_)+/i;
-        var componentName = patt.exec(document.location.href);
+    getComponentNameFromCurrentUrl : function(url){
+        var patt = /#(([a-z]|_)+)+/i;
+        var ajaxUrl = null;
 
-        return (componentName != null) ? componentName[0] : 'principal';
+        PD.loadJSFile(PD.routesFile);
+
+        if(url == undefined)
+            url = document.location.href;
+
+        ajaxUrl = patt.exec(url);
+        ajaxUrl = (ajaxUrl != null) ? ajaxUrl[1] : 'home';
+
+        return PD.components[ajaxUrl];
     },
 
     setCurrentComponent : function(componentName){
@@ -32,7 +39,7 @@ var PD = {
     loadComponent : function(componentName){        
         try
         {
-            PD.loadJSFile(PD.routesFile);
+            
             PD.loadJSClass("js/components/" + componentName + '.js');
             PD.setCurrentComponent(componentName);
         }
@@ -41,6 +48,13 @@ var PD = {
             alert("Error en loadComponent url => " + componentName + " | " + err.message);
             return 0;
         }
+    },
+
+    go : function(url){
+        if (url != undefined){
+            document.location.href = url;
+        }
+        PD.init();         
     },
     
     loadJSClass : function(file){

@@ -8,20 +8,20 @@ function banner(){
     	var result = null;
 
     	var list_items = [
-    		{
-    			"attributes" : {"class" : "active"},
-    			"text"  : Html.a({"href":"#"},"Home")
-    		},
-    		{
-    			"text"  : Html.a({"href":"#", "onclick" : "PD.go('portfolio');"},"portfolio")
-    		},
-    		{
-    			"text"  : Html.a({"href":"#"},"blog")
-    		},
-    		{
-    			"text"  : Html.a({"href":"#"},"contact")
-    		},
-    	];
+            {
+                "attributes" : {"class" : "active"},
+                "text"  : Html.a({"href":"#home"},"Home")
+            },
+            {
+                "text"  : Html.a({"href":"#portfolio"},"portfolio")
+            },
+            {
+                "text"  : Html.a({"href":"#"},"blog")
+            },
+            {
+                "text"  : Html.a({"href":"#"},"contact")
+            },
+        ];
 
     	result = Html.nav(undefined, Html.ul(undefined, list_items));
 

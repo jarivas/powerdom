@@ -1,4 +1,5 @@
 PD.components =
 {
-    "default" : "principal"
+    "home" : "principal",
+    "portfolio" : "portfolio"
 };

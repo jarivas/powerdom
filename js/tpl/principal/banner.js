@@ -10,10 +10,10 @@ function banner(){
     	var list_items = [
     		{
     			"attributes" : {"class" : "active"},
-    			"text"  : Html.a({"href":"#"},"Home")
+    			"text"  : Html.a({"href":"#home"},"Home")
     		},
     		{
-    			"text"  : Html.a({"href":"#", "onclick" : "PD.go('portfolio');"},"portfolio")
+    			"text"  : Html.a({"href":"#portfolio"},"portfolio")
     		},
     		{
     			"text"  : Html.a({"href":"#"},"blog")
