@@ -40,7 +40,6 @@ var PD = {
     loadComponent : function(componentName){        
         try
         {
-            
             PD.loadJSClass("js/components/" + componentName + '.js');
             PD.setCurrentComponent(componentName);
         }
@@ -105,11 +104,11 @@ var PD = {
         }
     },
     
-    ajax : function(funct, params, callback){
+    ajax : function(controller, params, callback, async){
         var url = '';
         var xmlhttp = PD.getXmlHttpObject();
 
-        url = PD.urlAjax + '?f='+funct;
+        url = PD.urlAjax + '?controller='+controller;
 
         for(var param in params)
             url += '&'+ param + '=' + params[param];
@@ -117,7 +116,11 @@ var PD = {
         xmlhttp.onreadystatechange = function(){
             PD.stateChanged(callback, xmlhttp);
         };
-        xmlhttp.open('GET',url,true);
+        
+        if(async == undefined)
+            async = true;
+        
+        xmlhttp.open('GET',url,async);
         xmlhttp.send(null);
     },
 
@@ -134,6 +137,13 @@ var PD = {
             var json = eval('(' + xmlhttp.responseText + ')');
             callback(json);
         }
+    },
+
+    loadInnerHtml : function(json){
+        if(json.error == undefined)
+            document.getElementById(json.id).innerHTML = json.data;
+        else
+            alert(json.error);
     }
-        
-};
+
+}

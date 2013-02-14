@@ -1,5 +1,7 @@
 function content(){
-    this.html = '<p>%%curdate%%</p>';
+    this.html =
+        '<section id="content" class="body">'+
+        '</section><!-- /#content -->';
 }
 
 content.prototype = new Template();

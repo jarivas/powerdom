@@ -39,10 +39,6 @@ var Common = {
     },
     
     getContent : function(){
-        var curdate = 'hola';
-        
-        return {
-            "curdate" : curdate
-        };  
+        PD.ajax('getTime', null, PD.loadInnerHtml, true);
     }
 }

@@ -1,7 +1,6 @@
 function content(){
     this.html =
         '<section id="content" class="body">'+
-        '<p>%%curdate%%</p>'+
         '</section><!-- /#content -->';
 }
 
