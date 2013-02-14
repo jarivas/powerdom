@@ -4,30 +4,6 @@ function banner(){
         '%%nav_menu%%'+
 	'</header><!-- /#banner -->';
 
-    this.nav_menu = function(){
-    	var result = null;
-
-    	var list_items = [
-            {
-                "text"  : Html.a({"href":"#home"},"Home")
-            },
-            {
-                "attributes" : {"class" : "active"},
-                "text"  : Html.a({"href":"#portfolio"},"portfolio")
-            },
-            {
-                "text"  : Html.a({"href":"#"},"blog")
-            },
-            {
-                "text"  : Html.a({"href":"#"},"contact")
-            },
-        ];
-
-    	result = Html.nav(undefined, Html.ul(undefined, list_items));
-
-    	return result;
-    };
-
 }
 
 banner.prototype = new Template();

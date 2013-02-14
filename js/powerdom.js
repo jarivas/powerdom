@@ -5,6 +5,7 @@ var PD = {
     components : null,
     currentComponent : null,
     routesFile  : 'js/routes.js',
+    urlAjax : 'ajax.php',
     strings : new Array(),
 
     init : function(){
@@ -58,7 +59,7 @@ var PD = {
     },
     
     loadJSClass : function(file){
-        var req = new XMLHttpRequest();
+        var req = PD.getXmlHttpObject();
         req.open('GET', file, false);
         req.send();
         eval(req.responseText);
@@ -68,7 +69,7 @@ var PD = {
     loadJSFile : function(file){
         if(document.getElementById(file) == undefined)
         {
-            var req = new XMLHttpRequest();
+            var req = PD.getXmlHttpObject();
             req.open('GET', file, false);
             req.send();
             eval(req.responseText);
@@ -101,6 +102,37 @@ var PD = {
             };
 	 
             PD.head.appendChild(css);
+        }
+    },
+    
+    ajax : function(funct, params, callback){
+        var url = '';
+        var xmlhttp = PD.getXmlHttpObject();
+
+        url = PD.urlAjax + '?f='+funct;
+
+        for(var param in params)
+            url += '&'+ param + '=' + params[param];
+
+        xmlhttp.onreadystatechange = function(){
+            PD.stateChanged(callback, xmlhttp);
+        };
+        xmlhttp.open('GET',url,true);
+        xmlhttp.send(null);
+    },
+
+    getXmlHttpObject : function(){
+        if (window.XMLHttpRequest)
+            return new XMLHttpRequest();
+        else if (window.ActiveXObject)
+            return new ActiveXObject('Microsoft.XMLHTTP');
+    },
+
+    stateChanged : function(callback, xmlhttp){
+        if (xmlhttp.readyState == 4)
+        {
+            var json = eval('(' + xmlhttp.responseText + ')');
+            callback(json);
         }
     }
         

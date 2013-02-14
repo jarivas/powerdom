@@ -2,12 +2,13 @@ function portfolio(){
     this.className = 'portfolio';
     this.nodes = {
         "banner" : "banner",
-        "featured" : "featured"
+        "featured" : "featured",
+        "content" : "content"
     };
     
     this.getDataNode_banner = function(){
         var headerTitle = 'Smashing <strong>Simple Page Interface</strong>';
-        var nav_menu = Banner.nav_menu();
+        var nav_menu = Common.nav_menu('#portfolio');
         
         return {
             "headerTitle" : headerTitle,
@@ -21,6 +22,10 @@ function portfolio(){
             "subCabecera" : "El marco de trabajo JavaScript ligero y eficiente que os sorprenderá",
             "contenido" : "Contenido de Portfolio"
         }
+    };
+    
+    this.getDataNode_content = function(){
+        return Common.getContent();
     };
     
 }
