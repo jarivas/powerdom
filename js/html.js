@@ -21,13 +21,8 @@ var Html = {
         
         return result;
     },
-
-    /***
-	* @param attributes Atributos de la lista
-	* @param list_items Array de {"attributes":"", "text":""} 
-	* attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
-	***/
-    ul : function(attributes, list_items){
+    
+    list : function(tag, attributes, list_items){
         var children = Array();
 
         for(var i = 0; i < list_items.length; ++i){
@@ -38,7 +33,55 @@ var Html = {
                 "children" : undefined
             };
         }
-        return Html.render('ul', attributes, undefined, children);
+        return Html.render(tag, attributes, undefined, children);
+    },
+
+    /***
+    * @param attributes Atributos de la lista
+    * @param list_items Array de {"attributes":"", "text":""} 
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    ul : function(attributes, list_items){
+        return Html.list('ul', attributes, list_items);
+    },
+    
+    /***
+    * @param attributes Atributos de la lista
+    * @param list_items Array de {"attributes":"", "text":""} 
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    ol: function(attributes, list_items){
+        return Html.list('ol', attributes, list_items);
+    },
+    
+    /***
+    * @param attributes Atributos de la lista
+    * @param options Array de {"value":"", "text":""} 
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    select : function(attributes, options){
+        var children = Array();
+
+        for(var i = 0; i < options.length; ++i){
+            children[i] = {
+                "tag": "option",
+                "attributes" : {"value" : options[i].value},
+                "text" : options[i].text,
+                "children" : undefined
+            };
+        }
+        return Html.render('select', attributes, undefined, children);
+    },
+    
+    /***
+     * @param attributes atributos de la tabla
+     * @param cols nombre de los campos que van a aparecer en los header
+     * @param rows filas de la tabla
+     * @param paginator objeto con información para dibujar el paginador
+     *
+     ***/
+    table : function(attributes, cols, rows, paginatorInfo){
+        
     },
 
     /***
@@ -58,5 +101,7 @@ var Html = {
     a : function(attributes, text){
         return Html.render('a', attributes, text, undefined);
     }
+    
+    
 
 }

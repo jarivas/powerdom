@@ -2,7 +2,8 @@ powerdom
 ========
 
 TODO:
-	· featured
+	· Input
+        · Form
 
 INFO:
 
