@@ -23,8 +23,7 @@ function Component(){
         var links = document.getElementsByTagName("a");
         var sharpPos = -1;
         var domainPos = -1;
-        var dummy = null;
-
+        
         for(var i = 0; i < links.length; ++i){
             sharpPos = links[i].href.indexOf('#');
 
@@ -41,7 +40,6 @@ function Component(){
     
     this.render = function(){
         var dataTemplate = null;
-        var el = null;
 
         for(var idNode in this.nodes){
             this.getTemplate(this.nodes[idNode]);

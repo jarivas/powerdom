@@ -5,6 +5,7 @@ var PD = {
     components : null,
     currentComponent : null,
     routesFile  : 'js/routes.js',
+    langPath : 'js/lang/',
     urlAjax : 'ajax.php',
     strings : new Array(),
 
@@ -40,6 +41,7 @@ var PD = {
     loadComponent : function(componentName){        
         try
         {
+            PD.loadJSFile(PD.langPath + PD.lang + '/' + componentName + '.js');
             PD.loadJSClass("js/components/" + componentName + '.js');
             PD.setCurrentComponent(componentName);
         }
@@ -134,7 +136,8 @@ var PD = {
     stateChanged : function(callback, xmlhttp){
         if (xmlhttp.readyState == 4)
         {
-            var json = eval('(' + xmlhttp.responseText + ')');
+            var json = PD.translateString(xmlhttp.responseText);
+            json = eval('(' + json + ')');
             callback(json);
         }
     },
@@ -144,6 +147,19 @@ var PD = {
             document.getElementById(json.id).innerHTML = json.data;
         else
             alert(json.error);
+    },
+	
+    translateString : function(str){
+        var patt = /%%([\w]+)%%/i;
+        var result = patt.exec(str);
+		
+        while (result != null)
+        {
+            eval("str = str.replace('" + result[0] + "', PD.strings[PD.lang]['"  + result[1] + "'])");
+            result = patt.exec(str);
+        }
+
+        return str;
     }
 
 }

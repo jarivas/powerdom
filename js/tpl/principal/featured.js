@@ -5,10 +5,10 @@ function featured(){
         	'<img src="images/sm-logo.gif" alt="Smashing Magazine" />'+
 		'</figure>'+
 		'<hgroup>'+
-		'<h2>%%cabecera%%</h2>'+
-		'<h3><a href="#">%%subCabecera%%</a></h3>'+
+		'<h2>{{cabecera}}</h2>'+
+		'<h3><a href="#">{{subCabecera}}</a></h3>'+
 		'</hgroup>'+
-		'<p>%%contenido%%</p>'+
+		'<p>{{contenido}}</p>'+
 	'</article></aside><!-- /#featured -->';
 
 }
