@@ -55,6 +55,7 @@ var Html = {
     },
     
     /***
+    * Genera una lista desplegable
     * @param attributes Atributos de la lista
     * @param options Array de {"value":"", "text":""} 
     * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
@@ -131,8 +132,66 @@ var Html = {
     ***/
     a : function(attributes, text){
         return Html.render('a', attributes, text, undefined);
-    }
+    },
     
+    /***
+    * Genera un input de tipo text
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    text : function(attributes){
+        attributes.type = "text";
+        return Html.render('input', attributes);
+    },
+    
+    /***
+    * Genera un input de tipo password
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    password  : function(attributes){
+        attributes.type = "password";
+        return Html.render('input', attributes);
+    },
+    
+    /***
+    * Genera un input de tipo password
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    radio : function(attributes){
+        attributes.type = "radio";
+        return Html.render('input', attributes);
+    },
+    
+    /***
+    * Genera un input de tipo checkbox
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    checkbox : function(attributes){
+        attributes.type = "checkbox";
+        return Html.render('input', attributes);
+    },
+    
+    /***
+    * Genera un botón submit
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    submit : function(attributes){
+        attributes.type = "submit";
+        return Html.render('input', attributes);
+    },
+    
+    /***
+    * Genera un input textearea
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    textarea : function(attributes){
+        return Html.render('textarea', attributes);
+    }
     
 
 }
