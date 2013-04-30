@@ -74,14 +74,45 @@ var Html = {
     },
     
     /***
-     * @param attributes atributos de la tabla
-     * @param cols nombre de los campos que van a aparecer en los header
-     * @param rows filas de la tabla
-     * @param paginator objeto con información para dibujar el paginador
-     *
+     * @param cols array de string nombre de los campos que van a aparecer en los header
+     * @param rows array de arrays de string filas de la tabla
+     * @param attributes Atributos de la etiqueta
+     * @param ColsAttributes atributos de los th
+     * @param RowsAttributes atributos de los td
+     * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
      ***/
-    table : function(attributes, cols, rows, paginatorInfo){
+    table : function(cols, rows, attributes, ColsAttributes, RowsAttributes){
+        var children = Array();
         
+        children.push(Html.row('th', cols, ColsAttributes));
+
+        for(var i = 0; i < rows.length; ++i){
+            children.push(Html.row('td', rows[i], RowsAttributes));
+        }
+        
+        return Html.render('table', attributes, undefined, children);
+    },
+    
+    row : function(cellType, cells, attributes){
+        var row = {
+                "tag": "tr",
+                "attributes" : attributes,
+                "text" : undefined,
+                "children" : undefined
+        };
+        var children = Array();
+        
+        for(var i = 0; i < cells.length; ++i){
+            children[i] = {
+                "tag": cellType,
+                "attributes" : attributes,
+                "text" : cells[i],
+                "children" : undefined
+            };
+        }
+        row.children = children;
+        
+        return row;
     },
 
     /***
