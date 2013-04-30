@@ -191,7 +191,18 @@ var Html = {
     ***/
     textarea : function(attributes){
         return Html.render('textarea', attributes);
+    },
+    
+    /***
+    * Genera un botón
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    button : function(attributes){
+        return Html.render('button', attributes);
     }
+    
+    //@TODO Buscar todos los elementos del formulario en http://www.w3schools.com/html/html_forms.asp 
     
 
 }
