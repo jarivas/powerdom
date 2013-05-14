@@ -46,22 +46,6 @@ var Html = {
         return Html.render(tag, attributes, undefined, children);
     },
 
-    formItemList : function(attributes, list_items){
-        var children = Array();
-
-        for(var i = 0; i < list_items.length; ++i)
-        {
-            children[i] = {
-                "tag": "li",
-                "attributes" : list_items[i].attributes,
-                "text" : list_items[i].text,
-                "children" : undefined
-            };
-        }
-
-        return children;
-    },
-
     /***
     * @param attributes Atributos de la lista, en el caso de no tener usar undefined
     * @param list_items Array de {"attributes":"", "text":""} 
@@ -270,13 +254,32 @@ var Html = {
         return Html.render('keygen', attributes);
     },
 
+    formItemList : function(attributes, list_items){
+        var children = Array();
+
+        for(var i = 0; i < list_items.length; ++i)
+        {
+            children[i] = {
+                "tag": "li",
+                "attributes" : list_items[i].attributes,
+                "text" : list_items[i].text,
+                "children" : undefined
+            };
+        }
+
+        return children;
+    },
+
     /***
     * Genera una grupo de elementos de formulario relacionados
     * @param attributes
+    * @param forms_items es un Array de {input, id, name}
     * attributes es un mapa  "atributo" : "value"
     ***/
     fieldSet: function(attributes, listType, forms_items){
-        var fs = {
+        var children = Html.formItemList();
+
+        return {
                 "tag": "fieldset",
                 "attributes" : attributes,
                 "text" : undefined,
@@ -284,24 +287,22 @@ var Html = {
                         "tag": listType,
                         "attributes" : attributes,
                         "text" :undefined,
-                        "children" : Html.formItemList()
+                        "children" : children
                 }]
         };
-        
-        return fs;
     },
 
     /***
     * Genera un formulario y su contenido
     * @param formAttributes atributos del formulario
-    * @param fieldSets Array de {attributes, listType, forms_items}
+    * @param fieldSets Array de {attributes, listType, [{input, id, name}]}
     * los atributos son un mapa  "atributo" : "value"
     ***/
     form : function(attributes, fieldSets){
         var children = Array();
 
         for(var i = 0; i < fieldSets.length; ++i){
-            children.push(Html.fieldSet(fieldSets[i]));
+            children.push(Html.fieldSet(fieldSets[i].attributes, fieldSets[i].listType, fieldSets[i].forms_items));
         }
         
         return Html.render('form', attributes, undefined, children);
