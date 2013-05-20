@@ -1,11 +1,18 @@
 var Html = {
-    render : function(tag, attributes, text, children){
-        var result = '<' + tag;
-		
+    renderAttributes : function(attributes){
+        var result = '';
+
         for(var attr in attributes)
         {
             result += ' '+ attr + '="' + attributes[attr] + '"';
         }
+
+        return result;
+    }
+    render : function(tag, attributes, text, children){
+        var result = '<' + tag;
+		
+        result += Html.renderAttributes(attributes);
 
         if ( (text == undefined) && (children == undefined) )
         {
@@ -29,22 +36,6 @@ var Html = {
         
         return result;
     },
-    
-    itemList : function(tag, attributes, list_items){
-        var children = Array();
-
-        for(var i = 0; i < list_items.length; ++i)
-        {
-            children[i] = {
-                "tag": "li",
-                "attributes" : list_items[i].attributes,
-                "text" : list_items[i].text,
-                "children" : undefined
-            };
-        }
-
-        return Html.render(tag, attributes, undefined, children);
-    },
 
     /***
     * @param attributes Atributos de la lista, en el caso de no tener usar undefined
@@ -63,23 +54,39 @@ var Html = {
     ol: function(attributes, list_items){
         return Html.itemList('ol', attributes, list_items);
     },
+    
+    /***
+    * @param attributes Atributos de la lista, en el caso de no tener usar undefined
+    * @param dt_items Array de elementos dt
+    * @param dd_items Array de elementos dd
+    * attributes es un mapa  "atributo" : "value"
+    ***/
+    dl: function(attributes, dt_items, dd_items){
+        var result = '<dl>';
 
-    optionList : function(options){
-        var children = Array();
-
-        for(var i = 0; i < options.length; ++i)
+        result += Html.renderAttributes(attributes);
+        for(var i = 0; i < dt_items.length; ++i)
         {
-            children[i] = {
-                "tag": "option",
-                "attributes" : {"value" : options[i].value},
-                "text" : options[i].text,
-                "children" : undefined
-            };
-            
+            result += '<dt>' + dt_items[i] + '</dt><dd>' +  dd_items[i] + '</dd>';
         }
+        result += '</dl>';
 
-        return children;
-    }
+        return result;
+
+    },
+
+    itemList : function(tag, attributes, list_items){
+        var result = '<' + tag + '>';
+
+        result += Html.renderAttributes(attributes);
+        for(var i = 0; i < list_items.length; ++i)
+        {
+            result += '<li ' + Html.renderAttributes(list_items[i].attributes) + '>' + list_items[i].text + '</li>';
+        }
+        result += '</' + tag + '>';
+        
+        return result;
+    },
     
     /***
     * Genera una lista desplegable
@@ -88,9 +95,18 @@ var Html = {
     * attributes es un mapa  "atributo" : "value"
     ***/
     select : function(attributes, options){
-        return Html.render('select', attributes, undefined, Html.optionList(options));
+        var result = '<select>';
+
+        result += Html.renderAttributes(attributes);
+        for(var i = 0; i < list_items.length; ++i)
+        {
+            result += '<option value="' + options[i].value + '">' + options[i].text + '</option>';
+        }
+        result += '</select>';
+        
+        return result;
     },
-    
+
     /***
      * @param cols array de string nombre de los campos que van a aparecer en los header
      * @param rows array de arrays de string filas de la tabla
@@ -131,6 +147,21 @@ var Html = {
         row.children = children;
         
         return row;
+
+        var result = '<tr ' + Html.renderAttributes(attributes) + '>';
+        for(var i = 0; i < cells.length; ++i){
+            result += '<' + cellType + '>' + cells[i] + '</' + cellType + '>';
+        }
+        result += '</tr>';
+    },
+
+    /***
+    * Genera un formulario y su contenido
+    * @param formAttributes atributos del formulario
+    * @param fieldSets Array de {attributes, listType, [{input, attributes, name, text}]
+    * los atributos son un mapa  "atributo" : "value"
+    ***/
+    form : function(attributes, fieldSets){
     },
 
     /***
@@ -227,7 +258,7 @@ var Html = {
     ***/
     button : function(attributes){
         return Html.render('button', attributes);
-    }
+    },
 
     /***
     * Genera un campo autocompletar
@@ -254,59 +285,79 @@ var Html = {
         return Html.render('keygen', attributes);
     },
 
-    formItemList : function(attributes, list_items){
-        var children = Array();
-
-        for(var i = 0; i < list_items.length; ++i)
-        {
-            children[i] = {
-                "tag": "li",
-                "attributes" : list_items[i].attributes,
-                "text" : list_items[i].text,
-                "children" : undefined
-            };
-        }
-
-        return children;
-    },
-
     /***
-    * Genera una grupo de elementos de formulario relacionados
+    * Genera una imagen
     * @param attributes
-    * @param forms_items es un Array de {input, id, name}
     * attributes es un mapa  "atributo" : "value"
     ***/
-    fieldSet: function(attributes, listType, forms_items){
-        var children = Html.formItemList();
-
-        return {
-                "tag": "fieldset",
-                "attributes" : attributes,
-                "text" : undefined,
-                "children" : [{
-                        "tag": listType,
-                        "attributes" : attributes,
-                        "text" :undefined,
-                        "children" : children
-                }]
-        };
+    img : function(attributes){
+        return Html.render('img', attributes);
     },
 
     /***
-    * Genera un formulario y su contenido
-    * @param formAttributes atributos del formulario
-    * @param fieldSets Array de {attributes, listType, [{input, id, name}]}
-    * los atributos son un mapa  "atributo" : "value"
+    * Genera un header 1
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value"
     ***/
-    form : function(attributes, fieldSets){
-        var children = Array();
+    h1 : function(attributes){
+        return Html.render('h1', attributes);
+    },
 
-        for(var i = 0; i < fieldSets.length; ++i){
-            children.push(Html.fieldSet(fieldSets[i].attributes, fieldSets[i].listType, fieldSets[i].forms_items));
+    /***
+    * Genera un header 2
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value"
+    ***/
+    h2 : function(attributes){
+        return Html.render('h2', attributes);
+    },
+
+    /***
+    * Genera un header 3
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value"
+    ***/
+    h3 : function(attributes){
+        return Html.render('h3', attributes);
+    },
+
+    /***
+    * Genera un párrrafo
+    * @param attributes
+    * attributes es un mapa  "atributo" : "value"
+    ***/
+    p : function(attributes){
+        return Html.render('p', attributes);
+    },
+
+    /***
+    * Genera un salto de línea
+    ***/
+    br : function(){
+        return Html.render('br', undefined);
+    },
+
+    /***
+    * Genera un mapa de imagen
+    * @param attributes atributos del elemento list
+    * @param areas Array de {shape,coords,href,alt}
+    * @param mapName es el valor que enlaza la imagen con las areas
+    * Ejemplo de uso http://w3schools.com/tags/tag_map.asp
+    * attributes es un mapa  "atributo" : "value", en el caso de no tener usar undefined
+    ***/
+    imageMap : function(attributes, areas, mapName){
+        var a = (attributes != undefined) ? attributes : {};
+        var result = '<map name="' + mapName + '">';
+
+        a.usemap = '#' + mapName;
+
+        for(var i = 0; i < areas.length; ++i){
+            result += '<area ' + Html.renderAttributes(areas[i]) + '>';
         }
-        
-        return Html.render('form', attributes, undefined, children);
+        result += '</map>';
+
+        return Html.render('img', a) + result;
     }
-    
+
 
 }
