@@ -8,7 +8,8 @@ var Html = {
         }
 
         return result;
-    }
+    },
+
     render : function(tag, attributes, text, children){
         var result = '<' + tag;
 		
@@ -120,7 +121,7 @@ var Html = {
         result += Html.row('th', cols, ColsAttributes);
         
         for(var i = 0; i < rows.length; ++i){
-            result += Html.row('tr', rows, RowsAttributes);
+            result += Html.row('td', rows, RowsAttributes);
         }
 
         return result;
