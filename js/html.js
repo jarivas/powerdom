@@ -116,38 +116,17 @@ var Html = {
      * los atributos es un mapa  "atributo" : "value"
      ***/
     table : function(cols, rows, attributes, ColsAttributes, RowsAttributes){
-        var children = Array();
+        var result = '<table ' + Html.renderAttributes(attributes) + '>';
+        result += Html.row('th', cols, ColsAttributes);
         
-        children.push(Html.row('th', cols, ColsAttributes));
-
         for(var i = 0; i < rows.length; ++i){
-            children.push(Html.row('td', rows[i], RowsAttributes));
+            result += Html.row('tr', rows, RowsAttributes);
         }
-        
-        return Html.render('table', attributes, undefined, children);
+
+        return result;
     },
     
     row : function(cellType, cells, attributes){
-        var row = {
-                "tag": "tr",
-                "attributes" : attributes,
-                "text" : undefined,
-                "children" : undefined
-        };
-        var children = Array();
-        
-        for(var i = 0; i < cells.length; ++i){
-            children[i] = {
-                "tag": cellType,
-                "attributes" : attributes,
-                "text" : cells[i],
-                "children" : undefined
-            };
-        }
-        row.children = children;
-        
-        return row;
-
         var result = '<tr ' + Html.renderAttributes(attributes) + '>';
         for(var i = 0; i < cells.length; ++i){
             result += '<' + cellType + '>' + cells[i] + '</' + cellType + '>';
