@@ -1,42 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <title>Smashing HTML5!</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="css/main.css" type="text/css" />
-        <script type="text/javascript" src="js/utils.js"></script>
-        <script type="text/javascript" src="js/component.js"></script>
-        <script type="text/javascript" src="js/template.js"></script>
-        <script type="text/javascript" src="js/html.js"></script>
-        <script type="text/javascript" src="js/common.js"></script>
-        <script type="text/javascript" src="js/powerdom.js"></script>
-    </head>
+<!doctype html>
+<html lang="en">
 
-    <body id="index" class="home">
+<head>
 
-        <header id="banner" class="body">
-        </header><!-- /#banner -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
 
-        <aside id="featured" class="body">
-        </aside><!-- /#featured -->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/layouts/side-menu.css">
 
-        <section id="content" class="body">
-        </section><!-- /#content -->
+    <script src="js/config.js"></script>
+    <!-- CORE -->
+    <script src="js/core/PageManager.js"></script>
+    <script src="js/core/Template.js"></script>
+    <script src="js/core/Powerdom.js"></script>
+    <!-- /CORE -->
 
-        <section id="extras" class="body">
-            <div class="blogroll">
-            </div><!-- /.blogroll -->
+</head>
 
-            <div class="social">
+<body>
 
-            </div><!-- /.social -->
-        </section><!-- /#extras -->
+    <div id="layout">
 
-        <footer id="contentinfo" class="body">
-        </footer><!-- /#contentinfo -->
-        <script type="text/javascript">
-            document.ready = PD.init();
-        </script>
+        <div id="side-menu">
+            <link rel="import" href="partials/side-menu.html">
+        </div>
 
-    </body>
+        <div id="main">
+            <script>PageManager.loadCurrent()</script>
+        </div>
+
+    </div>
+</body>
+
 </html>
