@@ -68,4 +68,9 @@ class PageManager {
 
         document.getElementById('main').appendChild(link);
     }
+
+    static currentInstance(){
+        let page = PageManager.prototype.data[PageManager.prototype.current];
+        return page.instance;
+    }
 }
