@@ -1,18 +1,8 @@
 class PageManager {
     static init() {
-        let current = 0, data = [];
-
-        for (let i = 0; i < window.config.pages.length; ++i) {
-            let page = window.config.pages[i];
-
-            if (page.hasOwnProperty('default') && page.default) {
-                current = i;
-                delete page.default;
-            }
-
-
-            data.push(page);
-        }
+        const data = [...window.config.pages];
+        const current = window.config.pages.findIndex(page => page.default)
+        delete window.config.pages[current].default;
 
         PageManager.prototype.current = current;
         PageManager.prototype.data = data;
