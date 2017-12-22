@@ -32,7 +32,7 @@ class PD {
         };
         xhr.open("POST", PD.apiUrl, true);
         xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(data);
+        xhr.send((data != null) ? JSON.stringify(data) : null );
     }
 
 }
