@@ -19,22 +19,14 @@ class PD {
     }
 
     static requestJson(data, callback, errorCb) {
-        let xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4) {
-                if (this.status == 200) {
-                    callback(JSON.parse(this.responseText));
-                } else {
-                    errorCb(this);
-                }
-            }
-        };
-        xhr.open("POST", PD.apiUrl, true);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send((data != null) ? JSON.stringify(data) : null );
-    }
-
+        fetch(PD.apiUrl, {
+            method: 'post',
+            body: data ? JSON.stringify(data) : null;
+        })
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(() => errorCb(this));
+  }
 }
 
 PD.init();
