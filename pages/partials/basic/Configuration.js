@@ -10,7 +10,8 @@ class Configuration extends PartialTemplate {
                     title: 'The title tag will be changed to this',
                     className: 'class name and name of the files .js and .html',
                     navigation: 'true to be displayed on navigation and footer',
-                    default: 'true if is the first page'
+                    default: 'true if is the first page',
+                    responsive: 'MediaQuery¡FileName,MediaQuery¡FileName'
                 }
             ]
         };

@@ -12,7 +12,7 @@
                     &lt;partial
                         <b>source</b>=&quot;/partials/form/filter-date-interval/&quot;
                         <b>className</b>=&quot;FilterDateInterval&quot;
-                        <b>responsive</b>=&quot;(max-width: 839px)|FilterDateIntervalSimple&quot;
+                        <b>responsive</b>=&quot;(max-width: 639px)|FilterDateIntervalSmall,(min-width: 640 and max-width: 839px)|FilterDateIntervalSimple&quot;
                         <b>changed</b>=&quot;RoundFilterDateChanged&quot;&gt;
                     &lt;/partial&gt;
                     ...
@@ -42,9 +42,7 @@
                     <li><b>FileName</b>.js is a class which its name is <b>FileName</b> and that extends from
                         PartialTemplate</li>
                     <li><b>responsive</b> is an optional attribute used to determine a new FileName in case the current
-                        resolution fits the media query. In this case, if current screen width &lt; 840 it will change
-                        the FileName <b>FilterDateInterval</b> from to <b>FilterDateIntervalSimple</b>, both classes
-                        exposes same methods
+                        resolution fits the media query, multiple can be described using ","
                     </li>
                     <li>The <b>changed</b> is an optional attribute used to determine what event will be fire when the
                         partial is ready

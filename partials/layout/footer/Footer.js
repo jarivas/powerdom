@@ -23,7 +23,7 @@ class Footer extends PartialTemplate {
     }
 
     bind() {
-        PD('a', this.nodeTarget).listen('click', Footer.click);
+        PD('.mdl-mini-footer__link-list a', /*this.nodeTarget*/).listen('click', Footer.click);
     }
     
     /**

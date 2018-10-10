@@ -9,6 +9,18 @@ input[type="range"]::-moz-range-track {
       #ccc 20%);
 }
 
+nav > a.is-active {
+    font-weight: bold;
+}
+
+nav > a.is-active::before {
+    content: '[';
+}
+
+nav > a.is-active::after {
+    content: ']';
+}
+
 .hscroll {
     overflow-x: auto; /* Horizontal */
 }
@@ -16,4 +28,12 @@ input[type="range"]::-moz-range-track {
 .hscroll > table{
     width: 100%;
     white-space: normal;
+}
+
+.floating-menu{
+  position: fixed;
+  right: 0;
+  z-index: 2;
+  background-color: silver;
+  border-radius: 50%;
 }

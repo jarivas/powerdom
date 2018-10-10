@@ -13,7 +13,7 @@
                                 <b>source</b>=&quot;/components/template/table/&quot;
                                 <b>className</b>=&quot;TableComponent&quot;
                                 <b>loaded</b>=&quot;tableRoundLoaded&quot;&gt;
-                                <b>responsive</b>=&quot;(max-width: 839px)|TableComponentResponsive&quot;
+                                <b>responsive</b>=&quot;(max-width: 639px)|TableComponentSmall,(min-width: 640 and max-width: 839px)(max-width: 839px)|TableComponentResponsive&quot;
                             &lt;/component&gt;
                         ...
                             &lt;!-- /page/PageName.js --&gt;
@@ -61,9 +61,7 @@
                         normally used to link the component to Page's static var so it can work with it.
                     </li>
                     <li><b>responsive</b> is an optional attribute used to determine a new FileName in case the current
-                        resolution fits the media query. In this case, if current screen width &lt; 840 it will change
-                        the FileName <b>FilterDateInterval</b> from to <b>FilterDateIntervalSimple</b>, both classes
-                        exposes same methods.
+                        resolution fits the media query, multiple can be described using ","
                     </li>
                 </ul>
             </div>

@@ -16,6 +16,7 @@
                         PageTemplate</li>
                     <li>If the view has partials only for this page, can be placed wherever you want but I recommend in
                         <b>/pages/partials/PageTitle/FileName/</b></li>
+                    <li>Using the attribute <b>responsive</b>, you can define what view to load for different resolutions</li>
                     <li>The easiest way of navigating between them is using <b>PageManager.changePage(title, params)</b>,
                         where the title is the on the config and the params is an optional object specific for each
                         page,
@@ -57,7 +58,7 @@
             </div>
             <div class="mdl-card__supporting-text">
                 <ul>
-                    <li><b>PageManager.changePage</b> and <b>PageManager.setCurrentIndex</b> are the methods reponsable for this/li>
+                    <li><b>PageManager.changePage</b> and <b>PageManager.setCurrentIndex</b> are the methods reponsable for this</li>
                     <li><b>PageManager.changePage</b> takes 2 arguments, the page's title and object that would be where all 
                         the parameters are set. <b>/pages/Pages.js</b> is an perefect example of this
                     </li>

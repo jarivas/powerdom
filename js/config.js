@@ -12,12 +12,14 @@ window.config = {
         {
             title: 'Getting started',
             className: 'Basic',
-            navigation: true
+            navigation: true,
+            responsive: '(max-width: 839px)|BasicResponsive'
         },
         {
             title: 'Static Components',
             className: 'Static',
-            navigation: true
+            navigation: true,
+            responsive: '(max-width: 839px)|StaticResponsive'
         },
         {
             title: 'Pages',

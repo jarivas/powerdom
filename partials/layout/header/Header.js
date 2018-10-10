@@ -38,7 +38,7 @@ class Header extends PartialTemplate {
     }
 
     bind() {
-        Header.prototype.links = PD('.mdl-navigation__link', this.nodeTarget).listen('click', Header.click);
+        Header.prototype.links = PD('nav.mdl-navigation > a', /*this.nodeTarget*/).listen('click', Header.click);
     }
 
     /**
@@ -54,8 +54,6 @@ class Header extends PartialTemplate {
 
     static updateIsActive(e) {
         const title = Header.prototype.pageEvents[e.type];
-
-        console.log('updateIsActive ', title);
 
         Header.prototype.links.removeClass('is-active')
             .foreach((el) => {

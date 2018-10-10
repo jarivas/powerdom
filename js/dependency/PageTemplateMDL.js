@@ -6,11 +6,13 @@ class PageTemplateMDL extends PageTemplate {
     handleParameters(){
         const params = PageManager.getParams();
 
-        if (params.hasOwnProperty('up'))
-            window.location.hash = '#top';
 
         if (params.hasOwnProperty('section'))
             PD(`a[href="${params.section}"]`).fire('click');
+        else{
+            window.location.hash = '';
+            window.location.hash = '#top';
+        }
     }
 
     /**

@@ -83,24 +83,42 @@ class PageManager {
      */
     static loadCurrentPage() {
         const page = PageManager.prototype.data[PageManager.prototype.currentIndex];
-        const main = PageManager.prototype.mainElement;
         const source = 'pages/';
-        const className = page.className;
-        const template = `${source}${className}.html`;
-        const script = `${source}${className}.js`;
-        const dynamicClasses = PageManager.prototype.dynamicClasses;
-        const success = () => {
-            PageManager.setHtml(dynamicClasses.get(className));
-            PD.getInstance(className, main);
-        };
+        let className = page.className;
+        let fileName = className;
+        let template = '';
+        let script = '';
 
         PageManager.setTitle(page.title);
 
-        if (dynamicClasses.has(className)) {
+        if (page.hasOwnProperty('responsive')) {
+            page.responsive.split(',').forEach(mediaFileName => {
+                mediaFileName = mediaFileName.split('|');
+
+                if (window.matchMedia(mediaFileName[0]).matches)
+                    fileName = mediaFileName[1];
+            });
+        }
+        
+        template = `${source}${fileName}.html`;
+        script = `${source}${fileName}.js`;
+
+        PageManager.loadCurrentPageHelper(className, fileName, template, script);
+    }
+
+    static loadCurrentPageHelper(className, fileName, template, script){
+        const dynamicClasses = PageManager.prototype.dynamicClasses;
+        const main = PageManager.prototype.mainElement;
+        const success = () => {
+            PageManager.setHtml(dynamicClasses.get(fileName));
+            PD.getInstance(className, main);
+        };
+
+        if (dynamicClasses.has(fileName)) {
             success();
         } else {
             PD.LoadTemplate(template, (html) => {
-                dynamicClasses.set(className, html);
+                dynamicClasses.set(fileName, html);
 
                 PD.loadJSClass(script, className, success);
             });
