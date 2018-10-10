@@ -1,0 +1,102 @@
+<template>
+    <div class="mdl-grid">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">Templated Components</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <pre><code>
+                            &lt;!-- /page/PageName.html --&gt;
+                            ...
+                            &lt;component
+                                <b>source</b>=&quot;/components/template/table/&quot;
+                                <b>className</b>=&quot;TableComponent&quot;
+                                <b>loaded</b>=&quot;tableRoundLoaded&quot;&gt;
+                                <b>responsive</b>=&quot;(max-width: 839px)|TableComponentResponsive&quot;
+                            &lt;/component&gt;
+                        ...
+                            &lt;!-- /page/PageName.js --&gt;
+                            class PageName extends PageTemplate {
+                                setUp(){
+                                    PD.listen(&#39;tableRoundLoaded&#39;, (e) => {
+                                        //TableComponent instance
+                                        PageName.prototype.tableRounds = e.detail;
+                                        //Uses its methods
+                                        PageName.prototype.tableRounds
+                                            .setHeader({ Game: true, Player: false, Bet: false });
+                                    });
+                                }
+                                ...
+
+                                static fillTable() {
+                                    let params = {};
+                            
+                                    PD.requestWorker(params, &#39;/pages/workers/pageName.js&#39;, (result) => {
+                                        const data = result.data;
+                            
+                                        if(data.length > 0) {
+                                            PageName.prototype.tableRounds.fill(data);
+                                        }
+                            
+                                    }, PageName.handleError);
+                                } 
+                            }
+                </code></pre>
+                <ul>
+                    <li>Works in a similar as partials, but are lighter and uncomplicated.</li>
+                    <li>Normally used as passive elements like a table.</li>
+                    <li>Can be more than one instance of the same class per page.</li>
+                    <li>The main idea is define the component on the html, linked to the Page class and use as a
+                        utility or helper.
+                    </li>
+                    <li>Components are defined on the page view, works as a tag with configured attributes.</li>
+                    <li><b>source</b> defines the folder where all the files will be placed.</li>
+                    <li>The <b>className</b> attribute defines the <b>FileName</b> pattern and the class name,
+                        <b>FileName</b>.js and <b>FileName</b>.html</li>
+                    <li><b>FileName</b>.html contain the view of the partial.</li>
+                    <li><b>FileName</b>.js is a class which its name is <b>FileName</b> and that extends from
+                        PartialTemplate.</li>
+                    <li>The <b>loaded</b> is used to determine what event will be fire when the component is ready,
+                        normally used to link the component to Page's static var so it can work with it.
+                    </li>
+                    <li><b>responsive</b> is an optional attribute used to determine a new FileName in case the current
+                        resolution fits the media query. In this case, if current screen width &lt; 840 it will change
+                        the FileName <b>FilterDateInterval</b> from to <b>FilterDateIntervalSimple</b>, both classes
+                        exposes same methods.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="mdl-layout-spacer"></div>
+    </div>
+    <div class="mdl-grid">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">TableComponent</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <ul>
+                    <li>Is the only component shipped by the momment</li>
+                    <li>Once is loaded you must set the table headers, because the css classes on MDL are different
+                        based on the cell content type.
+                    </li>
+                    <li><b>setHeader</b>({ <b>ColumnName</b>: booleanIsText, <b>ColumnName2</b>: booleanIsText ...})</li>
+                    <li>In my example the rest request's result is processed in the backgroud using a worker to
+                        generate the html rows and that resulting string is used in the <b>fill</b> method,
+                        reponsable of adding it to the table's body.
+                    </li>
+                </ul>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers"
+                    target="_blank">
+                    Web Workers
+                </a>
+            </div>
+        </div>
+        <div class="mdl-layout-spacer"></div>
+    </div>
+</template>

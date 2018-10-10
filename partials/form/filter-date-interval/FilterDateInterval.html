@@ -1,0 +1,52 @@
+<template>
+    <div class="mdl-grid filter-date-interval">
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-tablet">
+            <div class="material-icons">calendar_today</div>Start
+        </div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+            <input actionableElement="rangeStart"
+            listen="change:changeDate"
+            class="mdl-slider mdl-js-slider" data-target="date_from" type="range" min="1" max="12" value="1">
+        </div>
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--3-col-tablet">
+            <div class="mdl-textfield mdl-js-textfield">
+                <input actionableElement="date_from"
+                listen="keydown:validateKey,keyup:validateDates,change:changeFilters"
+                type="text" class="mdl-textfield__input" maxlength="10" pattern="[0-9]{2}\.[0-9]{2}\.[0-9]{4}">
+                <span class="mdl-textfield__error">Error</span>
+            </div>
+        </div>
+    </div>
+    <div class="mdl-grid filter-date-interval">
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-tablet">
+            <div class="material-icons">calendar_today</div>End
+        </div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+            <input actionableElement="rangeEnd"
+            listen="change:changeDate"
+            class="mdl-slider mdl-js-slider" data-target="date_to" type="range" min="1" max="12">
+        </div>
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--3-col-tablet">
+            <div class="mdl-textfield mdl-js-textfield">
+                <input actionableElement="date_to"
+                listen="keydown:validateKey,keyup:validateDates,change:changeFilters"
+                type="text" class="mdl-textfield__input" maxlength="10" pattern="[0-9]{2}\.[0-9]{2}\.[0-9]{4}">
+                <span class="mdl-textfield__error">Error</span>
+            </div>
+        </div>
+    </div>
+    <div class="mdl-grid filter-date-interval">
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--2-col-tablet">
+            <div class="material-icons">timelapse</div>Interval
+        </div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+            <input actionableElement="rangeInterval" listen="change:changeFilters" class="mdl-slider mdl-js-slider" type="range" min="0" max="2" value="1">
+        </div>
+        <div class="mdl-cell mdl-cell--1-col mdl-cell--3-col-tablet">
+            <div class="mdl-textfield mdl-js-textfield">
+                <input actionableElement="textInterval" type="text" class="mdl-textfield__input" value="Month" disabled>
+                <span class="mdl-textfield__error">Error</span>
+            </div>
+        </div>
+    </div>
+</template>

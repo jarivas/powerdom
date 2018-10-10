@@ -1,0 +1,2 @@
+class TemplatedComponents extends PageTemplateMDL {
+}

@@ -2,35 +2,80 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Title</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/layouts/side-menu.css">
+    <!-- CSS DEPENDENCIES-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/dependency/material.css"><!-- Not compressed for readbility, rename to .min if you want -->
+    <link rel="stylesheet" href="css/dependency/dialog-polyfill.css">
+    <!-- /CSS DEPENDENCIES -->
 
+    <!-- CSS CORE-->
+    <link rel="stylesheet" href="css/core.css">
+    <!-- /CSS CORE -->
+
+    <!-- CSS SITE-->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- /CSS SITE -->
+
+    <!-- JS DEPENDENCIES -->
+        <!-- js/dependency/material.js is a late dependecy -->
+    <!-- /JS DEPENDENCIES -->
+
+    <!-- JS CORE DEPENDENCIES -->
+    <script src="js/dependency/dialog-polyfill.js"></script>
+    <script src="js/core/PowerDom.js"></script>
+    <script src="js/core/loadStaticComponents.js" type="module"></script>
+    <script src="js/dependency/init.js"></script>
+    <!-- /JS CORE DEPENDENCIES -->
+
+    <!-- JS CORE -->
     <script src="js/config.js"></script>
-    <!-- CORE -->
     <script src="js/core/PageManager.js"></script>
     <script src="js/core/Template.js"></script>
-    <script src="js/core/Powerdom.js"></script>
-    <!-- /CORE -->
-
+    <script src="js/core/PartialTemplate.js"></script>
+    <script src="js/core/PageTemplate.js"></script>
+    <script src="js/dependency/PageTemplateMDL.js"></script>
+    <script src="js/core/ComponentTemplate.js"></script>
+    <script src="js/core/init.js"></script>
+    <!-- /JS CORE -->
 </head>
 
 <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <partial
+            source="/partials/layout/header/" className="Header">
+        </partial>
 
-    <div id="layout">
+        <main class="mdl-layout__content mdl-color--grey-100">
+            <div id="top"></div>
+            <div class="page-content">
+                <!-- Your content goes here -->
+            </div>
+        </main>
+        <partial
+            source="/partials/layout/footer/" className="Footer">
+        </partial>
+    </div>
 
-        <div id="side-menu">
-            <link rel="import" href="partials/side-menu.html">
+    <dialog class="mdl-dialog">
+        <h4 class="mdl-dialog__title"></h4>
+        <div class="mdl-dialog__content"></div>
+        <div class="mdl-dialog__actions mdl-dialog__actions--full-width"></div>
+    </dialog>
+
+    <div class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button type="button" class="mdl-snackbar__action"></button>
+    </div>
+
+    <div class="hidden modal">
+        <div class="modal-content">
+            <div class="inner-content"></div>
         </div>
-
-        <div id="main">
-            <script>PageManager.loadCurrent()</script>
-        </div>
-
     </div>
 </body>
 

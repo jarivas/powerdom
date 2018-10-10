@@ -1,66 +1,117 @@
 class PageManager {
-    static init() {
-        const data = [...window.config.pages];
-        const current = window.config.pages.findIndex(page => page.default)
-        delete window.config.pages[current].default;
 
-        PageManager.prototype.current = current;
-        PageManager.prototype.data = data;
+    /**
+     * Bootstraps the PageManager
+     */
+    static init() {
+        PageManager.prototype.currentIndex = window.config.pages.findIndex(page => page.default);
+        PageManager.prototype.data = [...window.config.pages];
+        PageManager.prototype.mainElement = PD.find(window.config.mainElementSelector);
+        PageManager.prototype.mainElementPD = PD(PageManager.prototype.mainElement);
+        PageManager.prototype.dynamicClasses = new Map();
+        PageManager.prototype.params = {}
+
+        PageManager.setTitle(window.config.website);
     }
 
-    static setCurrentIndex(index) {
-        let max = PageManager.prototype.data.length;
+    /**
+     * Set the current page title
+     * @param {string} title
+     */
+    static setTitle(title){
+        PD('title').setContent(title);
+    }
 
-        if (index >= 0 && index < max) {
-            PageManager.prototype.current = index;
-            PageManager.loadCurrent();
+    /**
+     *  @param {string} html content
+     */
+    static setHtml(html){
+        PageManager.prototype.mainElementPD.setContent(html);
+    }
+
+    /**
+     * Changes the page using the numeric index of pages
+     * @param {number} index
+     */
+    static setCurrentIndex(index) {
+        if (index >= 0 && index < PageManager.prototype.data.length) {
+            PageManager.prototype.currentIndex = index;
+            PageManager.loadCurrentPage();
         }
     }
 
-    static setCurrentPath(path) {
-        let i = 0, index = 0;
-        let max = PageManager.prototype.data.length;
-        let data = PageManager.prototype.data;
+    /**
+     * Changes the page
+     * @param {string} title the exact title of the page
+     * @param {object} [params] params like get params
+     */
+    static changePage(title, params){
+        const index = PageManager.prototype.data.findIndex(page => page.title == title);
 
-        do {
-            if (path != data[i].path) {
-                ++i;
-            } else {
-                index = i;
-                i = max;
-            }
+        if(typeof params != 'undefined')
+            PageManager.prototype.params = params;
 
-        } while (i < max);
+        PageManager.setCurrentIndex(index);
+    }
+    
+    /**
+     * Simulate the get params, those params are set on
+     * changePage, and after retrieved are cleaned
+     * @returns {object}
+     */
+    static getParams() {
+        const params = PageManager.prototype.params;
+        
+        PageManager.prototype.params = {};
 
-        if (index > 0)
-            PageManager.setCurrentIndex(index);
+        return params;
     }
 
+    /**
+     * Get the current page info
+     * @returns {{currentIndex: number, data: object}} Current page info
+     */
     static getInfo() {
         return {
-            current: PageManager.prototype.current,
+            currentIndex: PageManager.prototype.currentIndex,
             data: PageManager.prototype.data
         };
     }
 
-    static loadCurrent() {
-        let page = PageManager.prototype.data[PageManager.prototype.current];
-        let link = document.createElement('link');
-
-        link.rel = 'import';
-        link.href = page.path;
-        link.onload = (e) => {
-            if (!page.instance)
-                page.instance = page.onload(e.path);
-            else
-                page.instance.rebuild();
+    /**
+     * Renders the processed template for the current index on the mainElement
+     */
+    static loadCurrentPage() {
+        const page = PageManager.prototype.data[PageManager.prototype.currentIndex];
+        const main = PageManager.prototype.mainElement;
+        const source = '/pages/';
+        const className = page.className;
+        const template = `${source}${className}.html`;
+        const script = `${source}${className}.js`;
+        const dynamicClasses = PageManager.prototype.dynamicClasses;
+        const success = () => {
+            PageManager.setHtml(dynamicClasses.get(className));
+            PD.getInstance(className, main);
         };
 
-        document.getElementById('main').appendChild(link);
+        PageManager.setTitle(page.title);
+
+        if (dynamicClasses.has(className)) {
+            success();
+        } else {
+            PD.LoadTemplate(template, (html) => {
+                dynamicClasses.set(className, html);
+
+                PD.loadJSClass(script, className, success);
+            });
+        }
     }
 
-    static currentInstance(){
-        let page = PageManager.prototype.data[PageManager.prototype.current];
-        return page.instance;
+    /**
+     * Get the PageTemplate instance of the current page
+     * @returns {object} current page instance
+     */
+    static getPageInstance(){
+        return PageManager.prototype.data[PageManager.prototype.currentIndex].instance;
     }
 }

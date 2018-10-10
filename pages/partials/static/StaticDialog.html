@@ -1,0 +1,50 @@
+<template>
+    <div class="mdl-grid">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">DialogComponent</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <ul>
+                    <li>Based on the shipped Dialog component, is a modal window for dedicate user input</li>
+                    <li>The method <b>setTitle</b>(<b>headerSize : integer</b>, <b>text : string</b>) is optional and
+                        sets a text inside header with a specified size (1, 2, 3...) </li>
+                    <li>The method <b>setContent</b>(<b>html : string</b>) inserts the html string in the div
+                        designated as content </li>
+                    <li>The method <b>setActions</b>(<b>buttons : [{click:string, title:string}]</b>) inserts a list
+                        buttons to be display as possible choices to the user. Click is the function name, and title is what the button will display</li>
+                </ul>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <a href="https://getmdl.io/components/index.html#dialog-section" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                    target="_blank">
+                    MDL Dialogs
+                </a>
+            </div>
+        </div>
+        <div class="mdl-layout-spacer"></div>
+    </div>
+    <div class="mdl-grid">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">Example</h2>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <ul>
+                    <li>Click on the button to say Hello!</li>
+                    <li><code>DialogComponent.setContent("&lt;p&gt;Hello World!&lt;&sol;p&gt;")<br>
+                            .setActions([{click: "DialogComponent.close", title: "Close me :)"}])<br>
+                            .show();</code>
+                    </li>
+                    <li><button class="mdl-button mdl-js-button mdl-button--raised"
+                        actionableElement="helloButton"
+                        listen="click:sayHello">Say it</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="mdl-layout-spacer"></div>
+    </div>
+</template>

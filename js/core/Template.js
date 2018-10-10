@@ -1,44 +1,68 @@
 class Template {
+    constructor(data) {
+        this.init(data);
 
-    constructor(params) {
+        this.construct();
+    }
 
-        if (params instanceof Array)
-            this.initPage(params);
-        else
-            this.initTemplate(params);
+    /**
+     * Initializes the instance with the required data
+     * @param {object} data 
+     */
+    init(data) {}
 
-        this.build();
+    /**
+     * Inserts the generated html on the target element
+     */
+    append() {
+        const rootNodeContent = this.rootNode.content;
+        let node = this.nodeTarget;
+
+        while (node.hasChildNodes())
+            node.removeChild(node.firstChild);
+
+        node.appendChild(rootNodeContent);
+    }
+
+    /**
+     * Replaces the generated html on the target element
+     */
+    replace() {
+        const rootNodeContent = this.rootNode.content;
+        let node = this.nodeTarget;
+        let parent = node.parentNode;
+
+        while (rootNodeContent.hasChildNodes())
+            parent.insertBefore(rootNodeContent.firstChild, node);
+
+        parent.removeChild(node);
+
+        this.nodeTarget = parent;
+    }
+
+    /**
+     * Build the new html, insert it on the dom
+     */
+    construct() {
+        this.setUp();
+        this.attach();
         this.bind();
     }
 
-    initPage(params) {
-        this.curDoc = params[0].import;
-        this.nodeTarget = params[1];
-        this.rootNode = PD.find('template', this.curDoc);
-        this.templateHtml = this.rootNode.innerHTML;
+    /**
+     * insert the processed template it on the dom 
+     */
+    attach() {
+        this.replace(this.rootNode.content);
     }
 
-    initTemplate(params) {
-        this.curDoc = (params._currentScript || params.currentScript).ownerDocument;
-        this.rootNode = PD.find('template', this.curDoc);
-        this.nodeTarget = PD.find(this.rootNode.dataset.selector);
-    }
+    /**
+     * Prepare the elements or give them content before attach to the nodeTarget
+     */
+    setUp() {}
 
-    append(rootNodeContent) {
-        this.nodeTarget.innerHTML = '';
-        this.nodeTarget.appendChild(rootNodeContent);
-    }
-    
-    rebuild() {
-        this.rootNode.innerHTML = this.templateHtml;
-        this.build();
-    }
-
-    build() {
-
-    }
-
-    bind() {
-
-    }
+    /**
+     * Attach events to the elements that required it
+     */
+    bind() {}
 }

@@ -1,19 +1,38 @@
 window.config = {
-    website: "Website",
-    apiUrl: "api.php",
+    website: 'Manual',
+    apiUrl: 'http://api.url',
+    mainElementSelector: '.page-content',
     pages: [
         {
             title: 'Home',
-            path: 'pages/home.html',
-            default: true,
-            onload: (path) => { return new Home(path);},
-            instance: null
+            className: 'Home',
+            navigation: true,
+            default: true
         },
         {
-            title: 'Page1',
-            path: 'pages/page1.html',
-            onload: (path) => { return new Page1(path);},
-            instance: null
+            title: 'Getting started',
+            className: 'Basic',
+            navigation: true
+        },
+        {
+            title: 'Static Components',
+            className: 'Static',
+            navigation: true
+        },
+        {
+            title: 'Pages',
+            className: 'Pages',
+            navigation: true
+        },
+        {
+            title: 'Partials',
+            className: 'Partials',
+            navigation: true
+        },
+        {
+            title: 'Templated Components',
+            className: 'TemplatedComponents',
+            navigation: true
         }
     ]
 };
