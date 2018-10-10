@@ -23,6 +23,17 @@ class Footer extends PartialTemplate {
     }
 
     bind() {
-         PD('a', this.nodeTarget).listen('click', Header.click);
+        PD('a', this.nodeTarget).listen('click', Footer.click);
+    }
+    
+    /**
+     * Even if is an static function, the scope is the a tag
+     * static does not alter the normal js way of working
+     * @param {object} e 
+     */
+    static click(e) {
+        e.preventDefault();
+
+        PageManager.changePage(PD(this).getContent());
     }
 }
