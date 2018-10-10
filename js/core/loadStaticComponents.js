@@ -1,10 +1,13 @@
-import DialogComponent from 'components/static/DialogComponent.js';
-import NotificationComponent from 'components/static/NotificationComponent.js';
-import ModalComponent from 'components/static/ModalComponent.js';
-import LoadingComponent from 'components/static/LoadingComponent.js';
+const staticComponents = [
+    'DialogComponent',
+    'ModalComponent',
+    'NotificationComponent',
+    'LoadingComponent'
+];
 
-//Init
-DialogComponent.init();
-NotificationComponent.init();
-ModalComponent.init();
-LoadingComponent.init();
+staticComponents.forEach(component => {
+    let url = `components/static/${component}.js`;
+    let createInstance = () => eval(`window.${component} = new ${component}();`);
+
+    PD.loadJSClass(url, component, createInstance);
+});

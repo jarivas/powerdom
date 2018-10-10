@@ -1,18 +1,15 @@
 class ModalComponent {
-    static init() {
+    constructor() {
         const modal = PD.find('div.modal');
-        let instance = new ModalComponent();
 
-        instance.element = modal;
+        this.element = modal;
 
-        instance.elementContent = PD.find('div.modal-content', modal);
-        instance.elContent = PD(instance.elementContent);
+        this.elementContent = PD.find('div.modal-content', modal);
+        this.elContent = PD(this.elementContent);
 
-        instance.elementInnerContent = PD('div.inner-content', modal);
+        this.elementInnerContent = PD('div.inner-content', modal);
 
-        instance.el = PD(modal);
-
-        window.ModalComponent = instance;
+        this.el = PD(modal);
     }
 
     /**
@@ -48,5 +45,3 @@ class ModalComponent {
         window.ModalComponent.el.addClass('hidden');
     }
 }
-
-export default ModalComponent;

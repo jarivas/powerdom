@@ -1,17 +1,14 @@
 class DialogComponent {
-    static init() {
+    constructor() {
         const dialog = PD.find('dialog');
-        let instance = new DialogComponent();
 
         if (!dialog.showModal)
             dialogPolyfill.registerDialog(dialog);
 
-        instance.element = dialog;
-        instance.elementTitle = PD('.mdl-dialog__title', dialog);
-        instance.elementContent = PD('.mdl-dialog__content', dialog);
-        instance.elementActions = PD('.mdl-dialog__actions', dialog);
-
-        window.DialogComponent = instance;
+        this.element = dialog;
+        this.elementTitle = PD('.mdl-dialog__title', dialog);
+        this.elementContent = PD('.mdl-dialog__content', dialog);
+        this.elementActions = PD('.mdl-dialog__actions', dialog);
     }
 
     /**
@@ -62,5 +59,3 @@ class DialogComponent {
         this.element.close();
     }
 }
-
-export default DialogComponent;

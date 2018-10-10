@@ -413,7 +413,7 @@ PD.LoadTemplate = function (url, callback) {
 }
 
 /**
- * Loads dynamically a js class make it global
+ * Loads dynamically a js class and make it global
  * @param {string} url 
  * @param {string} className 
  * @param {function} callback 

@@ -1,19 +1,13 @@
 class LoadingComponent {
-    static init(){
-        window.LoadingComponent = LoadingComponent;
-    }
-
-    static show(){
-        window.ModalComponent
+    show(){
+        ModalComponent
             .setContent('<div class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>')
             .show();
 
         componentHandler.upgradeElement(PD.find('.mdl-progress'));
     }
 
-    static close(){
-        window.ModalComponent.close();
+    close(){
+        ModalComponent.close();
     }
 }
-
-export default LoadingComponent;
