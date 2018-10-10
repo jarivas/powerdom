@@ -84,7 +84,7 @@ class PageManager {
     static loadCurrentPage() {
         const page = PageManager.prototype.data[PageManager.prototype.currentIndex];
         const main = PageManager.prototype.mainElement;
-        const source = '/pages/';
+        const source = 'pages/';
         const className = page.className;
         const template = `${source}${className}.html`;
         const script = `${source}${className}.js`;
