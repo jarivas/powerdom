@@ -60,7 +60,7 @@ class ComponentTemplate extends Template {
     static loadComponent(component, className, fileName, source, loaded) {
         const dynamicClasses = ComponentTemplate.prototype.dynamicClasses;
         const successFunc = () => {
-            component.innerHTML = dynamicClasses.get(fileName);
+            PD.setContent(component, dynamicClasses.get(fileName));
             component.loaded = loaded
             PD.getInstance(className, component);
         };

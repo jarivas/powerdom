@@ -147,7 +147,7 @@ class PartialTemplate extends Template {
 
         return new Promise((resolve, reject) => {
             successFunc = () => {
-                partial.innerHTML = dynamicClasses.get(fileName);
+                PD.setContent(partial, dynamicClasses.get(fileName));
 
                 if (changed)
                     partial.changedEvent = changed;

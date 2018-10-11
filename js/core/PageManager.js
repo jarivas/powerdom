@@ -7,7 +7,7 @@ class PageManager {
         PageManager.prototype.currentIndex = window.config.pages.findIndex(page => page.default);
         PageManager.prototype.data = [...window.config.pages];
         PageManager.prototype.mainElement = PD.find(window.config.mainElementSelector);
-        PageManager.prototype.mainElementPD = PD(PageManager.prototype.mainElement);
+        PageManager.prototype.titleElement = PD.find('head > title');
         PageManager.prototype.dynamicClasses = new Map();
         PageManager.prototype.params = {}
 
@@ -19,14 +19,14 @@ class PageManager {
      * @param {string} title
      */
     static setTitle(title){
-        PD('title').setContent(title);
+        PD.setContent(PageManager.prototype.titleElement, title);
     }
 
     /**
      *  @param {string} html content
      */
-    static setHtml(html){
-        PageManager.prototype.mainElementPD.setContent(html);
+    static setContent(html){
+       PD.setContent(PageManager.prototype.mainElement, html);
     }
 
     /**
@@ -110,7 +110,7 @@ class PageManager {
         const dynamicClasses = PageManager.prototype.dynamicClasses;
         const main = PageManager.prototype.mainElement;
         const success = () => {
-            PageManager.setHtml(dynamicClasses.get(fileName));
+            PageManager.setContent(dynamicClasses.get(fileName));
             PD.getInstance(className, main);
         };
 

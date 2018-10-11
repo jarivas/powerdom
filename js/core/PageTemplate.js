@@ -7,7 +7,6 @@ class PageTemplate extends Template {
     init(main) {
         this.rootNode = main.firstChild;
         this.nodeTarget = main;
-        this.templateNode = this.rootNode.cloneNode(true);
     }
 
     /**
