@@ -1,25 +1,21 @@
 class PartialTemplate extends Template {
     /**
-     * Build the new html, insert it on the dom and triggers a
-     * partialLoadedClassName event
-     */
-    construct() {
+    * 
+    * @param {Element|Node} nodeTarget 
+    * @param {Element|Node|DocumentFragment} templateNode 
+    * @param {string} changed eventName
+    */
+    constructor(nodeTarget, templateNode, changed, className) {
+        PartialTemplate.referenceElements(templateNode, className);
+
+        super(nodeTarget, templateNode);
+
         this.listen();
-        PartialTemplate.referenceElements(this.rootNode.content, this.constructor.name);
-        super.construct();
-        PD.fire(`partialLoaded${this.constructor.name}`);
-    }
 
-    /**
-     * Set ups the instance with the required data
-     * @param {Element|Node} partialEl
-     */
-    init(partialEl) {
-        this.rootNode = partialEl.firstChild;
-        this.nodeTarget = partialEl;
+        if (changed)
+            this.changedEvent = changed;
 
-        if (partialEl.hasOwnProperty('changedEvent'))
-            this.changedEvent = partialEl.changedEvent;
+        PD.fire(`partialLoaded${className}`);
     }
 
     /**
@@ -44,14 +40,14 @@ class PartialTemplate extends Template {
      * 
      * reference will be the attribute used just to link the node to
      * the classs
-     * @param {DocumentFragment} rootNodeContent templateElement.content
+     * @param {Element|Node|DocumentFragment} templateNode  templateElement
      * @param {string} className the class target
      */
-    static referenceElements(rootNodeContent, className) {
-        rootNodeContent.querySelectorAll('[actionableElement]')
+    static referenceElements(templateNode, className) {
+        templateNode.querySelectorAll('[actionableElement]')
             .forEach(el => PartialTemplate.actionableElement(el, className));
 
-        rootNodeContent.querySelectorAll('[referenceElement]')
+        templateNode.querySelectorAll('[referenceElement]')
             .forEach(el => eval(`${className}.prototype.${el.attributes.referenceElement.value} = el;`));
     }
 
@@ -143,24 +139,26 @@ class PartialTemplate extends Template {
 
     static loadPartialHelper(className, fileName, changed, partial, template, script) {
         const dynamicClasses = PartialTemplate.prototype.dynamicClasses;
-        let successFunc = null;
 
         return new Promise((resolve, reject) => {
-            successFunc = () => {
-                PD.setContent(partial, dynamicClasses.get(fileName));
+            const successFunc = () => {
+                const params = [
+                    partial,
+                    dynamicClasses.get(fileName).cloneNode(true),
+                    changed,
+                    className
+                ];
 
-                if (changed)
-                    partial.changedEvent = changed;
+                PD.getInstance(className, params);
 
-                PD.getInstance(className, partial);
                 resolve(className);
             };
 
             if (dynamicClasses.has(fileName)) {
                 successFunc();
             } else {
-                PD.LoadTemplate(template, (html) => {
-                    dynamicClasses.set(fileName, html);
+                PD.LoadTemplate(template, (templateElement) => {
+                    dynamicClasses.set(fileName, templateElement);
 
                     PD.loadJSClass(script, className, successFunc);
                 });

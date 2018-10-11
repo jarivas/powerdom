@@ -4,7 +4,7 @@ class Home extends PageTemplateMDL {
         //and adds a listener on click event 
         PD('a', this.nodeTarget).listen('click', Home.click);
     }
-    
+
     /**
      * Even if is an static function, the scope is the a tag
      * static does not alter the normal js way of working
@@ -13,8 +13,6 @@ class Home extends PageTemplateMDL {
     static click(e) {
         e.preventDefault();
 
-        console.log(this);
-        
         const el = PD(this);
         const title = el.getData('title');
 

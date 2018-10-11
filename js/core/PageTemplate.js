@@ -1,12 +1,18 @@
 class PageTemplate extends Template {
-
     /**
-     * Set ups the instance with the required data
-     * @param {Element|Node} main
-     */
-    init(main) {
-        this.rootNode = main.firstChild;
-        this.nodeTarget = main;
+    * 
+    * @param {Element|Node} nodeTarget 
+    * @param {Element|Node|DocumentFragment} templateNode 
+    */
+    constructor(nodeTarget, templateNode) {
+        super(nodeTarget, templateNode);
+
+        ComponentTemplate.LoadComponents(this.nodeTarget);
+
+        PartialTemplate.loadPartials(`pageLoaded${this.constructor.name}`, () => {
+            this.partialsLoaded();
+            this.handleParameters();
+        });        
     }
 
     /**
@@ -24,20 +30,14 @@ class PageTemplate extends Template {
      * insert the processed template it on the dom 
      */
     attach() {
-        this.append(this.rootNode.content);
-    }
+        const nodeTarget = this.nodeTarget;
+        const templateNode = this.templateNode;
 
-    /**
-     * Build the new html, insert it on the dom and triggers a
-     * pageLoaded event
-     */
-    construct() {
-        super.construct();
-        ComponentTemplate.LoadComponents(this.nodeTarget);
-        PartialTemplate.loadPartials(`pageLoaded${this.constructor.name}`, () => {
-            this.partialsLoaded();
-            this.handleParameters();
-        });        
+        while (nodeTarget.hasChildNodes())
+            nodeTarget.removeChild(nodeTarget.firstChild);
+
+        while (templateNode.hasChildNodes())
+            nodeTarget.appendChild(templateNode.firstElementChild)
     }
 
     /**

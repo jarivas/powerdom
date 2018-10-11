@@ -1,197 +1,195 @@
-<template>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Powerdom</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>Inspired by the jQuery, the latest advances on Ecmascript, the templating engines for backend
-                        languages and the html template element.</li>
-                    <li>jQuery dom selection and manipulation and ajax is covered and extended, it uses the latest
-                        standards and is pretty light</li>
-                    <li>So the main idea is select an element or elements and manipulate its content (append, prepend,
-                        setContent, replace...) or surroundings
-                        (insertBefore, insertAfter..) or classes but abstracting the programmer from the html nodes,
-                        treating it like simple string as you do in backend
-                        templating
-                    </li>
-                    <li>The entry point is like in jQuery, you instanciate an object using the function <b>PD(selector,
-                            element)</b>, <b>selector</b> is a standard
-                        css string selector or a Element/Node and <b>element</b> can be multiple things like a
-                        document, DocumentFragment or element, and is optional
-                        its function is limit the nodes where the search is going to run.</li>
-                </ul>
-            </div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Powerdom</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Quick Example</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <p>This is taken from <b>/partials/layout/header/Header.js</b> feel free to check it out.</p>
-                <code>const nav = PD('nav.mdl-navigation', rootNodeContent);</code> </li>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>Inspired by the jQuery, the latest advances on Ecmascript, the templating engines for backend
+                    languages and the html template element.</li>
+                <li>jQuery dom selection and manipulation and ajax is covered and extended, it uses the latest
+                    standards and is pretty light</li>
+                <li>So the main idea is select an element or elements and manipulate its content (append, prepend,
+                    setContent, replace...) or surroundings
+                    (insertBefore, insertAfter..) or classes but abstracting the programmer from the html nodes,
+                    treating it like simple string as you do in backend
+                    templating
+                </li>
+                <li>The entry point is like in jQuery, you instanciate an object using the function <b>PD(selector,
+                        element)</b>, <b>selector</b> is a standard
+                    css string selector or a Element/Node and <b>element</b> can be multiple things like a
+                    document, DocumentFragment or element, and is optional
+                    its function is limit the nodes where the search is going to run.</li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Find elements / nodes</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>PD.find(selector, element</b> : Finds one element in that range.</li>
-                    <li><b>PD.findAll(selector, element</b> : Finds all the elements in that range.</li>
-                    <li>It is similar to PD() but those function returns elements not PowerDom instances.</li>
-                </ul>
-            </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Quick Example</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">DOM manipulation</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><i>Altering the DOM is only possible using PowerDom instances.</i></li>
-                    <li><b>setContent(html)</b> : The element(s) content is replaced with this html string. Suitable
-                        for div or elements which display what they have between the tags.</li>
-                    <li><b>getContent()</b> : Gets the element(s) content</li>
-                    <li><b>setValue(value)</b> : Sets the value on element(s) has the property, inputs are an example
-                        of this</li>
-                    <li><b>getValue()</b> : Gets the value on element(s) has the property, inputs are an example of
-                        this</li>
-                    <li><b>replace(html)</b> : The whole element(s) is replace with this html string</li>
-                    <li><b>prepend(html)</b> : Inserts the html string on element(s) begining</li>
-                    <li><b>append(html)</b> : Inserts the html string on element(s) end</li>
-                    <li><b>insertBefore(html)</b> : Inserts the html string right before the element(s)</li>
-                    <li><b>insertAfter(html)</b> : Inserts the html string right after the element(s)</li>
-                    <li><b>getHtml()</b> : Gets the whole element(s) html strings</li>
-                    <li><b>empty()</b> : Removes the contents of the element(s)</li>
-                    <li><b>remove()</b> : Removes the element(s)</li>
-                </ul>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <p>This is taken from <b>/partials/layout/header/Header.js</b> feel free to check it out.</p>
+            <code>const nav = PD('nav.mdl-navigation', rootNodeContent);</code> </li>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">CSS Manipulation</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>addClass(cssClass)</b> : Adds a class to the element(s) if not present</li>
-                    <li><b>removeClass(cssClass)</b> : Removes the class from the element(s) if present</li>
-                    <li><b>toggleClass(cssClass)</b> : If the class is present will be removed or if is not will add it</li>
-                </ul>
-            </div> 
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Find elements / nodes</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Property Manipulation</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>setData(index, value)</b> : Adds / Sets a  (index) to the element(s) data-index="value"</li>
-                    <li><b>getData(index)</b> : Gets the value(s) of the the element(s)</li>
-                </ul>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>PD.find(selector, element</b> : Finds one element in that range.</li>
+                <li><b>PD.findAll(selector, element</b> : Finds all the elements in that range.</li>
+                <li>It is similar to PD() but those function returns elements not PowerDom instances.</li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Data Attribute</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>setProperty(index, value)</b> : Adds a property (index) to the element(s) index="value"</li>
-                    <li><b>getProperty(index)</b> : Gets the value(s) of the the element(s)</li>
-                    <li><b>removeProperty(index)</b> : Removes the property by its index</li>
-                </ul>
-            </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">DOM manipulation</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Events</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>PD.listen(event, callback)</b> : Sets a listener for an event</li>
-                    <li><b>PD.fire(event)</b> : Trigger an event</li>
-                    <li><b>PD.mute(event)</b> : Remove the listener for an event</li>
-                    <li>All of this can be use on a instance, but normally you would use it global</li>
-                </ul>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><i>Altering the DOM is only possible using PowerDom instances.</i></li>
+                <li><b>setContent(html)</b> : The element(s) content is replaced with this html string. Suitable
+                    for div or elements which display what they have between the tags.</li>
+                <li><b>getContent()</b> : Gets the element(s) content</li>
+                <li><b>setValue(value)</b> : Sets the value on element(s) has the property, inputs are an example
+                    of this</li>
+                <li><b>getValue()</b> : Gets the value on element(s) has the property, inputs are an example of
+                    this</li>
+                <li><b>replace(html)</b> : The whole element(s) is replace with this html string</li>
+                <li><b>prepend(html)</b> : Inserts the html string on element(s) begining</li>
+                <li><b>append(html)</b> : Inserts the html string on element(s) end</li>
+                <li><b>insertBefore(html)</b> : Inserts the html string right before the element(s)</li>
+                <li><b>insertAfter(html)</b> : Inserts the html string right after the element(s)</li>
+                <li><b>getHtml()</b> : Gets the whole element(s) html strings</li>
+                <li><b>empty()</b> : Removes the contents of the element(s)</li>
+                <li><b>remove()</b> : Removes the element(s)</li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Dynamic loading</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>Because is a <a href="https://en.wikipedia.org/wiki/Single-page_application" target="_blank">
-                            Single Page Application</a> framework provide the tools to dynamically load all files
-                        needed
-                    </li>
-                    <li><b>PD.requestJson</b> : Standard REST communication</li>
-                    <li><b>PD.requestWorker</b> : Communicates with the server and process the response in a background
-                        worker to avoid frezing the window</li>
-                    <li><b>PD.LoadTemplate</b> : Get the html files dynamically</li>
-                    <li><b>PD.loadJSClass</b> : Load a class and makes it globally available abstracting you from js
-                        particular scope understanding</li>
-                    <li><b>PD.loadJSFile</b> : Help to load the late dependencies</li>
-                    <li><b>PD.getInstance</b> : Create a instace of a global class during a time in the execution where
-                        you only have the claseName and returns it</li>
-                    <li><b>PD.createInstance</b> : Create a instace of a class during a time in the execution where you
-                        only have the claseName and assignate it to a variable</li>
-                    <li>The important thing here is to remember that those exist, specially <b>PD.requestJson</b> and
-                        <b>PD.requestWorker</b>
-                        because the other functions are mainly use as part of the internal framework</li>
-                </ul>
-            </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">CSS Manipulation</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Selected Elements Iteration</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>foreach(callback)</b> : Invokes the callback for every element, callback(PD(element), index)</li>
-                </ul>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>addClass(cssClass)</b> : Adds a class to the element(s) if not present</li>
+                <li><b>removeClass(cssClass)</b> : Removes the class from the element(s) if present</li>
+                <li><b>toggleClass(cssClass)</b> : If the class is present will be removed or if is not will add it</li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-</template>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Property Manipulation</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>setData(index, value)</b> : Adds / Sets a (index) to the element(s) data-index="value"</li>
+                <li><b>getData(index)</b> : Gets the value(s) of the the element(s)</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Data Attribute</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>setProperty(index, value)</b> : Adds a property (index) to the element(s) index="value"</li>
+                <li><b>getProperty(index)</b> : Gets the value(s) of the the element(s)</li>
+                <li><b>removeProperty(index)</b> : Removes the property by its index</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Events</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>PD.listen(event, callback)</b> : Sets a listener for an event</li>
+                <li><b>PD.fire(event)</b> : Trigger an event</li>
+                <li><b>PD.mute(event)</b> : Remove the listener for an event</li>
+                <li>All of this can be use on a instance, but normally you would use it global</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Dynamic loading</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>Because is a <a href="https://en.wikipedia.org/wiki/Single-page_application" target="_blank">
+                        Single Page Application</a> framework provide the tools to dynamically load all files
+                    needed
+                </li>
+                <li><b>PD.requestJson</b> : Standard REST communication</li>
+                <li><b>PD.requestWorker</b> : Communicates with the server and process the response in a background
+                    worker to avoid frezing the window</li>
+                <li><b>PD.LoadTemplate</b> : Get the html files dynamically</li>
+                <li><b>PD.loadJSClass</b> : Load a class and makes it globally available abstracting you from js
+                    particular scope understanding</li>
+                <li><b>PD.loadJSFile</b> : Help to load the late dependencies</li>
+                <li><b>PD.getInstance</b> : Create a instace of a global class during a time in the execution where
+                    you only have the claseName and returns it</li>
+                <li><b>PD.createInstance</b> : Create a instace of a class during a time in the execution where you
+                    only have the claseName and assignate it to a variable</li>
+                <li>The important thing here is to remember that those exist, specially <b>PD.requestJson</b> and
+                    <b>PD.requestWorker</b>
+                    because the other functions are mainly use as part of the internal framework</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Selected Elements Iteration</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>foreach(callback)</b> : Invokes the callback for every element, callback(PD(element), index)</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>

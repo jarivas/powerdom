@@ -1,14 +1,14 @@
 class Header extends PartialTemplate {
     setUp() {
-        const rootNodeContent = this.rootNode.content;
+        const templateNode = this.templateNode;
         const pagesInfo = PageManager.getInfo();
 
         //This way is better because select both nav elements
-        const nav = PD('nav.mdl-navigation', rootNodeContent);
+        const nav = PD('nav.mdl-navigation', templateNode);
 
         //"Following" the html template pattern where, you 
         //clone the code and use it 
-        const templateLink = PD('a', rootNodeContent).getHtml();
+        const templateLink = PD('a', templateNode).getHtml();
 
         let newEl = '';
         let pageTitle = ''
@@ -34,7 +34,7 @@ class Header extends PartialTemplate {
         });
 
         Header.prototype.pageEvents = events;
-        PD('.mdl-layout-title', rootNodeContent).setContent(window.config.website);
+        PD('.mdl-layout-title', templateNode).setContent(window.config.website);
     }
 
     bind() {

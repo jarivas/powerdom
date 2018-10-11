@@ -23,11 +23,18 @@ class PageManager {
     }
 
     /**
-     *  @param {string} html content
+     *  @param {string} html
      */
     static setContent(html){
-       PD.setContent(PageManager.prototype.mainElement, html);
-    }
+        PD.setContent(PageManager.prototype.mainElement, html);
+     }
+
+     /**
+      *  @param {Document|DocumentFragment|Element} element
+      */
+     static setContentElement(element){
+        PD.setContentElement(PageManager.prototype.mainElement, element);
+     }
 
     /**
      * Changes the page using the numeric index of pages
@@ -108,17 +115,20 @@ class PageManager {
 
     static loadCurrentPageHelper(className, fileName, template, script){
         const dynamicClasses = PageManager.prototype.dynamicClasses;
-        const main = PageManager.prototype.mainElement;
         const success = () => {
-            PageManager.setContent(dynamicClasses.get(fileName));
-            PD.getInstance(className, main);
+            const params = [
+                PageManager.prototype.mainElement,
+                dynamicClasses.get(fileName).cloneNode(true)
+            ];
+
+            PD.getInstance(className, params);
         };
 
         if (dynamicClasses.has(fileName)) {
             success();
         } else {
-            PD.LoadTemplate(template, (html) => {
-                dynamicClasses.set(fileName, html);
+            PD.LoadTemplate(template, (templateElement) => {
+                dynamicClasses.set(fileName, templateElement);
 
                 PD.loadJSClass(script, className, success);
             });

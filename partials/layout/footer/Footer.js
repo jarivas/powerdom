@@ -1,14 +1,13 @@
 class Footer extends PartialTemplate {
     setUp() {
-        const rootNodeContent = this.rootNode.content;
+        const templateNode = this.templateNode;
         const pagesInfo = PageManager.getInfo();
 
-        const list = PD('ul.mdl-mini-footer__link-list', rootNodeContent);
+        const list = PD('ul.mdl-mini-footer__link-list', templateNode);
 
         //"Following" the html template pattern where, you 
         //clone the code and use it 
-        const templateLink = PD('li', rootNodeContent).getHtml();
-
+        const templateLink = PD('li', templateNode).getHtml();
         let newEl = '';
 
         list.empty();

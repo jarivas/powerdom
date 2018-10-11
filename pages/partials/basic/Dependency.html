@@ -1,68 +1,71 @@
-<template>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Material Design Lite</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>Is a css responsive framework created by google using the Material design guidelines.</li>
-                    <li>It also requires a dialog polyfil but is already included.</li>
-                    <li>In order to construct your site your should use the Grid and it use plus the components shipped
-                        with this framework.</li>
-                </ul>
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a href="https://getmdl.io/components/index.html" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-                    target="_blank">
-                    Components guide
-                </a>
-            </div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Material Design Lite</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">JS Dependecies</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>Every site normally requires some extra JS, and for this framework that would be considered a dependency.</li>
-                    <li>This dependency should be on the index.html file where is specified by the placeholder in order to keep the structure and load order.</li>
-                    <li>The /js/dependency/init.js is the place where the event <b>dependeciesLoaded</b> should be fired.</li>
-                    <li>In case the dependecies has to be waited in order to continue use Promises as is for example in the dependency-init.js file</li>
-                    <li>The framework bootsequence is based on events, so there is no need of add extra booting js code, if you need to load something
-                        try to fit it inside the bootsequence or inside the build function of the first page loaded
-                    </li>
-                </ul>
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referencia/Objetos_globales/Promise" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-                    target="_blank">
-                    Promises
-                </a>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>Is a css responsive framework created by google using the Material design guidelines.</li>
+                <li>It also requires a dialog polyfil but is already included.</li>
+                <li>In order to construct your site your should use the Grid and it use plus the components shipped
+                    with this framework.</li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">CSS Dependecies</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>Every site normally requires some extra CSS, some can be considered dependency because is part of a external lib and rest is just
-                        site css, in the case of this site is style.css
-                    </li>
-                    <li>Check the placeholders on index.html to better understanding</li>
-                </ul>
-            </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="https://getmdl.io/components/index.html" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                target="_blank">
+                Components guide
+            </a>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-</template>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">JS Dependecies</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>Every site normally requires some extra JS, and for this framework that would be considered a
+                    dependency.</li>
+                <li>This dependency should be on the index.html file where is specified by the placeholder in order to
+                    keep the structure and load order.</li>
+                <li>The /js/dependency/init.js is the place where the event <b>dependeciesLoaded</b> should be fired.</li>
+                <li>In case the dependecies has to be waited in order to continue use Promises as is for example in the
+                    dependency-init.js file</li>
+                <li>The framework bootsequence is based on events, so there is no need of add extra booting js code, if
+                    you need to load something
+                    try to fit it inside the bootsequence or inside the build function of the first page loaded
+                </li>
+            </ul>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referencia/Objetos_globales/Promise" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                target="_blank">
+                Promises
+            </a>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">CSS Dependecies</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>Every site normally requires some extra CSS, some can be considered dependency because is part of a
+                    external lib and rest is just
+                    site css, in the case of this site is style.css
+                </li>
+                <li>Check the placeholders on index.html to better understanding</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>

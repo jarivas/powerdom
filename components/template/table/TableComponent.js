@@ -1,9 +1,9 @@
 class TableComponent extends ComponentTemplate {
     setUp() {
-        const rootNodeContent = this.rootNode.content;
+        const templateNode = this.templateNode;
         
-        this.header = PD('thead > tr', rootNodeContent);
-        this.body = PD('tbody', rootNodeContent);
+        this.header = PD('thead > tr', templateNode);
+        this.body = PD('tbody', templateNode);
 
         return this;
     }

@@ -1,21 +1,13 @@
 class ComponentTemplate extends Template {
     /**
-     * Build the new html, insert it on the dom and triggers a
-     * partialLoadedClassName event
-     */
-    construct() {
-        super.construct();
-        PD.fire(this.loaded, this);
-    }
-
-    /**
-     * Set ups the instance with the required data
-     * @param {Element|Node} componentEl
-     */
-    init(componentEl) {
-        this.rootNode = componentEl.firstChild;
-        this.nodeTarget = componentEl;
-        this.loaded = componentEl.loaded;
+    * 
+    * @param {Element|Node} nodeTarget 
+    * @param {Element|Node|DocumentFragment} templateNode 
+    * @param {string} loaded eventName
+    */
+    constructor(nodeTarget, templateNode, loaded) {
+        super(nodeTarget, templateNode);
+        PD.fire(loaded, this);
     }
 
     /**
@@ -28,16 +20,16 @@ class ComponentTemplate extends Template {
     /**
      * Scans for al the components in the DocumentFragment, generates the new html
      * replace them with the new html and return instances to each one of them
-     * @param {DocumentFragment} rootNodeContent templateElement.content
+     * @param {Element|Node|DocumentFragment} templateNode  templateElement
      */
-    static LoadComponents(rootNodeContent) {
+    static LoadComponents(templateNode) {
         let data = null;
         let source = '';
         let loaded = '';
         let className = '';
         let fileName = '';
 
-        rootNodeContent.querySelectorAll('component').forEach(component => {
+        templateNode.querySelectorAll('component').forEach(component => {
             data = component.attributes;
             source = data.source.value;
             loaded = data.loaded.value;
@@ -60,9 +52,13 @@ class ComponentTemplate extends Template {
     static loadComponent(component, className, fileName, source, loaded) {
         const dynamicClasses = ComponentTemplate.prototype.dynamicClasses;
         const successFunc = () => {
-            PD.setContent(component, dynamicClasses.get(fileName));
-            component.loaded = loaded
-            PD.getInstance(className, component);
+            const params = [
+                component,
+                dynamicClasses.get(fileName).cloneNode(true),
+                loaded
+            ];
+
+            PD.getInstance(className, params);
         };
 
         if (dynamicClasses.has(fileName)) {
@@ -71,8 +67,8 @@ class ComponentTemplate extends Template {
             let template = `${source}${fileName}.html`;
             let script = `${source}${fileName}.js`;
 
-            PD.LoadTemplate(template, (html) => {
-                dynamicClasses.set(fileName, html);
+            PD.LoadTemplate(template, (templateElement) => {
+                dynamicClasses.set(fileName, templateElement);
 
                 PD.loadJSClass(script, className, successFunc);
             });

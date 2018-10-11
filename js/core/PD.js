@@ -52,14 +52,26 @@ PD.findAll = function (selector, element) {
 /**
  * A innerHtml replacement and a shortcut to avoid
  * unnecesary instances
- * @param {Document|DocumentFragment|Element} [element]
+ * @param {Document|DocumentFragment|Element} targetElement
  * @param {string} html
  */
-PD.setContent = function (element, html) {
-    while (element.hasChildNodes())
-        element.removeChild(element.lastChild);
+PD.setContent = function (targetElement, html) {
+    while (targetElement.hasChildNodes())
+        targetElement.removeChild(targetElement.lastChild);
 
-    element.insertAdjacentHTML('beforeend', html);
+    targetElement.insertAdjacentHTML('beforeend', html);
+}
+
+/**
+ * A faster setContent
+ * @param {Document|DocumentFragment|Element} targetElement
+ * @param {Document|DocumentFragment|Element} element
+ */
+PD.setContentElement = function (targetElement, element) {
+    while (targetElement.hasChildNodes())
+        targetElement.removeChild(targetElement.lastChild);
+
+    targetElement.insertAdjacentHTML('beforeend', element);
 }
 
 /**
@@ -111,14 +123,23 @@ PD.requestWorker = function (data, workerUrl, callback, errorCb) {
 }
 
 /**
- * Loads dynamically <template>..</template> and process it
+ * Loads dynamically the html string and returns the element
  * @param {string} url 
  * @param {templateCallback} callback 
  */
 PD.LoadTemplate = function (url, callback) {
     fetch(url)
         .then(response => response.text())
+        .then(PD.LoadTemplateHelper)
         .then(callback);
+}
+
+PD.LoadTemplateHelper = function (html) {
+    let templateElement = document.createElement("template");
+
+    PD.setContent(templateElement, html.trim().replace(/\r?\n|\r/g, ''));
+
+    return templateElement;
 }
 
 /**
@@ -130,8 +151,12 @@ PD.LoadTemplate = function (url, callback) {
 PD.loadJSClass = function (url, className, callback) {
     fetch(url)
         .then(response => response.text())
-        .then(text => eval(`window.${className} = ${text}`))
+        .then(text => PD.loadJSClassHelper(text, className))
         .then(callback);
+}
+
+PD.loadJSClassHelper = function (text, className) {
+    eval(`window.${className} = ${text}`);
 }
 
 /**
@@ -149,25 +174,21 @@ PD.loadJSFile = function (url, callback) {
 /**
  * Creates a instace of a class and returns it
  * @param {string} className 
- * @param {Element|Node} data 
+ * @param {array} params 
  * @return {object}
  */
-PD.getInstance = function (className, data) {
-    let class_str = `new ${className}(data);`;
-
-    return eval(class_str);
+PD.getInstance = function (className, params) {
+    return eval(`new ${className}(...params);`);
 }
 
 /**
  * Set a instance to an variable
  * @param {string} varName 
  * @param {string} className 
- * @param {Element|Node} data 
+ * @param {array} params  
  */
-PD.createInstance = function (varName, className, data) {
-    let class_str = `${varName} = new ${className}(data);`;
-
-    eval(class_str);
+PD.createInstance = function (varName, className, params) {
+    eval(`${varName} = new ${className}(...params);`);
 }
 
 /**

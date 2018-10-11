@@ -1,12 +1,10 @@
-<template>
-    <div id="filter-rows" class="mdl-grid">
-        <div class="mdl-cell mdl-cell--1-col mdl-cell--4-col-tablet">
-            <div actionableElement="badgeRows" class="material-icons mdl-badge mdl-badge--overlap" data-badge="20">storage</div>
-            Rows
-        </div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
-            <input actionableElement="rowsRange" listen="change:change" class="mdl-slider mdl-js-slider" type="range"
-                data-target="badgeRows" min="20" max="999" value="20" step="20">
-        </div>
+<div id="filter-rows" class="mdl-grid">
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--4-col-tablet">
+        <div actionableElement="badgeRows" class="material-icons mdl-badge mdl-badge--overlap" data-badge="20">storage</div>
+        Rows
     </div>
-</template>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <input actionableElement="rowsRange" listen="change:change" class="mdl-slider mdl-js-slider" type="range"
+            data-target="badgeRows" min="20" max="999" value="20" step="20">
+    </div>
+</div>

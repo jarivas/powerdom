@@ -1,29 +1,27 @@
-<template>
-    <div class="floating-menu">
-        <button id="menu" class="mdl-button mdl-js-button mdl-button--icon">
-            <i class="material-icons">more_vert</i>
-        </button>
-        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="menu">
-            <li class="mdl-menu__item" data-section="#powerdom">Powerdom</li>
-            <li class="mdl-menu__item" data-section="#dependency">Dependency</li>
-            <li class="mdl-menu__item" data-section="#sequence">Boot Sequence</li>
-            <li class="mdl-menu__item" data-section="#config">Config</li>
-        </ul>
-    </div>
-    <div id="powerdom">
-        <partial source="pages/partials/basic/" className="BasicPowerdom">
-        </partial>
-    </div>
-    <div id="dependency">
-        <partial source="pages/partials/basic/" className="Dependency">
-        </partial>
-    </div>
-    <div id="sequence">
-        <partial source="pages/partials/basic/" className="Sequence">
-        </partial>
-    </div>
-    <div id="config">
-        <partial source="pages/partials/basic/" className="Configuration">
-        </partial>
-    </div>
-</template>
+<div class="floating-menu">
+    <button id="menu" class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+    </button>
+    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="menu">
+        <li class="mdl-menu__item" data-section="#powerdom">Powerdom</li>
+        <li class="mdl-menu__item" data-section="#dependency">Dependency</li>
+        <li class="mdl-menu__item" data-section="#sequence">Boot Sequence</li>
+        <li class="mdl-menu__item" data-section="#config">Config</li>
+    </ul>
+</div>
+<div id="powerdom">
+    <partial source="pages/partials/basic/" className="BasicPowerdom">
+    </partial>
+</div>
+<div id="dependency">
+    <partial source="pages/partials/basic/" className="Dependency">
+    </partial>
+</div>
+<div id="sequence">
+    <partial source="pages/partials/basic/" className="Sequence">
+    </partial>
+</div>
+<div id="config">
+    <partial source="pages/partials/basic/" className="Configuration">
+    </partial>
+</div>

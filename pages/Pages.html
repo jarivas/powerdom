@@ -1,126 +1,127 @@
-<template>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Pages</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>All the pages are on <b>/pages/</b> folder</li>
-                    <li>The page configuration is defined in <b>/js/config.js</b> and <b>window.config.pages</b></li>
-                    <li>The <b>className</b> attribute defines the <b>FileName</b> pattern and the class name,
-                        <b>FileName</b>.js and <b>FileName</b>.html</li>
-                    <li><b>FileName</b>.html contain the view of the page, html, partials and or components</li>
-                    <li><b>FileName</b>.js is a class which its name is <b>FileName</b> and that extends from
-                        PageTemplate</li>
-                    <li>If the view has partials only for this page, can be placed wherever you want but I recommend in
-                        <b>/pages/partials/PageTitle/FileName/</b></li>
-                    <li>Using the attribute <b>responsive</b>, you can define what view to load for different resolutions</li>
-                    <li>The easiest way of navigating between them is using <b>PageManager.changePage(title, params)</b>,
-                        where the title is the on the config and the params is an optional object specific for each
-                        page,
-                        for a params example check <b>/pages/Pages.js</b> and <b>/pages/Basic.js</b>
-                    </li>
-                </ul>
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a id="config" href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                    Pages configuration
-                </a>
-            </div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Pages</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Template descendants</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>Pages</b>, <b>Partials</b> and <b>Templated Components</b> inherit from <b>Template</b>, so
-                        they once they are created using a html template (<b>DocumentFragment</b>) will Build
-                        (modify the inner html + Inserts the result on the node target) => Bind (the events for this
-                        new elements)
-                    </li>
-                </ul>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>All the pages are on <b>/pages/</b> folder</li>
+                <li>The page configuration is defined in <b>/js/config.js</b> and <b>window.config.pages</b></li>
+                <li>The <b>className</b> attribute defines the <b>FileName</b> pattern and the class name,
+                    <b>FileName</b>.js and <b>FileName</b>.html</li>
+                <li><b>FileName</b>.html contain the view of the page, html, partials and or components</li>
+                <li><b>FileName</b>.js is a class which its name is <b>FileName</b> and that extends from
+                    PageTemplate</li>
+                <li>If the view has partials only for this page, can be placed wherever you want but I recommend in
+                    <b>/pages/partials/PageTitle/FileName/</b></li>
+                <li>Using the attribute <b>responsive</b>, you can define what view to load for different resolutions</li>
+                <li>The easiest way of navigating between them is using <b>PageManager.changePage(title, params)</b>,
+                    where the title is the on the config and the params is an optional object specific for each
+                    page,
+                    for a params example check <b>/pages/Pages.js</b> and <b>/pages/Basic.js</b>
+                </li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Changing Pages</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li><b>PageManager.changePage</b> and <b>PageManager.setCurrentIndex</b> are the methods reponsable for this</li>
-                    <li><b>PageManager.changePage</b> takes 2 arguments, the page's title and object that would be where all 
-                        the parameters are set. <b>/pages/Pages.js</b> is an perefect example of this
-                    </li>
-                    <li><b>PageManager.setCurrentIndex</b> just takes a zero based integer index, the page order is the same as in config</li>
-                    <li>There is a third method <b>PageManager.getParams</b> to get the params passed to the page,
-                        <b>/js/dependency/PageTemplateMDL.js</b> it will show you where and how this works</li>
-                </ul>
-            </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a id="config" href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Pages configuration
+            </a>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Loading sequence</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ol>
-                    <li>Using the <b>className</b> retrieve from the server the html and js (if has not been done
-                        before)</li>
-                    <li>Get an instance of <b>className</b>, using the template node (<b>DocumentFragment</b>) in the
-                        downloaded html as base
-                        to be processed and inserted in the main element designated to contain the page
-                    </li>
-                    <li>When is created, the instance, call the functions <b>setUp</b>, <b>attach</b> and <b>bind</b>
-                        to process the
-                        html and bind the necessary events</li>
-                    <li>The attaches the modified html to the main element</li>
-                    <li>The main element is scanned for partials and templated components and process them</li>
-                    <li>When all the partials are inserted and ready an pageLoaded<b>className</b> is emited and
-                        <b>handleParameters</b> it will process the parameters previously set on PageManager.changePage.</li>
-                </ol>
-            </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Template descendants</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Interactivity</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <p>Normally the pages are not only dynamic in the content generating sense also in the interactive one,
-                    form or visual elements require references to them, so easiest way of working with this elements is
-                    having static references to them in the container class, this can be the Page or Partial class.<br>
-                    When you construct a page the reference to the object is missing because is worthless, is just an
-                    excuse to define the setUp, attach and bind methods, the rest of the methods and internal variables
-                    should
-                    be static so can be easily referenced inside the class.</p>
-                <p>Pages classes does not hold on much code because pages usually break down to partials or components
-                    and the code is encapsulated inside of them, plus partials define the references to the dynamic
-                    elements directly in the view as element's attributes.
-                </p>
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-                <a id="partials" href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                    Read more about Partials
-                </a>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>Pages</b>, <b>Partials</b> and <b>Templated Components</b> inherit from <b>Template</b>, so
+                    they once they are created using a html template (<b>DocumentFragment</b>) will Build
+                    (modify the inner html + Inserts the result on the node target) => Bind (the events for this
+                    new elements)
+                </li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-</template>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Changing Pages</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li><b>PageManager.changePage</b> and <b>PageManager.setCurrentIndex</b> are the methods reponsable for
+                    this</li>
+                <li><b>PageManager.changePage</b> takes 2 arguments, the page's title and object that would be where
+                    all
+                    the parameters are set. <b>/pages/Pages.js</b> is an perefect example of this
+                </li>
+                <li><b>PageManager.setCurrentIndex</b> just takes a zero based integer index, the page order is the
+                    same as in config</li>
+                <li>There is a third method <b>PageManager.getParams</b> to get the params passed to the page,
+                    <b>/js/dependency/PageTemplateMDL.js</b> it will show you where and how this works</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Loading sequence</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ol>
+                <li>Using the <b>className</b> retrieve from the server the html and js (if has not been done
+                    before)</li>
+                <li>Get an instance of <b>className</b>, using the template node (<b>DocumentFragment</b>) in the
+                    downloaded html as base
+                    to be processed and inserted in the main element designated to contain the page
+                </li>
+                <li>When is created, the instance, call the functions <b>setUp</b>, <b>attach</b> and <b>bind</b>
+                    to process the
+                    html and bind the necessary events</li>
+                <li>The attaches the modified html to the main element</li>
+                <li>The main element is scanned for partials and templated components and process them</li>
+                <li>When all the partials are inserted and ready an pageLoaded<b>className</b> is emited and
+                    <b>handleParameters</b> it will process the parameters previously set on PageManager.changePage.</li>
+            </ol>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Interactivity</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <p>Normally the pages are not only dynamic in the content generating sense also in the interactive one,
+                form or visual elements require references to them, so easiest way of working with this elements is
+                having static references to them in the container class, this can be the Page or Partial class.<br>
+                When you construct a page the reference to the object is missing because is worthless, is just an
+                excuse to define the setUp, attach and bind methods, the rest of the methods and internal variables
+                should
+                be static so can be easily referenced inside the class.</p>
+            <p>Pages classes does not hold on much code because pages usually break down to partials or components
+                and the code is encapsulated inside of them, plus partials define the references to the dynamic
+                elements directly in the view as element's attributes.
+            </p>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a id="partials" href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Read more about Partials
+            </a>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>

@@ -1,50 +1,57 @@
-<template>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Bootsequence</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ol>
-                    <li><b>dependeciesLoaded</b> : All the dependencies js files that can be loaded and initialized in this moment</li>
-                    <li><b>coreLoaded</b> : Normally you should not have the need of subscribe to this</li>
-                    <li><b>partialsInitialized</b> : When all the partials are loaded and Initialized is the moment when late dependencies are loaded, in this
-                        case only material should be loaded at this point because the result html is already in index.html so can be make up by
-                        the material html render.</li>
-                </ol>
-                <ul>
-                    <li>The /js/core/init.js is the place where those events are listened, in case you do not want to liste then in another place, you
-                        can add your code as is indicated, my advince only listen to <b>partialsInitialized</b>, the others events are way too internal
-                    </li>
-                    <li>In the console you can see the whole Bootsequence and the partials loaded each time a new page is loaded</li>
-                </ul>
-            </div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Bootsequence</h2>
         </div>
-        <div class="mdl-layout-spacer"></div>
-    </div>
-    <div class="mdl-grid">
-        <div class="mdl-layout-spacer"></div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">More Info</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <ul>
-                    <li>First, following a required structrure defined by the html-comments-placeholders the files are loaded
-                        one after another.
-                    </li>
-                    <li>The DOM modificator PowerDOM (PD) is first thing to load because is the base of the rest </li>
-                    <li>The next are the static components which are only shown programatically</li>
-                    <li>When <b>dependeciesLoaded</b> is fired, the PageManager will be initialized</li>
-                    <li>PageManager will load the html representation of the page, this will be placed inside the mainElement.</li>
-                    <li>At the same time the body partials are being load</li>
-                    <li>When the page is ready (all the partial inside of it are ready) a <b>partialsInitialized</b> is fired</li>
-                    <li>Now the just loaded material lib will render its thing</li>
-                    <li>The next time a page is ready, it will just call a refresh material's method </li>
-                </ul>
-            </div>
+        <div class="mdl-card__supporting-text">
+            <ol>
+                <li><b>dependeciesLoaded</b> : All the dependencies js files that can be loaded and initialized in this
+                    moment</li>
+                <li><b>coreLoaded</b> : Normally you should not have the need of subscribe to this</li>
+                <li><b>partialsInitialized</b> : When all the partials are loaded and Initialized is the moment when
+                    late dependencies are loaded, in this
+                    case only material should be loaded at this point because the result html is already in index.html
+                    so can be make up by
+                    the material html render.</li>
+            </ol>
+            <ul>
+                <li>The /js/core/init.js is the place where those events are listened, in case you do not want to liste
+                    then in another place, you
+                    can add your code as is indicated, my advince only listen to <b>partialsInitialized</b>, the others
+                    events are way too internal
+                </li>
+                <li>In the console you can see the whole Bootsequence and the partials loaded each time a new page is
+                    loaded</li>
+            </ul>
         </div>
-        <div class="mdl-layout-spacer"></div>
     </div>
-</template>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">More Info</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>First, following a required structrure defined by the html-comments-placeholders the files are
+                    loaded
+                    one after another.
+                </li>
+                <li>The DOM modificator PowerDOM (PD) is first thing to load because is the base of the rest </li>
+                <li>The next are the static components which are only shown programatically</li>
+                <li>When <b>dependeciesLoaded</b> is fired, the PageManager will be initialized</li>
+                <li>PageManager will load the html representation of the page, this will be placed inside the
+                    mainElement.</li>
+                <li>At the same time the body partials are being load</li>
+                <li>When the page is ready (all the partial inside of it are ready) a <b>partialsInitialized</b> is
+                    fired</li>
+                <li>Now the just loaded material lib will render its thing</li>
+                <li>The next time a page is ready, it will just call a refresh material's method </li>
+            </ul>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
