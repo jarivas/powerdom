@@ -37,7 +37,7 @@ class PageTemplate extends Template {
             nodeTarget.removeChild(nodeTarget.firstChild);
 
         while (templateNode.hasChildNodes())
-            nodeTarget.appendChild(templateNode.firstElementChild)
+            nodeTarget.appendChild(templateNode.firstChild)
     }
 
     /**

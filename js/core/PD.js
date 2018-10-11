@@ -137,7 +137,7 @@ PD.LoadTemplate = function (url, callback) {
 PD.LoadTemplateHelper = function (html) {
     let templateElement = document.createElement("template");
 
-    PD.setContent(templateElement, html.trim().replace(/\r?\n|\r/g, ''));
+    PD.setContent(templateElement, html.trim());
 
     return templateElement;
 }

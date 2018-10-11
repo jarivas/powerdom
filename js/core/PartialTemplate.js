@@ -24,13 +24,6 @@ class PartialTemplate extends Template {
     listen() {}
 
     /**
-     * insert the processed template it on the dom 
-     */
-    attach() {
-        this.replace();
-    }
-
-    /**
      * Auto creates static references inside the class to elements
      * 
      * actionableElement will be the attribute used in the elements that you
