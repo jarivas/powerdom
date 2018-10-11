@@ -42,6 +42,6 @@ class ModalComponent {
         if (elementClose)
             elementClose.remove();
 
-        window.ModalComponent.el.addClass('hidden');
+        this.el.addClass('hidden');
     }
 }
