@@ -10,8 +10,8 @@ class PageTemplateMDL extends PageTemplate {
         if (params.hasOwnProperty('section'))
             PD(`a[href="${params.section}"]`).fire('click');
         else{
-            window.location.hash = '';
             window.location.hash = '#top';
+            window.location.hash = '';
         }
     }
 

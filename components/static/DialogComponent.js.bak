@@ -17,11 +17,9 @@ class DialogComponent {
      * @param {string} text 
      */
     setTitle(headerSize, text) {
-        const instance = window.DialogComponent;
+        this.elementTitle.replace(`<h${headerSize} class="mdl-dialog__title">${text}</h${headerSize}>`);
 
-        instance.elementTitle.replace(`<h${headerSize} class="mdl-dialog__title">${text}</h${headerSize}>`);
-
-        return instance;
+        return this;
     }
 
     /**
@@ -29,11 +27,9 @@ class DialogComponent {
      * @param {string} html 
      */
     setContent(html) {
-        const instance = window.DialogComponent;
+        this.elementContent.setContent(html);
 
-        instance.elementContent.setContent(html);
-
-        return instance;
+        return this;
     }
 
     /**
@@ -43,26 +39,23 @@ class DialogComponent {
      * @returns {object} A reference to the instance
      */
     setActions(buttons) {
-        const instance = window.DialogComponent;
         let html = '';
 
         buttons.forEach(button =>
             html += `<button type="button" class="mdl-button" onclick="${button.click}();">${button.title}</button>`
         );
 
-        instance.elementActions.setContent(html);
+        this.elementActions.setContent(html);
 
-        return instance;
+        return this;
     }
 
     show() {
-        const instance = window.DialogComponent;
-
-        instance.element.showModal();
-        componentHandler.upgradeElement(instance.element);
+        this.element.showModal();
+        componentHandler.upgradeElement(this.element);
     }
 
     close() {
-        window.DialogComponent.element.close();
+        this.element.close();
     }
 }

@@ -8,7 +8,7 @@ class NotificationComponent {
      * @param {string} text 
      */
     show(text){
-        window.NotificationComponent.element.MaterialSnackbar.showSnackbar({message: text});
+        this.element.MaterialSnackbar.showSnackbar({message: text});
         console.log(text);
     }
 }

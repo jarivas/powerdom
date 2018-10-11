@@ -17,11 +17,9 @@ class ModalComponent {
      * @param {string} html 
      */
     setContent(html) {
-        const instance = window.ModalComponent;
-        
-        instance.elementInnerContent.setContent(html);
+        this.elementInnerContent.setContent(html);
 
-        return instance;
+        return this;
     }
 
 
@@ -30,23 +28,20 @@ class ModalComponent {
      * @param {boolean} [canClose=false] 
      */
     show(canClose) {
-        const instance = window.ModalComponent;
-
         if (canClose) {
             this.elContent.prepend('<span class="close">&times;</span>');
-            PD('span.close', instance.elementContent).listen('click', instance.close);
+            PD('span.close', this.elementContent).listen('click', this.close);
         }
 
-        instance.el.removeClass('hidden');
+        this.el.removeClass('hidden');
     }
 
     close() {
-        const instance = window.ModalComponent;
-        let elementClose = PD('span.close', instance.elementContent);
+        let elementClose = PD('span.close', this.elementContent);
 
         if (elementClose)
             elementClose.remove();
 
-        instance.el.addClass('hidden');
+        this.el.addClass('hidden');
     }
 }
