@@ -2,29 +2,37 @@ class PageTemplate extends Template {
     /**
     * 
     * @param {Element|Node} nodeTarget 
-    * @param {Element|Node|DocumentFragment} templateNode 
+    * @param {Element|Node|DocumentFragment} templateNode
+     * @param {boolean|object} extraParams
     */
-    constructor(nodeTarget, templateNode) {
-        super(nodeTarget, templateNode);
+    constructor(nodeTarget, templateNode, extraParams) {
+        super(nodeTarget, templateNode, extraParams);
 
-        ComponentTemplate.LoadComponents(this.nodeTarget);
+        this.handleParameters();
+
+        ComponentTemplate.LoadComponents(nodeTarget);
 
         PartialTemplate.loadPartials(`pageLoaded${this.constructor.name}`, () => {
             this.partialsLoaded();
-            this.handleParameters();
-        });        
+            this.handleAnchorParameters();
+        });
     }
 
     /**
      * Processes the entry parameters passed to the page on change
      */
-    handleParameters(){}
+    handleParameters() { }
+
+    /**
+     * Processes anchor section parameters passed
+     */
+    handleAnchorParameters() {}
 
     /**
      * Executed right after the partials are loaded, typically to
      * retrieve data from the server based on filters
      */
-    partialsLoaded() {}
+    partialsLoaded() { }
 
     /**
      * insert the processed template it on the dom 

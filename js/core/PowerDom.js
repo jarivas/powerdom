@@ -228,6 +228,15 @@ class PowerDom {
         return this;
     }
 
+    removeAllClasses(){
+        this.elements.forEach(element => {
+            const list = element.classList;
+            list.forEach(css => list.remove(css));
+        });
+
+        return this;
+    }
+
     /**
      * If the class is present will be removed and viceversa
      * @param {string} cssClass 
@@ -244,8 +253,19 @@ class PowerDom {
      * @param {string} value 
      * @returns {PowerDom} this
      */
-    setProperty(index, value) {
-        this.elements.forEach(element => element[index] = value);
+    setAttribute(index, value) {
+        this.elements.forEach(element => element.setAttribute(index, value));
+
+        return this;
+    }
+    
+    /**
+     * Sets a property with its value
+     * @param {string} index 
+     * @returns {PowerDom} this
+     */
+    removeAttribute(index) {
+        this.elements.forEach(element => element.removeAttribute(index));
 
         return this;
     }
@@ -297,6 +317,15 @@ class PowerDom {
         this.elements.forEach(element => data.push(element.dataset[index]));
 
         return (data.length == 1) ? data[0] : data;
+    }
+
+    /**
+     * Get the reference or references to the contained nodes
+     */
+    getElements(){
+        const elements = this.elements;
+
+        return (elements.length == 1) ? elements[0] : elements;
     }
 
 }

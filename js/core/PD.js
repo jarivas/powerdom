@@ -212,6 +212,19 @@ PD.fire = (event, detail) => window.dispatchEvent(new CustomEvent(event, { detai
  */
 PD.mute = (event, callback) => window.removeEventListener(event, callback);
 
+PD.isTouchable = function(){
+    //Android and IE Mobile
+    if(navigator.userAgent.match(/Mobi/) || 'ontouchstart' in document.documentElement)
+        return true;
+
+    //iOs
+    if(!!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) && 
+        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
+        return true;
+
+    return false;
+}
+
 window.PD = PD;
 
 /**

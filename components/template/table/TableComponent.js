@@ -4,8 +4,6 @@ class TableComponent extends ComponentTemplate {
         
         this.header = PD('thead > tr', templateNode);
         this.body = PD('tbody', templateNode);
-
-        return this;
     }
 
     setHeader(data){

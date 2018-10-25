@@ -50,6 +50,9 @@ class Header extends PartialTemplate {
         e.preventDefault();
 
         PageManager.changePage(PD(this).getContent());
+
+        if(PD.find('.mdl-layout__drawer.is-visible'))
+            PD('.is-visible').removeClass('is-visible');
     }
 
     static updateIsActive(e) {

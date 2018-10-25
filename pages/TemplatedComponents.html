@@ -44,6 +44,7 @@
                 </code></pre>
             <ul>
                 <li>Works in a similar as partials, but are lighter and uncomplicated.</li>
+                <li>Can be on partials</li>
                 <li>Normally used as passive elements like a table.</li>
                 <li>Can be more than one instance of the same class per page.</li>
                 <li>The main idea is define the component on the html, linked to the Page class and use as a
@@ -75,7 +76,6 @@
         </div>
         <div class="mdl-card__supporting-text">
             <ul>
-                <li>Is the only component shipped by the momment</li>
                 <li>Once is loaded you must set the table headers, because the css classes on MDL are different
                     based on the cell content type.
                 </li>
@@ -91,6 +91,27 @@
                 target="_blank">
                 Web Workers
             </a>
+        </div>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--6-col-phone mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">AutoComplete</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <ul>
+                <li>The select inputs elements are not styled on MDL, so this can be used to be replaced </li>
+                <li>It uses the native autocomplete element</li>
+                <li>Once the component fires the loaded element use <b>init</b>(<b>id</b>: string, <b>label</b>: string) to customize it</li>
+                <li>Then <b>addOptions</b>(<b>options</b>: string[])</li>
+                <li><b>empty</b>() will remove all the content</li>
+                <li><b>getValue</b>() and <b>setValue</b>() it will help you when the changed event is fired</li>
+            </ul>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
         </div>
     </div>
     <div class="mdl-layout-spacer"></div>

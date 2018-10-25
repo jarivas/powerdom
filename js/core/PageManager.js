@@ -91,34 +91,24 @@ class PageManager {
     static loadCurrentPage() {
         const page = PageManager.prototype.data[PageManager.prototype.currentIndex];
         const source = 'pages/';
-        let className = page.className;
-        let fileName = className;
-        let template = '';
-        let script = '';
+        const className = page.className;
+        const fileName = Template.getFilename(className, page);
+        const template = `${source}${fileName}.html`;
+        const script = `${source}${fileName}.js`;
+        const extraParams = (page.hasOwnProperty('extraParams') ) ? page.extraParams : false;
 
         PageManager.setTitle(page.title);
 
-        if (page.hasOwnProperty('responsive')) {
-            page.responsive.split(',').forEach(mediaFileName => {
-                mediaFileName = mediaFileName.split('|');
-
-                if (window.matchMedia(mediaFileName[0]).matches)
-                    fileName = mediaFileName[1];
-            });
-        }
-        
-        template = `${source}${fileName}.html`;
-        script = `${source}${fileName}.js`;
-
-        PageManager.loadCurrentPageHelper(className, fileName, template, script);
+        PageManager.loadCurrentPageHelper(className, fileName, template, script, extraParams);
     }
 
-    static loadCurrentPageHelper(className, fileName, template, script){
+    static loadCurrentPageHelper(className, fileName, template, script, extraParams){
         const dynamicClasses = PageManager.prototype.dynamicClasses;
         const success = () => {
             const params = [
                 PageManager.prototype.mainElement,
-                dynamicClasses.get(fileName).cloneNode(true)
+                dynamicClasses.get(fileName).cloneNode(true),
+                extraParams
             ];
 
             PD.getInstance(className, params);
@@ -141,5 +131,9 @@ class PageManager {
      */
     static getPageInstance(){
         return PageManager.prototype.data[PageManager.prototype.currentIndex].instance;
+    }
+
+    static changeMainElement(selector){
+        PageManager.prototype.mainElement = PD.find(selector);
     }
 }

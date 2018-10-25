@@ -3,8 +3,11 @@
         <div actionableElement="badgeRows" class="material-icons mdl-badge mdl-badge--overlap" data-badge="20">storage</div>
         Rows
     </div>
-    <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
-        <input actionableElement="rowsRange" listen="change:change" class="mdl-slider mdl-js-slider" type="range"
-            data-target="badgeRows" min="20" max="999" value="20" step="20">
+    <div class="mdl-cell mdl-cell--1-col mdl-cell--3-col-tablet">
+        <div class="mdl-textfield mdl-js-textfield">
+            <input actionableElement="rowsInput" listen="keydown:validateKey,keyup:validateValue"
+                type="text" class="mdl-textfield__input" maxlength="3" pattern="[0-9]+" value="20">
+            <span class="mdl-textfield__error">Error</span>
+        </div>
     </div>
 </div>

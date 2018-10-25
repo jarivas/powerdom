@@ -4,9 +4,13 @@ class ComponentTemplate extends Template {
     * @param {Element|Node} nodeTarget 
     * @param {Element|Node|DocumentFragment} templateNode 
     * @param {string} loaded eventName
+    * @param {string} changed eventName
     */
-    constructor(nodeTarget, templateNode, loaded) {
-        super(nodeTarget, templateNode);
+    constructor(nodeTarget, templateNode, loaded, changed) {
+        const extraParams = (changed) ? { "changed": changed } : false;
+
+        super(nodeTarget, templateNode, extraParams);
+
         PD.fire(loaded, this);
     }
 
@@ -23,39 +27,28 @@ class ComponentTemplate extends Template {
      * @param {Element|Node|DocumentFragment} templateNode  templateElement
      */
     static LoadComponents(templateNode) {
-        let data = null;
-        let source = '';
-        let loaded = '';
-        let className = '';
-        let fileName = '';
-
-        templateNode.querySelectorAll('component').forEach(component => {
-            data = component.attributes;
-            source = data.source.value;
-            loaded = data.loaded.value;
-            className = data.className.value;
-            fileName = className;
-
-            if (data.hasOwnProperty('responsive')) {
-                data.responsive.value.split(',').forEach(mediaFileName => {
-                    mediaFileName = mediaFileName.split('|');
-    
-                    if (window.matchMedia(mediaFileName[0]).matches)
-                        fileName = mediaFileName[1];
-                });
-            }
-
-            ComponentTemplate.loadComponent(component, className, fileName, source, loaded);
-        });
+        templateNode.querySelectorAll('component').forEach(ComponentTemplate.loadComponent);
     }
 
-    static loadComponent(component, className, fileName, source, loaded) {
+    static loadComponent(component) {
+        const data = component.attributes;
+        const source = data.source.value;
+        const loaded = data.loaded.value;
+        const changed = data.hasOwnProperty('changed') ? data.changed.value : false;
+        const className = data.className.value;
+        const fileName = Template.getFilename(className, data);
+
+        ComponentTemplate.loadComponentHelper(component, className, fileName, source, loaded, changed);
+    }
+
+    static loadComponentHelper(component, className, fileName, source, loaded, changed) {
         const dynamicClasses = ComponentTemplate.prototype.dynamicClasses;
         const successFunc = () => {
             const params = [
                 component,
                 dynamicClasses.get(fileName).cloneNode(true),
-                loaded
+                loaded,
+                changed
             ];
 
             PD.getInstance(className, params);

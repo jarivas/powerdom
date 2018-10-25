@@ -1,6 +1,6 @@
 class TableComponentResponsive extends ComponentTemplate {
     setUp() {
-        const templateNode = templateNode;
+        const templateNode = this.templateNode;
         this.body = PD('div.table-responsive', templateNode);
         
         return this;

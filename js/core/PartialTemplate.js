@@ -3,25 +3,51 @@ class PartialTemplate extends Template {
     * 
     * @param {Element|Node} nodeTarget 
     * @param {Element|Node|DocumentFragment} templateNode 
+    * @param {string} className current class name
+    * @param {function} resolve to be called on loaded
     * @param {string} changed eventName
     */
-    constructor(nodeTarget, templateNode, changed, className) {
+    constructor(nodeTarget, templateNode, resolve, className, changed) {
+        const components = templateNode.querySelectorAll('component');
+        const readyFunction = () => { PD.fire(`partialLoaded${className}`); resolve(className); };
+        let ready = true;
+
         PartialTemplate.referenceElements(templateNode, className);
 
-        super(nodeTarget, templateNode);
+        super(nodeTarget, templateNode, false);
 
-        this.listen();
+        ready = this.listen(readyFunction);
 
-        if (changed)
-            this.changedEvent = changed;
+        if(changed)
+            eval(`${className}.prototype.changed = '${changed}';`)
 
-        PD.fire(`partialLoaded${className}`);
+       components.forEach(ComponentTemplate.loadComponent);
+
+        if(ready)
+            readyFunction();
     }
 
     /**
      * Set the listeners in case the partial has to wait for a signal
+     * @param {function} readyFunction to be called on loaded
+     * @returns {bool} return false when the loaded event needs to be
+     * fired inside this function
      */
-    listen() {}
+    listen(readyFunction) {
+        return true;
+    }
+    
+    /**
+     * Set the listeners in case the partial has to wait for a signal
+     * @param {string} loadedEvent eventName
+     * @param {function} resolve to be called on loaded
+     * @returns {bool} return false when the loaded event needs to be
+     * fired inside this function
+     */
+    static loadSuccess(loadedEvent, resolve) {
+        PD.fire(loadedEvent);
+        resolve(loadedEvent);
+    }
 
     /**
      * Auto creates static references inside the class to elements
@@ -110,22 +136,10 @@ class PartialTemplate extends Template {
         const data = partial.attributes;
         const source = data.source.value;
         const changed = data.hasOwnProperty('changed') ? data.changed.value : false;
-        let className = data.className.value;
-        let fileName = className;
-        let template = '';
-        let script = '';
-
-        if (data.hasOwnProperty('responsive')) {
-            data.responsive.value.split(',').forEach(mediaFileName => {
-                mediaFileName = mediaFileName.split('|');
-
-                if (window.matchMedia(mediaFileName[0]).matches)
-                    fileName = mediaFileName[1];
-            });
-        }
-
-        template = `${source}${fileName}.html`;
-        script = `${source}${fileName}.js`;
+        const className = data.className.value;
+        const fileName = Template.getFilename(className, data);
+        const template =  `${source}${fileName}.html`;
+        const script = `${source}${fileName}.js`;
 
         return PartialTemplate.loadPartialHelper(className, fileName, changed, partial, template, script);
     }
@@ -135,16 +149,13 @@ class PartialTemplate extends Template {
 
         return new Promise((resolve, reject) => {
             const successFunc = () => {
-                const params = [
+                PD.getInstance(className, [
                     partial,
                     dynamicClasses.get(fileName).cloneNode(true),
-                    changed,
-                    className
-                ];
-
-                PD.getInstance(className, params);
-
-                resolve(className);
+                    resolve,
+                    className,
+                    changed
+                ]);
             };
 
             if (dynamicClasses.has(fileName)) {

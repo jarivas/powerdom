@@ -41,7 +41,10 @@
                 <li><b>FileName</b>.js is a class which its name is <b>FileName</b> and that extends from
                     PartialTemplate</li>
                 <li><b>responsive</b> is an optional attribute used to determine a new FileName in case the current
-                    resolution fits the media query, multiple can be described using ","
+                    resolution fits the <b>media query</b> or <b>touchable</b>. Media query is targeted for size and
+                    touchable in case contains elements like input type="date" or type="number".., those where
+                    natively touch devices handles it better with no javascript. Multiple rules can be chained using ","
+                    in here
                 </li>
                 <li>The <b>changed</b> is an optional attribute used to determine what event will be fire when the
                     partial is ready

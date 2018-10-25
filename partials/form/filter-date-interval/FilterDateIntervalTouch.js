@@ -10,8 +10,6 @@ class FilterDateInterval extends PartialTemplate {
 
         FilterDateInterval.prototype.date_from.setValue(`${date.getFullYear()}-01-01`);
         FilterDateInterval.prototype.date_to.setValue(day);
-
-        FilterDateInterval.prototype.changeEvent = this.changedEvent;
     }
 
     static checkDates() {
@@ -30,10 +28,6 @@ class FilterDateInterval extends PartialTemplate {
     
     static change(e) {
         if(FilterDateInterval.checkDates())    
-            PD.fire(FilterDateInterval.prototype.changeEvent);
-    }
-
-    static invalid(e){
-        console.log(e);
+            PD.fire(FilterDateInterval.prototype.changed);
     }
 }

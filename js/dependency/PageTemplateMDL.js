@@ -9,10 +9,8 @@ class PageTemplateMDL extends PageTemplate {
 
         if (params.hasOwnProperty('section'))
             PD(`a[href="${params.section}"]`).fire('click');
-        else{
-            window.location.hash = '#top';
-            window.location.hash = '';
-        }
+        else
+            PageTemplateMDL.moveUp();
     }
 
     /**
@@ -21,5 +19,10 @@ class PageTemplateMDL extends PageTemplate {
      */
     partialsLoaded() {
         componentHandler.upgradeAllRegistered();
+    }
+
+    static moveUp(){
+        window.location.hash = '#top';
+        window.location.hash = '';
     }
 }
