@@ -3,7 +3,7 @@ class PageTemplate extends Template {
     * 
     * @param {Element|Node} nodeTarget 
     * @param {Element|Node|DocumentFragment} templateNode
-     * @param {boolean|object} extraParams
+    * @param {boolean|object} extraParams
     */
     constructor(nodeTarget, templateNode, extraParams) {
         super(nodeTarget, templateNode, extraParams);
@@ -26,7 +26,7 @@ class PageTemplate extends Template {
     /**
      * Processes anchor section parameters passed
      */
-    handleAnchorParameters() {}
+    handleAnchorParameters() { }
 
     /**
      * Executed right after the partials are loaded, typically to

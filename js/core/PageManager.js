@@ -54,9 +54,8 @@ class PageManager {
      */
     static changePage(title, params){
         const index = PageManager.prototype.data.findIndex(page => page.title == title);
-
-        if(typeof params != 'undefined')
-            PageManager.prototype.params = params;
+        
+        PageManager.prototype.params = (typeof params != 'undefined') ? params : {};
 
         PageManager.setCurrentIndex(index);
     }
@@ -95,7 +94,7 @@ class PageManager {
         const fileName = Template.getFilename(className, page);
         const template = `${source}${fileName}.html`;
         const script = `${source}${fileName}.js`;
-        const extraParams = (page.hasOwnProperty('extraParams') ) ? page.extraParams : false;
+        const extraParams = (page.hasOwnProperty('extraParams') ) ? page.extraParams : null;
 
         PageManager.setTitle(page.title);
 
@@ -133,7 +132,12 @@ class PageManager {
         return PageManager.prototype.data[PageManager.prototype.currentIndex].instance;
     }
 
+    /**
+     * Changes the pages's node target
+     * @param {string} selector 
+     */
     static changeMainElement(selector){
-        PageManager.prototype.mainElement = PD.find(selector);
+        console.log('Changing Main Element notice');
+        PageManager.prototype.mainElement =  PD.find(selector);
     }
 }

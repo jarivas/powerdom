@@ -104,7 +104,7 @@ PD.requestJson = function (data, callback, errorCb) {
  * @param {errorCallback} errorCb 
  */
 PD.requestWorker = function (data, workerUrl, callback, errorCb) {
-    let worker = new Worker(workerUrl);
+    const worker = new Worker(workerUrl);
 
     worker.addEventListener('message', callback, false);
     worker.addEventListener('error', errorCb, false);
