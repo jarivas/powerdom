@@ -56,7 +56,8 @@ class Template {
         let fileName = className;
 
         if (data.hasOwnProperty('responsive')) {
-            const response = (data.responsive.hasOwnProperty('value')) ? data.responsive.value : data.responsive.valueNode;
+            const responsive = (data.responsive.hasOwnProperty('value')) ? data.responsive.value : 
+                    (typeof data.responsive == 'string') ? data.responsive : data.responsive.valueNode;
             responsive.split(',').forEach(mediaFileName => {
                 mediaFileName = mediaFileName.split('|');
 
