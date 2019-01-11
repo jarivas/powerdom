@@ -134,7 +134,7 @@ class PartialTemplate extends Template {
      */
     static loadPartial(partial) {
         const data = partial.attributes;
-        const source = data.source.value;
+        const source = window.config.dir + '/partials/' + data.source.value;
         const changed = data.hasOwnProperty('changed') ? data.changed.value : false;
         const className = data.className.value;
         const fileName = Template.getFilename(className, data);

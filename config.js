@@ -1,7 +1,12 @@
 window.config = {
     website: 'Manual',
-    apiUrl: 'http://api.url',
+    apiUrl: 'http://localhost:8080/api',
+    dir: 'powerdom',
     mainElementSelector: '.page-content',
+    css: [
+    ],
+    js: [
+    ],
     pages: [
         {
             title: 'Home',
@@ -36,5 +41,11 @@ window.config = {
             className: 'TemplatedComponents',
             navigation: true
         }
+    ],
+    staticComponents: [
+        'DialogComponent',
+        'ModalComponent',
+        'NotificationComponent',
+        'LoadingComponent'
     ]
 };

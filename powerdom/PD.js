@@ -1,9 +1,9 @@
 /**
-* Gets and PowerDom Instance
-* @param {DOMString|Element|Node} selector
-* @param {Document|DocumentFragment|Element} [element]
-* @returns {PowerDom}
-*/
+ * Gets and PowerDom Instance
+ * @param {DOMString|Element|Node} selector
+ * @param {Document|DocumentFragment|Element} [element]
+ * @returns {PowerDom}
+ */
 PD = function (selector, element) {
     let instance = null;
 
@@ -90,9 +90,9 @@ PD.requestJson = function (data, callback, errorCb) {
             'Content-Type': 'application/json'
         })
     })
-        .then(response => response.json())
-        .then(callback)
-        .catch(errorCb);
+            .then(response => response.json())
+            .then(callback)
+            .catch(errorCb);
 }
 
 /**
@@ -117,9 +117,9 @@ PD.requestWorker = function (data, workerUrl, callback, errorCb) {
             'Content-Type': 'application/json'
         })
     })
-        .then(response => response.json())
-        .then(data => worker.postMessage(data))
-        .catch(errorCb);
+            .then(response => response.json())
+            .then(data => worker.postMessage(data))
+            .catch(errorCb);
 }
 
 /**
@@ -129,9 +129,9 @@ PD.requestWorker = function (data, workerUrl, callback, errorCb) {
  */
 PD.LoadTemplate = function (url, callback) {
     fetch(url)
-        .then(response => response.text())
-        .then(PD.LoadTemplateHelper)
-        .then(callback);
+            .then(response => response.text())
+            .then(PD.LoadTemplateHelper)
+            .then(callback);
 }
 
 PD.LoadTemplateHelper = function (html) {
@@ -150,13 +150,32 @@ PD.LoadTemplateHelper = function (html) {
  */
 PD.loadJSClass = function (url, className, callback) {
     fetch(url)
-        .then(response => response.text())
-        .then(text => PD.loadJSClassHelper(text, className))
-        .then(callback);
+            .then(response => response.text())
+            .then(text => PD.loadJSClassHelper(text, className))
+            .then(callback);
 }
 
 PD.loadJSClassHelper = function (text, className) {
     eval(`window.${className} = ${text}`);
+}
+
+/**
+ * Loads dynamically an array of js class and make it global
+ * @param {string[]} files
+ * @param {string[]} classNames 
+ * @param {function} callback 
+ */
+PD.loadMultipleJSClass = function (files, classNames, callback) {
+    const promises = [];
+
+    files.forEach((file, index) =>
+        promises.push(
+                fetch(file)
+                .then(response => response.text())
+                .then(text => PD.loadJSClassHelper(text, classNames[index])))
+    );
+
+    Promise.all(promises).then(callback);
 }
 
 /**
@@ -166,9 +185,27 @@ PD.loadJSClassHelper = function (text, className) {
  */
 PD.loadJSFile = function (url, callback) {
     fetch(url)
-        .then(response => response.text())
-        .then(eval)
-        .then(callback);
+            .then(response => response.text())
+            .then(eval)
+            .then(callback);
+}
+
+/**
+ * Loads dynamically an array of js files
+ * @param {string[]} files 
+ * @param {function} callback 
+ */
+PD.loadMultipleJSFile = function (files, callback) {
+    const promises = [];
+
+    files.forEach(file =>
+        promises.push(
+                fetch(file)
+                .then(response => response.text())
+                .then(eval))
+    );
+
+    Promise.all(promises).then(callback);
 }
 
 /**
@@ -203,7 +240,7 @@ PD.listen = (event, callback) => window.addEventListener(event, callback);
  * @param {string} event
  * @param {object} detail
  */
-PD.fire = (event, detail) => window.dispatchEvent(new CustomEvent(event, { detail: detail }));
+PD.fire = (event, detail) => window.dispatchEvent(new CustomEvent(event, {detail: detail}));
 
 /**
  * Removes the event listener previously registered
@@ -212,20 +249,22 @@ PD.fire = (event, detail) => window.dispatchEvent(new CustomEvent(event, { detai
  */
 PD.mute = (event, callback) => window.removeEventListener(event, callback);
 
-PD.isTouchable = function(){
+PD.isTouchable = function () {
     //Android and IE Mobile
-    if(navigator.userAgent.match(/Mobi/) || 'ontouchstart' in document.documentElement)
+    if (navigator.userAgent.match(/Mobi/) || 'ontouchstart' in document.documentElement)
         return true;
 
     //iOs
-    if(!!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) && 
-        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
+    if (!!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/) &&
+            /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)
         return true;
 
     return false;
 }
 
 window.PD = PD;
+
+PD.loadJSFile(`${window.config.dir}/loader.js`);
 
 /**
  * @callback restCallback

@@ -89,7 +89,7 @@ class PageManager {
      */
     static loadCurrentPage() {
         const page = PageManager.prototype.data[PageManager.prototype.currentIndex];
-        const source = 'pages/';
+        const source = `${window.config.dir}/pages/`;
         const className = page.className;
         const fileName = Template.getFilename(className, page);
         const template = `${source}${fileName}.html`;

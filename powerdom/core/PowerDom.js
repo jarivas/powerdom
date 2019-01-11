@@ -24,6 +24,23 @@ class PowerDom {
 
         return this;
     }
+    
+    /**
+     * Set the content of all elements matches by the selector
+     * @param {Document|DocumentFragment|Element} el
+     * @returns {PowerDom} this
+     */
+    setContentElement(el) {
+        this.elements.forEach(element => {
+
+            while (element.hasChildNodes())
+                element.removeChild(element.lastChild);
+
+            element.insertAdjacentElement('beforeend', el);
+        });
+
+        return this;
+    }
 
     /**
      * Return a string or strings with the contents 
@@ -62,7 +79,7 @@ class PowerDom {
     }
 
     /**
-     * Replace element with a html string
+     * Replace element(s) with a html string
      * @param {string} html 
      * @returns {PowerDom} this
      */
@@ -78,10 +95,27 @@ class PowerDom {
 
         return this;
     }
+    
+    /**
+     * Replace element(s) with another element
+     * @param {Document|DocumentFragment|Element} el
+     * @returns {PowerDom} this
+     */
+    replaceElement(el) {
+        let parent = null;
+
+        this.elements.forEach(element => {
+            element.insertAdjacentElement('beforebegin', el);
+            parent = element.parentNode
+            parent.removeChild(element);
+            element = parent.querySelector(this.selector);
+        });
+
+        return this;
+    }
 
     /**
-     * Parses the specified text as HTML or XML and inserts the resulting nodes into the DOM tree
-     * inside the element, before its first child.
+     * Inserts the resulting nodes into the DOM tree inside the element, before its first child.
      * @param {string} html 
      * @returns {PowerDom} this
      */
@@ -92,8 +126,18 @@ class PowerDom {
     }
 
     /**
-     * Parses the specified text as HTML or XML and inserts the resulting nodes into the DOM tree
-     * inside the element, after its last child.
+     * Inserts the nodes into the DOM tree inside the element, before its first child.
+     * @param {Document|DocumentFragment|Element} el
+     * @returns {PowerDom} this
+     */
+    prependElement(el) {
+        this.elements.forEach(element => element.insertAdjacentElement('afterbegin', el));
+
+        return this;
+    }
+
+    /**
+     * Inserts the resulting nodes into the DOM tree inside the element, after its last child.
      * @param {string} html 
      * @returns {PowerDom} this
      */
@@ -104,8 +148,18 @@ class PowerDom {
     }
 
     /**
-     * Parses the specified text as HTML or XML and inserts the resulting nodes into the DOM tree
-     * before the element itself
+     * Inserts the nodes into the DOM tree inside the element, after its last child.
+     * @param {Document|DocumentFragment|Element} el
+     * @returns {PowerDom} this
+     */
+    appendElement(el) {
+        this.elements.forEach(element => element.insertAdjacentElement('beforeend', el));
+
+        return this;
+    }
+
+    /**
+     * Inserts the resulting nodes into the DOM tree before the element itself
      * @param {string} html 
      * @returns {PowerDom} this
      */
@@ -116,13 +170,34 @@ class PowerDom {
     }
 
     /**
-     * Parses the specified text as HTML or XML and inserts the resulting nodes into the DOM tree
-     * after the element itself
+     * Inserts the resulting nodes into the DOM tree before the element itself
+     * @param {Document|DocumentFragment|Element} el
+     * @returns {PowerDom} this
+     */
+    insertElement(el) {
+        this.elements.forEach(element => element.insertAdjacentElement('beforebegin', el));
+
+        return this;
+    }
+
+    /**
+     * Inserts the resulting nodes into the DOM tree after the element itself
      * @param {string} html 
      * @returns {PowerDom} this
      */
     insertAfter(html) {
         this.elements.forEach(element => element.insertAdjacentHTML('afterend', html));
+
+        return this;
+    }
+
+    /**
+     * Inserts the resulting nodes into the DOM tree after the element itself
+     * @param {string} html 
+     * @returns {PowerDom} this
+     */
+    insertAfterElement(el) {
+        this.elements.forEach(element => element.insertAdjacentElement('afterend', el));
 
         return this;
     }

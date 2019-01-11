@@ -6,49 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Title</title>
 
-    <!-- CSS DEPENDENCIES-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/dependency/material.css"><!-- Not compressed for readbility, rename to .min if you want -->
-    <link rel="stylesheet" href="css/dependency/dialog-polyfill.css">
-    <!-- /CSS DEPENDENCIES -->
-
-    <!-- CSS CORE-->
-    <link rel="stylesheet" href="css/core.css">
-    <!-- /CSS CORE -->
-
-    <!-- CSS SITE-->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- /CSS SITE -->
-
-    <!-- JS DEPENDENCIES -->
-        <!-- js/dependency/material.js is a late dependecy -->
-    <!-- /JS DEPENDENCIES -->
-
-    <!-- JS CORE DEPENDENCIES -->
-    <script src="js/dependency/dialog-polyfill.js"></script>
-    <script src="js/core/PowerDom.js"></script>
-    <script src="js/core/PD.js"></script>
-    <script src="js/core/loadStaticComponents.js"></script>
-    <script src="js/dependency/init.js"></script>
-    <!-- /JS CORE DEPENDENCIES -->
-
-    <!-- JS CORE -->
-    <script src="js/config.js"></script>
-    <script src="js/core/PageManager.js"></script>
-    <script src="js/core/Template.js"></script>
-    <script src="js/core/PartialTemplate.js"></script>
-    <script src="js/core/PageTemplate.js"></script>
-    <script src="js/dependency/PageTemplateMDL.js"></script>
-    <script src="js/core/ComponentTemplate.js"></script>
-    <script src="js/core/init.js"></script>
-    <!-- /JS CORE -->
+    <script src="config.js"></script>
+    <script src="powerdom/PD.js"></script>
 </head>
 
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <partial
-            source="partials/layout/header/" className="Header">
+            source="layout/header/" className="Header">
         </partial>
 
         <main class="mdl-layout__content mdl-color--grey-100">
@@ -57,9 +22,6 @@
                 <!-- Your content goes here -->
             </div>
         </main>
-        <partial
-            source="partials/layout/footer/" className="Footer">
-        </partial>
     </div>
 
     <dialog class="mdl-dialog">
