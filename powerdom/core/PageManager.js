@@ -4,12 +4,15 @@ class PageManager {
      * Bootstraps the PageManager
      */
     static init() {
-        PageManager.prototype.currentIndex = window.config.pages.findIndex(page => page.default);
-        PageManager.prototype.data = [...window.config.pages];
-        PageManager.prototype.mainElement = PD.find(window.config.mainElementSelector);
-        PageManager.prototype.titleElement = PD.find('head > title');
-        PageManager.prototype.dynamicClasses = new Map();
-        PageManager.prototype.params = {}
+        const pManager = PageManager.prototype;
+        
+        pManager.currentIndex = window.config.pages.findIndex(page => page.default);
+        pManager.data = [...window.config.pages];
+        pManager.mainElement = PD.find(window.config.mainElementSelector);
+        pManager.titleElement = PD.find('head > title');
+        pManager.dynamicClasses = new Map();
+        pManager.params = {};
+        pManager.instance = null;
 
         PageManager.setTitle(window.config.website);
     }
@@ -53,9 +56,10 @@ class PageManager {
      * @param {object} [params] params like get params
      */
     static changePage(title, params){
-        const index = PageManager.prototype.data.findIndex(page => page.title == title);
+        const pManager = PageManager.prototype;
+        const index = pManager.data.findIndex(page => page.title == title);
         
-        PageManager.prototype.params = (typeof params != 'undefined') ? params : {};
+        pManager.params = (typeof params != 'undefined') ? params : {};
 
         PageManager.setCurrentIndex(index);
     }
@@ -104,13 +108,14 @@ class PageManager {
     static loadCurrentPageHelper(className, fileName, template, script, extraParams){
         const dynamicClasses = PageManager.prototype.dynamicClasses;
         const success = () => {
+            const pManager = PageManager.prototype;
             const params = [
-                PageManager.prototype.mainElement,
+                pManager.mainElement,
                 dynamicClasses.get(fileName).cloneNode(true),
                 extraParams
             ];
 
-            PD.getInstance(className, params);
+            pManager.instance = PD.getInstance(className, params);
         };
 
         if (dynamicClasses.has(fileName)) {
@@ -129,7 +134,7 @@ class PageManager {
      * @returns {object} current page instance
      */
     static getPageInstance(){
-        return PageManager.prototype.data[PageManager.prototype.currentIndex].instance;
+        return PageManager.prototype.instance;
     }
 
     /**
@@ -138,6 +143,6 @@ class PageManager {
      */
     static changeMainElement(selector){
         console.log('Changing Main Element notice');
-        PageManager.prototype.mainElement =  PD.find(selector);
+        PageManager.prototype.mainElement = PD.find(selector);
     }
 }
