@@ -7,6 +7,9 @@ window.config = {
     ],
     js: [
     ],
+    extCore:[
+        
+    ],
     pages: [
         {
             title: 'Home',

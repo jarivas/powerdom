@@ -81,7 +81,11 @@ function loadClasses(classArray, callback) {
 }
 
 function loadCore() {
-    loadClasses(coreClasses, initAfterCore);
+    loadClasses(coreClasses, loadExtendedCore);
+}
+
+function loadExtendedCore() {
+    loadClasses(config.extCore, initAfterCore);
 }
 
 function initAfterCore() {
