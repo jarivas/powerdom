@@ -8,7 +8,6 @@ window.config = {
     js: [
     ],
     extCore:[
-        
     ],
     pages: [
         {

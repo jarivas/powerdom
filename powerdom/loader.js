@@ -14,11 +14,11 @@ const cssDependency = [
 
 const preCoreClasses = [
     'PowerDom',
-    'PageManager'
+    'PageManager',
+    'Template'
 ];
 
 const coreClasses = [
-    'Template',
     'PageTemplate',
     'ComponentTemplate',
     'PartialTemplate',
@@ -37,10 +37,12 @@ const staticComponents = [
     'LoadingComponent'
 ];
 
+console.log('Load PD basics');
 loadClasses(preCoreClasses, loadDependency);
 
 //functions
 function loadDependency() {
+    console.log('2nd load external non PD related');
     PD.listen('partialsInitialized', PageManager.loadCurrentPage);
 
     cssDependency.forEach(file => loadCSS(file));
@@ -73,7 +75,10 @@ function loadClasses(classArray, callback) {
     const classNames = [];
 
     classArray.forEach(c => {
-        files.push(`${coreDir}/${c}.js`);
+        const fileName = `${coreDir}/${c}.js`;
+        
+        console.log(fileName);
+        files.push(fileName);
         classNames.push(c);
     });
 
@@ -81,14 +86,17 @@ function loadClasses(classArray, callback) {
 }
 
 function loadCore() {
+    console.log('3rd load PD core files');
     loadClasses(coreClasses, loadExtendedCore);
 }
 
 function loadExtendedCore() {
+    console.log('4th load PD extended core files');
     loadClasses(config.extCore, initAfterCore);
 }
 
 function initAfterCore() {
+    console.log('5th Initialization after core load');
     PD.apiUrl = window.config.apiUrl;
 
     PageManager.init();
