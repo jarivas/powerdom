@@ -1,2 +1,0 @@
-class StaticExplanation extends PartialTemplate {
-}

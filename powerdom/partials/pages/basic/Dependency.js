@@ -1,3 +1,0 @@
-class Dependency extends PartialTemplate {
-
-}

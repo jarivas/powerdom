@@ -1,15 +1,8 @@
 const config = window.config;
 const configDir = config.dir;
 const coreDir = `${configDir}/core`;
-const staticComponentsDir = `${configDir}/components/static`;
 
 const cssDependency = [
-    'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
-    'https://fonts.googleapis.com/icon?family=Material+Icons',
-    `${coreDir}/css/dialog-polyfill.css`,
-    `${coreDir}/css/material.css`,
-    `${coreDir}/css/core.css`,
-    `${coreDir}/css/style.css`
 ].concat(config.css);
 
 const preCoreClasses = [
@@ -26,16 +19,8 @@ const coreClasses = [
 ];
 
 const jsDependency = [
-    `${coreDir}/js/material.js`,
-    `${coreDir}/js/dialog-polyfill.js`
 ].concat(config.js);
 
-const staticComponents = [
-    'DialogComponent',
-    'ModalComponent',
-    'NotificationComponent',
-    'LoadingComponent'
-];
 
 console.log('Load PD basics');
 loadClasses(preCoreClasses, loadDependency);
@@ -107,13 +92,6 @@ function initAfterCore() {
     PageManager.init();
 
     PD.fire('coreLoaded');
-
-    staticComponents.forEach(component => {
-        let url = `${staticComponentsDir}/${component}.js`;
-        let createInstance = () => eval(`window.${component} = new ${component}();`);
-
-        PD.loadJSClass(url, component, createInstance);
-    });
 
     ComponentTemplate.initComponents();
     PartialTemplate.initPartials();

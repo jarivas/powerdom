@@ -1,2 +1,0 @@
-class Basic extends PageTemplateMDL {
-}

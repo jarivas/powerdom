@@ -1,2 +1,0 @@
-class Static extends PageTemplateMDL {
-}

@@ -1,2 +1,0 @@
-class BasicPowerdom extends PartialTemplate {
-}
