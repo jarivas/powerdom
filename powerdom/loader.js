@@ -91,12 +91,17 @@ function loadCore() {
 }
 
 function loadExtendedCore() {
-    console.log('4th load PD extended core files');
-    loadClasses(config.extCore, initAfterCore);
+    console.log('4th load PD extending core class files');
+    loadClasses(config.extCore, loadExtendedCoreJs);
+}
+
+function loadExtendedCoreJs() {
+    console.log('5th load PD extending core js tweak files');
+    PD.loadMultipleJSFile(config.extCoreJs, initAfterCore);
 }
 
 function initAfterCore() {
-    console.log('5th Initialization after core load');
+    console.log('6th Initialization after core load');
     PD.apiUrl = window.config.apiUrl;
 
     PageManager.init();

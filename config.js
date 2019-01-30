@@ -9,6 +9,8 @@ window.config = {
     ],
     extCore:[
     ],
+    extCoreJs:[
+    ],
     pages: [
         {
             title: 'Home',
