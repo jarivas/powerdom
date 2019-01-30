@@ -1,11 +1,7 @@
 class PageTemplateMDL extends PageTemplate {
 
-    /**
-     * Processes the entry parameters passed to the page on change
-     */    
-    handleParameters(){
+    handleAnchorParameters() {
         const params = PageManager.getParams();
-
 
         if (params.hasOwnProperty('section'))
             PD(`a[href="${params.section}"]`).fire('click');
@@ -13,15 +9,11 @@ class PageTemplateMDL extends PageTemplate {
             PageTemplateMDL.moveUp();
     }
 
-    /**
-     * Executed right after the partials are loaded, typically to
-     * retrieve data from the server based on filters
-     */
     partialsLoaded() {
         componentHandler.upgradeAllRegistered();
     }
 
-    static moveUp(){
+    static moveUp() {
         window.location.hash = '#top';
         window.location.hash = '';
     }
