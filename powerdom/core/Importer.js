@@ -1,11 +1,7 @@
 import { PowerDom, find, findAll } from '/powerdom/core/PowerDom.js';
 
-function getTemplates() {
-    if (!Importer.prototype.hasOwnProperty('templates'))
-        Importer.prototype.templates = new Map();
-
-    return Importer.prototype.templates;
-}
+const templates = new Map();
+const modules = new Map();
 
 function getTargetElement(targetElementSelector) {
     const selectorType = typeof targetElementSelector;
@@ -21,13 +17,6 @@ function getTargetElement(targetElementSelector) {
         throw 'Invalid selector';
 
     return targetElement;
-}
-
-function getModules() {
-    if (!Importer.prototype.hasOwnProperty('modules'))
-        Importer.prototype.modules = new Map();
-
-    return Importer.prototype.modules;
 }
 
 async function getCode(url) {
@@ -63,20 +52,18 @@ async function getCode(url) {
 class Importer {
 
     static async importTemplate(url, targetElementSelector) {
-        const templates = getTemplates();
         let targetElement = getTargetElement(targetElementSelector);
         let templateElement = null, html = '';
 
-
-        if (templates.has(url))
+        if (templates.has(url)) {
             html = templates.get(url);
-        else
+        } else {
             html = await Request.getRemoteText(url);
+            templates.set(url, html);
+        }
 
         templateElement = document.createElement("template");
-
         templateElement.insertAdjacentHTML('beforeend', html);
-
         targetElement.appendElement(templateElement);
 
         findAll('script', templateElement).forEach(script => {
@@ -89,8 +76,6 @@ class Importer {
     }
 
     static async importModule(url) {
-        const modules = getModules();
-
         if (!modules.has(url))
             eval(await getCode(url));
 
