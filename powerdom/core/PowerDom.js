@@ -1,7 +1,21 @@
 class PowerDom {
+    /**
+     * A shortcut to instanciate 
+     * @param {DOMString|Document|DocumentFragment|Element} selector one or more comma separated
+     * @param {Document|DocumentFragment|Element} [element]
+     * @returns {PowerDom}
+     */
+    static getInstance(selector, element) {
+        const elements = findAll(selector, element);
+
+        if (!elements)
+            throw 'No elements selected';
+
+        return new PowerDom(elements);
+    }
 
     /**
-     * You should not instanciate this directly, use PD
+     * 
      * @param {Element[]|NodeList} elements 
      */
     constructor(elements) {
@@ -9,7 +23,6 @@ class PowerDom {
     }
 
     /**
-     * Set the inner html of all elements matches by the selector
      * @param {string} html 
      * @returns {PowerDom} this
      */
@@ -24,9 +37,8 @@ class PowerDom {
 
         return this;
     }
-    
+
     /**
-     * Set the content of all elements matches by the selector
      * @param {Document|DocumentFragment|Element} el
      * @returns {PowerDom} this
      */
@@ -42,16 +54,28 @@ class PowerDom {
         return this;
     }
 
+    setContentMultipleElements(nodes){
+        {
+            this.elements.forEach(element => {
+    
+                while (element.hasChildNodes())
+                    element.removeChild(element.lastChild);
+    
+                nodes.forEach(n => element.insertAdjacentElement('beforeend', n))
+            });
+    
+        }       
+    }
+
     /**
      * Return a string or strings with the contents 
      * @returns {string|string[]}
      */
     getContent() {
-        let content = [];
-
-        this.elements.forEach(element => content.push(element.innerHTML));
-
-        return (content.length == 1) ? content[0] : content;
+        return this.elements.reduce(function (accumulator, currentValue) {
+            accumulator.push(currentValue.innerHTML);
+            return accumulator;
+        }, []);
     }
 
 
@@ -71,11 +95,10 @@ class PowerDom {
      * @returns {string|number|{string|number}[]}
      */
     getValue() {
-        let values = [];
-
-        this.elements.forEach(element => values.push(element.value));
-
-        return (values.length == 1) ? values[0] : values;
+        return this.elements.reduce(function (accumulator, currentValue) {
+            accumulator.push(currentValue.value);
+            return accumulator;
+        }, []);
     }
 
     /**
@@ -95,7 +118,7 @@ class PowerDom {
 
         return this;
     }
-    
+
     /**
      * Replace element(s) with another element
      * @param {Document|DocumentFragment|Element} el
@@ -208,11 +231,10 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getHtml() {
-        let clones = [];
-
-        this.elements.forEach(element => clones.push(element.outerHTML));
-
-        return (clones.length == 1) ? clones[0] : clones;
+        return this.elements.reduce(function (accumulator, currentValue) {
+            accumulator.push(currentValue.outerHTML);
+            return accumulator;
+        }, []);
     }
 
     /**
@@ -303,7 +325,7 @@ class PowerDom {
         return this;
     }
 
-    removeAllClasses(){
+    removeAllClasses() {
         this.elements.forEach(element => {
             const list = element.classList;
             list.forEach(css => list.remove(css));
@@ -333,7 +355,7 @@ class PowerDom {
 
         return this;
     }
-    
+
     /**
      * Sets a property with its value
      * @param {string} index 
@@ -351,11 +373,10 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getProperty(index) {
-        let values = [];
-
-        this.elements.forEach(element => values.push(element[index]));
-
-        return (values.length == 1) ? values[0] : values;
+        return this.elements.reduce(function (accumulator, currentValue) {
+            accumulator.push(currentValue[index]);
+            return accumulator;
+        }, []);
     }
 
     /**
@@ -387,17 +408,16 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getData(index) {
-        let data = [];
-
-        this.elements.forEach(element => data.push(element.dataset[index]));
-
-        return (data.length == 1) ? data[0] : data;
+        return this.elements.reduce(function (accumulator, currentValue) {
+            accumulator.push(currentValue.dataset[index]);
+            return accumulator;
+        }, []);
     }
 
     /**
      * Get the reference or references to the contained nodes
      */
-    getElements(){
+    getElements() {
         const elements = this.elements;
 
         return (elements.length == 1) ? elements[0] : elements;
@@ -406,12 +426,39 @@ class PowerDom {
 }
 
 /**
+ * Returns the first Element within the document that matches the specified selector,
+ * or group of selectors. If no matches are found, null is returned.
+ * @param {DOMString} selector one or more comma separated
+ * @param {Document|DocumentFragment|Element} [element]
+ * @returns {Element|Node}
+ */
+function find(selector, element) {
+    element = (typeof element == 'undefined') ? document : element;
+    return element.querySelector(selector);
+}
+
+/**
+ * Returns a static (not live) NodeList representing a list of the document's element
+ *  that match the specified group of selectors.
+ * @param {DOMString} selector one or more comma separated
+ * @param {Document|DocumentFragment|Element} [element]
+ * @returns {Element[]|NodeList}
+ */
+function findAll(selector, element) {
+    element = (typeof element == 'undefined') ? document : element;
+    return element.querySelectorAll(selector);
+}
+
+
+
+export { PowerDom, find, findAll };
+/**
  * @callback errorCallback
  * @param {object} error
- * 
+ *
  * @callback EventListener
  * @param {object} event
- * 
+ *
  * @callback foreachCallback
  * @param {PowerDom} element
  * @param {index} indexOptional
