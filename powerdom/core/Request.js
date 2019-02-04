@@ -1,3 +1,5 @@
+const workers = new Map();
+
 class Request {
 
     static json(path, data, callback, errorCb) {
@@ -16,22 +18,7 @@ class Request {
             .catch(errorCb);
     }
 
-    static worker(path, data, worker) {
-        fetch(window.config.apiUrl + path, {
-            method: 'post',
-            body: data ? JSON.stringify(data) : null,
-            mode: 'cors',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        })
-            .then(response => response.json())
-            .then(data => worker.postMessage(data))
-            .catch(errorCb);
-    }
-
-    static getWorker(workerUrl) {
-        const workers = Request.getWorkers();
+    static getWorkerForRquest(workerUrl, callback, errorCb) {
         let worker = null;
 
         if (!workers.has(workerUrl)) {
@@ -48,11 +35,18 @@ class Request {
         return workerUrl;
     }
 
-    static getWorkers() {
-        if (!Request.prototype.hasOwnProperty('workers'))
-            Request.prototype.workers = new Map();
-
-        return Request.prototype.workers;
+    static worker(path, data, worker) {
+        fetch(window.config.apiUrl + path, {
+            method: 'post',
+            body: data ? JSON.stringify(data) : null,
+            mode: 'cors',
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+            .then(response => response.json())
+            .then(data => worker.postMessage(data))
+            .catch(errorCb);
     }
 
     static async getRemoteText(url) {
@@ -64,7 +58,7 @@ class Request {
         catch (err) {
             console.log('fetch failed', err);
         }
-        
+
         return text;
     }
 
