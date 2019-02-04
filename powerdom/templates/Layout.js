@@ -1,5 +1,6 @@
 class Layout {
     static init() {
+        console.log('init')
     }
 }
 

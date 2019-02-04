@@ -1,21 +1,77 @@
 import { PowerDom, find, findAll } from '/powerdom/core/PowerDom.js';
 
+function getTemplates() {
+    if (!Importer.prototype.hasOwnProperty('templates'))
+        Importer.prototype.templates = new Map();
+
+    return Importer.prototype.templates;
+}
+
+function getTargetElement(targetElementSelector) {
+    const selectorType = typeof targetElementSelector;
+    let targetElement = '';
+
+    if (selectorType == 'undefined')
+        targetElement = PD('body');
+    else if (selectorType == 'string')
+        selectorType = PD(targetElementSelector);
+    else if ((selectorType == 'object') && (targetElementSelector instanceof PowerDom))
+        targetElement = targetElementSelector;
+    else
+        throw 'Invalid selector';
+
+    return targetElement;
+}
+
+function getModules() {
+    if (!Importer.prototype.hasOwnProperty('modules'))
+        Importer.prototype.modules = new Map();
+
+    return Importer.prototype.modules;
+}
+
+async function getCode(url) {
+    const removeComments = /\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm;
+    const exportDefault = /export\s+default\s+(\w*)/;
+    const multiExport = /export\s*\{(.+)\}/;
+    const splitMultiExport = /\w+/g;
+    let lineToReplace = '', replacingLine = '', code = '';
+
+    code = await Request.getRemoteText(url);
+    code = code.replace(removeComments, '');
+
+    if (exportDefault.test(code)) {
+        const matches = code.match(exportDefault);
+        lineToReplace = matches[0];
+        replacingLine = `modules.set('${url}', ${matches[1]});\n`;
+
+    } else if (multiExport.test(code)) {
+        const matches = code.match(multiExport);
+        lineToReplace = matches[0];
+
+        matches[1].match(splitMultiExport).forEach(exported => {
+            replacingLine += `modules.${exported} = ${exported};\n`;
+        });
+
+    } else {
+        throw `Not a valid url: ${url}`;
+    }
+
+    return code.replace(lineToReplace, replacingLine);
+}
+
 class Importer {
 
-    static async importHtml(url, targetElementSelector) {
-        const selectorType = typeof targetElementSelector;
-        let targetElement = null, templateElement = null, html = '';
+    static async importTemplate(url, targetElementSelector) {
+        const templates = getTemplates();
+        let targetElement = getTargetElement(targetElementSelector);
+        let templateElement = null, html = '';
 
-        if (selectorType == 'undefined')
-            targetElement = PD('body');
-        else if (selectorType == 'string')
-            selectorType = PD(targetElementSelector);
-        else if ((selectorType == 'object') && (targetElementSelector instanceof PowerDom))
-            targetElement = targetElementSelector;
+
+        if (templates.has(url))
+            html = templates.get(url);
         else
-            throw 'Invalid selector';
-
-        html = await Request.getRemoteText(url);
+            html = await Request.getRemoteText(url);
 
         templateElement = document.createElement("template");
 
@@ -33,46 +89,12 @@ class Importer {
     }
 
     static async importModule(url) {
-        const modules = Importer.getModules();
-        const removeComments = /\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm;
-        const exportDefault = /export\s+default\s+(\w*)/;
-        const multiExport = /export\s*\{(.+)\}/;
-        const splitMultiExport = /\w+/g;
-        let lineToReplace = '', replacingLine = '', code = '';
+        const modules = getModules();
 
-        if (modules.has(url)) 
-            return modules.get(url);
-        
-        code = await Request.getRemoteText(url);
-        code = code.replace(removeComments, '');
-
-        if (exportDefault.test(code)) {
-            const matches = code.match(exportDefault);
-            lineToReplace = matches[0];
-            replacingLine = `modules.set('${url}', ${matches[1]});\n`;
-
-        } else if (multiExport.test(code)) {
-            const matches = code.match(multiExport);
-            lineToReplace = matches[0];
-
-            matches[1].match(splitMultiExport).forEach(exported => {
-                replacingLine += `modules.${exported} = ${exported};\n`;
-            });
-
-        } else {
-            throw `Not a valid url: ${url}`;
-        }
-        
-        eval(code.replace(lineToReplace, replacingLine));
+        if (!modules.has(url))
+            eval(await getCode(url));
 
         return modules.get(url);
-    }
-
-    static getModules() {
-        if (!Importer.prototype.hasOwnProperty('modules'))
-            Importer.prototype.modules = new Map();
-
-        return Importer.prototype.modules;
     }
 }
 
