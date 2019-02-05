@@ -6,7 +6,7 @@ class PowerDom {
      * @returns {PowerDom}
      */
     static getInstance(selector, element) {
-        const elements = findAll(selector, element);
+        const elements = selectAll(selector, element);
 
         if (!elements)
             throw 'No elements selected';
@@ -54,17 +54,17 @@ class PowerDom {
         return this;
     }
 
-    setContentMultipleElements(nodes){
+    setContentMultipleElements(nodes) {
         {
             this.elements.forEach(element => {
-    
+
                 while (element.hasChildNodes())
                     element.removeChild(element.lastChild);
-    
+
                 nodes.forEach(n => element.insertAdjacentElement('beforeend', n))
             });
-    
-        }       
+
+        }
     }
 
     /**
@@ -72,10 +72,11 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getContent() {
-        return this.elements.reduce(function (accumulator, currentValue) {
-            accumulator.push(currentValue.innerHTML);
-            return accumulator;
-        }, []);
+        const content = [];
+
+        this.elements.forEach(element => content.push(element.innerHTML));
+
+        return (content.length == 1) ? content[0] : content;
     }
 
 
@@ -95,10 +96,11 @@ class PowerDom {
      * @returns {string|number|{string|number}[]}
      */
     getValue() {
-        return this.elements.reduce(function (accumulator, currentValue) {
-            accumulator.push(currentValue.value);
-            return accumulator;
-        }, []);
+        const values = [];
+
+        this.elements.forEach(element => values.push(element.value));
+
+        return (values.length == 1) ? values[0] : values;
     }
 
     /**
@@ -231,10 +233,11 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getHtml() {
-        return this.elements.reduce(function (accumulator, currentValue) {
-            accumulator.push(currentValue.outerHTML);
-            return accumulator;
-        }, []);
+        const clones = [];
+
+        this.elements.forEach(element => clones.push(element.outerHTML));
+
+        return (clones.length == 1) ? clones[0] : clones;
     }
 
     /**
@@ -373,10 +376,11 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getProperty(index) {
-        return this.elements.reduce(function (accumulator, currentValue) {
-            accumulator.push(currentValue[index]);
-            return accumulator;
-        }, []);
+        const values = [];
+
+        this.elements.forEach(element => values.push(element[index]));
+
+        return (values.length == 1) ? values[0] : values;
     }
 
     /**
@@ -408,10 +412,11 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getData(index) {
-        return this.elements.reduce(function (accumulator, currentValue) {
-            accumulator.push(currentValue.dataset[index]);
-            return accumulator;
-        }, []);
+        const data = [];
+
+        this.elements.forEach(element => data.push(element.dataset[index]));
+
+        return (data.length == 1) ? data[0] : data;
     }
 
     /**
@@ -422,7 +427,6 @@ class PowerDom {
 
         return (elements.length == 1) ? elements[0] : elements;
     }
-
 }
 
 /**
@@ -432,7 +436,7 @@ class PowerDom {
  * @param {Document|DocumentFragment|Element} [element]
  * @returns {Element|Node}
  */
-function find(selector, element) {
+function select(selector, element) {
     element = (typeof element == 'undefined') ? document : element;
     return element.querySelector(selector);
 }
@@ -444,14 +448,12 @@ function find(selector, element) {
  * @param {Document|DocumentFragment|Element} [element]
  * @returns {Element[]|NodeList}
  */
-function findAll(selector, element) {
+function selectAll(selector, element) {
     element = (typeof element == 'undefined') ? document : element;
     return element.querySelectorAll(selector);
 }
 
-
-
-export { PowerDom, find, findAll };
+export { PowerDom, select, selectAll };
 /**
  * @callback errorCallback
  * @param {object} error

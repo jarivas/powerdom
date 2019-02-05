@@ -1,4 +1,4 @@
-import { PowerDom, find, findAll } from '/powerdom/core/PowerDom.js';
+import { PowerDom, select, selectAll } from '/powerdom/PowerDom.js';
 
 const templates = new Map();
 const modules = new Map();
@@ -46,7 +46,9 @@ async function getCode(url) {
         throw `Not a valid url: ${url}`;
     }
 
-    return code.replace(lineToReplace, replacingLine);
+    code = code.replace(lineToReplace, replacingLine);
+    //console.log(code)
+    return code;
 }
 
 class Importer {
@@ -66,7 +68,7 @@ class Importer {
         templateElement.insertAdjacentHTML('beforeend', html);
         targetElement.appendElement(templateElement);
 
-        findAll('script', templateElement).forEach(script => {
+        selectAll('script', templateElement).forEach(script => {
             eval(script.textContent);
             script.remove();
         });
@@ -80,6 +82,39 @@ class Importer {
             eval(await getCode(url));
 
         return modules.get(url);
+    }
+
+    static loadCss(url) {
+        const head = document.head;
+        const css = document.createElement('link');
+        let cssAdded = false;
+
+        css.href = url;
+        css.type = 'text/css';
+        css.rel = 'stylesheet';
+
+        css.onload = css.onreadystatechange = function () {
+            if (!cssAdded && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
+                cssAdded = true;
+                css.onload = css.onreadystatechange = null;
+            }
+        };
+
+        head.appendChild(css);
+    }
+
+    static async loadMultipleJs(files) {
+        files.forEach(url => {
+            Request.getRemoteText(url).then((code) => {
+                const head = document.head;
+                const script = document.createElement('script');
+
+                eval(code);
+                script.type = 'text/javascript';
+                script.src = url;
+                head.appendChild(script);
+            });
+        });
     }
 }
 

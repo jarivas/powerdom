@@ -2,10 +2,11 @@ const workers = new Map();
 
 class Request {
 
-    static json(path, data, callback, errorCb) {
-        const headers = {
-            'Content-Type': 'application/json'
-        };
+    static json(path, data, callback, errorCb, headers) {
+        if(typeof headers == 'undefined')
+            headers = {};
+
+        headers['Content-Type'] = 'application/json';
 
         fetch(window.config.apiUrl + path, {
             method: 'post',
@@ -62,23 +63,18 @@ class Request {
         return text;
     }
 
-    static loadCSS(url) {
-        const head = document.head;
-        const css = document.createElement('link');
-        let cssAdded = false;
+    static handleError(error) {
+        let message = '';
 
-        css.href = url;
-        css.type = 'text/css';
-        css.rel = 'stylesheet';
+        if (typeof error == "string")
+            message = error;
+        else if (error.hasOwnProperty('message'))
+            message = error.message;
+        else if (error.hasOwnProperty('error'))
+            message = error.error;
 
-        css.onload = css.onreadystatechange = function () {
-            if (!cssAdded && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
-                cssAdded = true;
-                css.onload = css.onreadystatechange = null;
-            }
-        };
-
-        head.appendElement(css);
+        console.log('fix dialog, notificacion and modal using native dialog')
+        console.log(error);
     }
 }
 export default Request;
