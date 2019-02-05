@@ -1,5 +1,16 @@
 class Layout {
     static init() {
+        Layout.initUIHelpers();
+
+        Layout.initHeader();
+    }
+
+    static initUIHelpers(){
+        Importer.importModule('/powerdom/UIHelpers.js')
+        .then((UIHelpers) => window.UIHelpers = UIHelpers);
+    }
+
+    static initHeader() {
         const config = window.config;
         const pages = config.pages;
         const menu = PD('.header nav ul.menu');
@@ -18,6 +29,7 @@ class Layout {
         PD('li > a', menu.getElements()).listen('click', Layout.click);
 
         Layout.changePage('default');
+
     }
 
     static click(e) {

@@ -6,7 +6,8 @@ window.config = {
     mainElementSelector: '.page-content',
     css: [
         '/css/vital.min.css',
-        '/css/dialog-polyfill.css'
+        '/css/dialog-polyfill.css',
+        '/css/UIHelpers.css'
     ],
     js: [
         '/js/dialog-polyfill.js'

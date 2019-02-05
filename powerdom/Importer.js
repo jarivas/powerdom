@@ -1,4 +1,4 @@
-import { PowerDom, select, selectAll } from '/powerdom/PowerDom.js';
+import { PowerDom, selectAll } from '/powerdom/PowerDom.js';
 
 const templates = new Map();
 const modules = new Map();
@@ -36,19 +36,27 @@ async function getCode(url) {
 
     } else if (multiExport.test(code)) {
         const matches = code.match(multiExport);
+
         lineToReplace = matches[0];
+        replacingLine = 'const m = {};\n';
 
         matches[1].match(splitMultiExport).forEach(exported => {
-            replacingLine += `modules.${exported} = ${exported};\n`;
+            replacingLine += `m.${exported} = ${exported};\n`;
         });
 
+        replacingLine += `modules.set('${url}', m);\n`;
     } else {
         throw `Not a valid url: ${url}`;
     }
 
     code = code.replace(lineToReplace, replacingLine);
-    //console.log(code)
-    return code;
+
+    return appendJsToHead(url, code);
+}
+
+function appendJsToHead(url, code) {
+    const temp = url.split('/');
+    return `${code} //# sourceURL=${temp.pop()}`;
 }
 
 class Importer {
@@ -78,8 +86,9 @@ class Importer {
     }
 
     static async importModule(url) {
-        if (!modules.has(url))
+        if (!modules.has(url)) {
             eval(await getCode(url));
+        }
 
         return modules.get(url);
     }
@@ -105,15 +114,8 @@ class Importer {
 
     static async loadMultipleJs(files) {
         files.forEach(url => {
-            Request.getRemoteText(url).then((code) => {
-                const head = document.head;
-                const script = document.createElement('script');
-
-                eval(code);
-                script.type = 'text/javascript';
-                script.src = url;
-                head.appendChild(script);
-            });
+            Request.getRemoteText(url)
+                .then((code) => eval(appendJsToHead(url, code)));
         });
     }
 }

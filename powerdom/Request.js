@@ -73,7 +73,7 @@ class Request {
         else if (error.hasOwnProperty('error'))
             message = error.error;
 
-        console.log('fix dialog, notificacion and modal using native dialog')
+        window.notification.show(message, 2000);
         console.log(error);
     }
 }
