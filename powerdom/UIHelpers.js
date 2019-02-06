@@ -63,7 +63,7 @@ class Page {
         Page.prototype.title = PD('head > title');
     }
 
-    static buildMenu() {
+    static buildMenu(callback) {
         const config = window.config;
         const pages = config.pages;
         const menu = PD('.header nav ul.menu');
@@ -88,6 +88,8 @@ class Page {
             menu.setContent(html.trim());
 
             PD('li > a', menu.getElements()).listen('click', menuClick);
+
+            callback();
 
         }), Request.handleError, { AUTH: window.token });
     }

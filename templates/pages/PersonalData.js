@@ -14,7 +14,7 @@ class PersonalData {
     }
 
     static save() {
-        const data = {};
+        let data = {};
         let send = true;
 
         PersonalData.prototype.fields.getElements().forEach(field => {
@@ -24,8 +24,11 @@ class PersonalData {
                 send = false;
         });
 
-        if (send)
-            Request.json('curriculum/set', data, PersonalData.savedSuccessfully, Request.handleError, { AUTH: window.token });
+        if (send){
+            window.data.personalData = data;
+
+            Request.json('curriculum/set', window.data, PersonalData.savedSuccessfully, Request.handleError, { AUTH: window.token });
+        }
     }
 
     static savedSuccessfully(result) {
@@ -34,7 +37,7 @@ class PersonalData {
         PersonalData.prototype.fields
             .removeAttribute('disabled');
         PersonalData.prototype.btn
-            .adAttribute('disabled')
+            .setAttribute('disabled')
             .setContent('Up to date');
 
         window.UIHelpers.Loading.close();

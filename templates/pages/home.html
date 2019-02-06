@@ -69,24 +69,25 @@
     </div>
 </div>
 <script>
-    UIHelpers.Page.buildMenu();
-    Request.json('curriculum/get', {}, (data) => {
-        const filledSections = Object.keys(data).length;
-        const totalSections = Object.keys(window.structure).length;
-        const fields = PD('.full-width-forms input,textarea');
+    UIHelpers.Page.buildMenu(() => {
+        Request.json('curriculum/get', {}, (data) => {
+            const filledSections = Object.keys(data).length;
+            const totalSections = Object.keys(window.structure).length;
+            const fields = PD('.full-width-forms input,textarea');
 
-        window.data = data;
+            window.data = data;
 
-        PD("#sectionsFilled")
-            .setContent(`Hello <b>${data.personalData.firstName}</b>, ${filledSections} of ${totalSections} sections filled`);
+            PD("#sectionsFilled")
+                .setContent(`Hello <b>${data.personalData.firstName}</b>, ${filledSections} of ${totalSections} sections filled`);
 
-        fields.getElements().forEach((node) => node.value = data.personalData[node.id]);
+            fields.getElements().forEach((node) => node.value = data.personalData[node.id]);
 
-        Importer.importModule('/templates/pages/PersonalData.js')
-            .then((PersonalData) => {
-                window.PersonalData = PersonalData;
-                PersonalData.init(fields, PD('button'))
-            });
+            Importer.importModule('/templates/pages/PersonalData.js')
+                .then((PersonalData) => {
+                    window.PersonalData = PersonalData;
+                    PersonalData.init(fields, PD('button'))
+                });
 
-    }, Request.handleError, { AUTH: window.token });
+        }, Request.handleError, { AUTH: window.token });
+    });
 </script>
