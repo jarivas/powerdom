@@ -73,16 +73,19 @@ class Page {
             window.structure = structure;
 
             Object.keys(structure).forEach((key) => {
+                let page = null;
                 if (key != 'personalData') {
-                    const page = {
+                    page = {
                         template: `templates/pages/${key}.html`,
                         title: key.charAt(0).toUpperCase() + key.slice(1),
                         navigation: true,
                         auth: true
                     };
-                    html = `<li><a href="#" data-page="${key}">${page.title}</a></li>${html}`;
                     pages[key] = page;
+                } else {
+                    page = pages.home;
                 }
+                html = `<li><a href="#" data-page="home">${page.title}</a></li>${html}`;
             });
 
             menu.setContent(html.trim());
