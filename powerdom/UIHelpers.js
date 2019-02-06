@@ -84,8 +84,9 @@ class Page {
                     pages[key] = page;
                 } else {
                     page = pages.home;
+                    key = 'home';
                 }
-                html = `<li><a href="#" data-page="home">${page.title}</a></li>${html}`;
+                html = `<li><a href="#" data-page="${key}">${page.title}</a></li>${html}`;
             });
 
             menu.setContent(html.trim());
