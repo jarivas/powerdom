@@ -21,14 +21,17 @@ class Login {
                 send = false;
         });
 
-        Request.json('curriculum/login', data, Login.handleToken, Request.handleError)
+        if(send)
+            Request.json('curriculum/login', data, Login.handleToken, Request.handleError)
     }
 
     static handleToken(response){
-        if(response.hasOwnProperty('success') && success)
+        if(response.hasOwnProperty('success') && response.success){
             window.token = response.token;
-        else
-            throw response.message
+            window.UIHelpers.Page.changePage('home');
+        } else {
+            throw response.message;
+        }
     }
 }
 

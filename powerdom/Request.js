@@ -73,7 +73,7 @@ class Request {
         else if (error.hasOwnProperty('error'))
             message = error.error;
 
-        window.UIHelpers.Notification.show(message, 2000);
+        window.UIHelpers.Notification.show(message);
         console.log(error);
     }
 }

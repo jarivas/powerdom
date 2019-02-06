@@ -18,12 +18,14 @@ window.config = {
         default: {
             template: 'templates/pages/login.html',
             title: 'Log in',
-            navigation: false
+            navigation: false,
+            auth: false
         },
-        personalData: {
-            template: 'templates/pages/personal.html',
-            title: 'Personal Data',
-            navigation: true
+        home: {
+            template: 'templates/pages/home.html',
+            title: 'Home',
+            navigation: true,
+            auth: true
         }
     },
     defaultLogin: {

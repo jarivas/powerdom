@@ -1,7 +1,7 @@
 <div class="row header">
     <div class="section">
         <nav>
-            <a href="/" class="logo"><img src="img/PD.svg" alt="Logo"></a>
+            <a class="logo"><img src="img/PD.svg" alt="Logo"></a>
             <label for="menu-toggle" id="menu-toggle-label"></label>
             <input id="menu-toggle" type="checkbox">
             <div class="icon-menu"></div>
@@ -17,5 +17,10 @@
 <dialog>This is da dialog!</dialog>
 
 <script>
-    Importer.importModule('/templates/Layout.js').then(Layout => Layout.init());
+    Importer.importModule('/powerdom/UIHelpers.js')
+        .then((UIHelpers) => {
+            window.UIHelpers = UIHelpers;
+            UIHelpers.Page.init();
+            UIHelpers.Page.changePage('default');
+        });
 </script>
