@@ -5,22 +5,21 @@
             <label for="menu-toggle" id="menu-toggle-label"></label>
             <input id="menu-toggle" type="checkbox">
             <div class="icon-menu"></div>
-            <ul class="menu">
-
-            </ul>
+            <ul class="menu"></ul>
         </nav>
     </div>
 </div>
-<div class="contents page-content">
-
-</div>
+<div class="contents page-content"></div>
 <dialog>This is da dialog!</dialog>
-
 <script>
     Importer.importModule('/powerdom/UIHelpers.js')
         .then((UIHelpers) => {
             window.UIHelpers = UIHelpers;
-            UIHelpers.Page.init();
-            UIHelpers.Page.changePage('default');
+            Importer.importModule('/templates/pages/PageHelper.js')
+                .then((PageHelper) => {
+                    window.PageHelper = PageHelper;
+                    PageHelper.init();
+                    PageHelper.changePage('default');
+                })
         });
 </script>

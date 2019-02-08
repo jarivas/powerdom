@@ -7,7 +7,7 @@ class Login {
 
         Login.prototype.inputs.forEach(input => input.value = defaultValues[input.id]);
 
-        PD('button', form).listen('click', Login.click);
+        PD('button').listen('click', Login.click);
     }
 
     static click() {
@@ -22,13 +22,14 @@ class Login {
         });
 
         if(send)
-            Request.json('curriculum/login', data, Login.handleToken, Request.handleError)
+            Request.json('curriculum/login', data, Request.handleError)
+                .then(Login.handleToken)
     }
 
     static handleToken(response){
         if(response.hasOwnProperty('success') && response.success){
-            window.token = response.token;
-            window.UIHelpers.Page.changePage('home');
+            PageHelper.prototype.token= response.token;
+            PageHelper.changePage('home');
         } else {
             throw response.message;
         }

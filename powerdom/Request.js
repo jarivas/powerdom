@@ -2,20 +2,19 @@ const workers = new Map();
 
 class Request {
 
-    static json(path, data, callback, errorCb, headers) {
+    static async json(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {};
 
         headers['Content-Type'] = 'application/json';
 
-        fetch(window.config.apiUrl + path, {
+        return fetch(window.config.apiUrl + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
             headers: new Headers(headers)
         })
             .then(response => response.json())
-            .then(callback)
             .catch(errorCb);
     }
 

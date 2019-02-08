@@ -5,6 +5,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="section">
         <div class="full-width-forms">
@@ -52,7 +53,7 @@
             </div>
             <div class="col-2-3">
                 <label>
-                    <textarea id="summary" placeholder="Write here your summaray" rows="4"></textarea>
+                    <textarea id="summary" placeholder="Write here your summary" rows="4"></textarea>
                 </label>
             </div>
             <div class="clear"></div>
@@ -69,25 +70,39 @@
     </div>
 </div>
 <script>
-    UIHelpers.Page.buildMenu(() => {
-        Request.json('curriculum/get', {}, (data) => {
-            const filledSections = Object.keys(data).length;
-            const totalSections = Object.keys(window.structure).length;
-            const fields = PD('.full-width-forms input,textarea');
+    const fields = PD('.full-width-forms input,textarea');
 
-            window.data = data;
+    function sectionsFilledWarning(data) {
+        const filledSections = Object.keys(data).length;
+        const totalSections = Object.keys(PageHelper.prototype.structure).length;
 
-            PD("#sectionsFilled")
-                .setContent(`Hello <b>${data.personalData.firstName}</b>, ${filledSections} of ${totalSections} sections filled`);
+        PD("#sectionsFilled")
+            .setContent(`Hello <b>${data.personalData.firstName}</b>, ${filledSections} of ${totalSections} sections filled`);
+    }
 
-            fields.getElements().forEach((node) => node.value = data.personalData[node.id]);
+    if (typeof PageHelper.prototype.structure == 'undefined') {
+        PageHelper.buildMenu()
+            .then(() => {
+                Request.json('curriculum/get', {}, Request.handleError, { AUTH: PageHelper.prototype.token})
+                    .then((data) => {
+                        PageHelper.prototype.data = data;
 
-            Importer.importModule('/templates/pages/PersonalData.js')
-                .then((PersonalData) => {
-                    window.PersonalData = PersonalData;
-                    PersonalData.init(fields, PD('button'))
-                });
+                        sectionsFilledWarning(data);
 
-        }, Request.handleError, { AUTH: window.token });
-    });
+                        Importer.importModule('/templates/pages/PersonalData.js')
+                            .then((PersonalData) => {
+                                window.PersonalData = PersonalData;
+                                PersonalData.init(fields, PD('button'))
+                            });
+                    })
+            });
+    } else {
+        sectionsFilledWarning(PageHelper.prototype.data);
+
+        Importer.importModule('/templates/pages/PersonalData.js')
+            .then((PersonalData) => {
+                window.PersonalData = PersonalData;
+                PersonalData.init(fields, PD('button'))
+            });
+    }
 </script>

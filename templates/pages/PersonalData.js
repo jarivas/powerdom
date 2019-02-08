@@ -1,9 +1,25 @@
+const savedSuccessfully = (result) => {
+    console.log(result);
+
+    PersonalData.prototype.fields
+        .removeAttribute('disabled');
+    PersonalData.prototype.btn
+        .setAttribute('disabled')
+        .setContent('Up to date');
+
+    window.UIHelpers.Loading.close();
+}
+
 class PersonalData {
     static init(fields, btn) {
+        const personalData = PageHelper.prototype.data.personalData;
+
         PersonalData.prototype.fields = fields;
         PersonalData.prototype.btn = btn;
 
-        fields.listen('change', PersonalData.markAsEdited);
+        fields.listen('change', PersonalData.markAsEdited)
+            .getElements().forEach((node) => node.value = personalData[node.id]);
+            
         btn.listen('click', PersonalData.save);
     }
 
@@ -25,22 +41,12 @@ class PersonalData {
         });
 
         if (send){
-            window.data.personalData = data;
+            PageHelper.prototype.data.personalData = data;
 
-            Request.json('curriculum/set', window.data, PersonalData.savedSuccessfully, Request.handleError, { AUTH: window.token });
+            Request.json('curriculum/set', PageHelper.prototype.data,
+                Request.handleError, { AUTH: PageHelper.prototype.token})
+                .then(savedSuccessfully);
         }
-    }
-
-    static savedSuccessfully(result) {
-        console.log(result);
-
-        PersonalData.prototype.fields
-            .removeAttribute('disabled');
-        PersonalData.prototype.btn
-            .setAttribute('disabled')
-            .setContent('Up to date');
-
-        window.UIHelpers.Loading.close();
     }
 }
 

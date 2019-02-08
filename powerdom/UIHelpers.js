@@ -1,9 +1,5 @@
 const DialogElement = PD('dialog');
 const closeBtn = `<br><br><button class="btn tiny" onclick="window.UIHelpers.Modal.close()">Close</button>`;
-const menuClick = (e) => {
-    e.preventDefault();
-    Page.changePage(e.target.dataset.page);
-}
 
 class Notification {
     static show(message, displayTime) {
@@ -42,14 +38,21 @@ class Loading {
 }
 
 class Modal {
-    static show(content, addCloseBtn) {
+    static setContent(content, addCloseBtn) {
         if (typeof addCloseBtn != 'undefined' && addCloseBtn)
             content = content.concat(closeBtn);
 
         DialogElement.removeAllClasses()
-            .setContent(content)
-            .getElements()
-            .showModal();
+            .setContent(content);
+    }
+
+    static setContentElement(content) {
+        DialogElement.removeAllClasses()
+            .setContentElement(content);
+    }
+
+    static show() {
+        DialogElement.getElements().showModal();
     }
 
     static close() {
@@ -57,62 +60,4 @@ class Modal {
     }
 }
 
-class Page {
-    static init() {
-        Page.prototype.mainElement = PD(config.mainElementSelector);
-        Page.prototype.title = PD('head > title');
-    }
-
-    static buildMenu(callback) {
-        const config = window.config;
-        const pages = config.pages;
-        const menu = PD('.header nav ul.menu');
-        let html = '';
-
-        Request.json('curriculum/getStructure', {}, ((structure) => {
-            window.structure = structure;
-
-            Object.keys(structure).forEach((key) => {
-                let page = null;
-                if (key != 'personalData') {
-                    page = {
-                        template: `templates/pages/${key}.html`,
-                        title: key.charAt(0).toUpperCase() + key.slice(1),
-                        navigation: true,
-                        auth: true
-                    };
-                    pages[key] = page;
-                } else {
-                    page = pages.home;
-                    key = 'home';
-                }
-                html = `<li><a href="#" data-page="${key}">${page.title}</a></li>${html}`;
-            });
-
-            menu.setContent(html.trim());
-
-            PD('li > a', menu.getElements()).listen('click', menuClick);
-
-            callback();
-
-        }), Request.handleError, { AUTH: window.token });
-    }
-
-    static changePage(index) {
-        const page = window.config.pages[index];
-        const mainElement = Page.prototype.mainElement;
-
-        if (page.auth && typeof window.token == 'undefined')
-            return false;
-
-        UIHelpers.Loading.show();
-
-        Importer.importTemplate(page.template, mainElement)
-            .then(() => {
-                Page.prototype.title.setContent(page.title);
-                UIHelpers.Loading.close();
-            });
-    }
-}
-
-export { Notification, Loading, Modal, Page }
+export { Notification, Loading, Modal }

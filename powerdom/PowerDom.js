@@ -6,7 +6,11 @@ class PowerDom {
      * @returns {PowerDom}
      */
     static getInstance(selector, element) {
-        const elements = selectAll(selector, element);
+        const el = (typeof PageHelper == 'undefined') ? document : PageHelper.prototype.mainElement;
+        let elements = null;
+
+        element = (typeof element == 'undefined') ? el : element;
+        elements = element.querySelectorAll(selector);
 
         if (!elements)
             throw 'No elements selected';
@@ -61,7 +65,10 @@ class PowerDom {
                 while (element.hasChildNodes())
                     element.removeChild(element.lastChild);
 
-                nodes.forEach(n => element.insertAdjacentElement('beforeend', n))
+                nodes.forEach(n => {
+                    if(n.nodeType == Node.ELEMENT_NODE )
+                        element.insertAdjacentElement('beforeend', n)
+                })
             });
 
         }
