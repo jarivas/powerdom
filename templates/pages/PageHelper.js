@@ -30,6 +30,14 @@ const markAsEdited = () => {
 
 }
 
+const save = (data) => {
+    PageHelper.prototype.data[index].push(data);
+
+    Request.json('curriculum/set', PageHelper.prototype.data,
+        Request.handleError, { AUTH: PageHelper.prototype.token })
+        .then(addedSuccessfully);
+}
+
 const addItem = () => {
     let data = {};
     let send = true;
@@ -47,11 +55,7 @@ const addItem = () => {
         if (!PageHelper.prototype.data.hasOwnProperty(index))
             PageHelper.prototype.data[index] = [];
 
-        PageHelper.prototype.data[index].push(data);
-
-        Request.json('curriculum/set', PageHelper.prototype.data,
-            Request.handleError, { AUTH: PageHelper.prototype.token })
-            .then(addedSuccessfully);
+        save(data);
     }
 }
 
@@ -65,6 +69,14 @@ const addedSuccessfully = (result) => {
         .setContent('Up to date');
 
     window.UIHelpers.Loading.close();
+}
+
+const editItem = () => {
+
+}
+
+const deleteItem = () => {
+
 }
 
 class PageHelper {
@@ -124,12 +136,29 @@ class PageHelper {
             });
     }
 
-    static sectionItemWarning(section) {
+    static sectionItemWarning() {
         const data = PageHelper.prototype.data;
-        const itemsAdded = (typeof data[section] == 'undefined') ? 0 : data[section].length;
+        const index = PageHelper.prototype.index;
+        const itemsAdded = (typeof data[index] == 'undefined') ? 0 : data[index].length;
 
-        PD("#items")
+        PD('#items')
             .setContent(`You have added ${itemsAdded} items in this section`);
+    }
+
+    static setTable(){
+        const index = PageHelper.prototype.index;
+        const tbody = PD('table > tbody');
+        let html = '';
+
+        PageHelper.prototype.data[index].forEach((data, i) => {
+            html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
+            `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
+            `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
+        });
+
+        tbody.setContent(html);
+        
+        PageHelper.prototype.tbody = tbody;
     }
 
     static setAddNew() {
