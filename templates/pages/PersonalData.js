@@ -7,7 +7,7 @@ const savedSuccessfully = (result) => {
         .setAttribute('disabled')
         .setContent('Up to date');
 
-    window.UIHelpers.Loading.close();
+    UIHelpers.Loading.close();
 }
 
 class PersonalData {

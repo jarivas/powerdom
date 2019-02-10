@@ -72,6 +72,7 @@ class Importer {
             templates.set(url, html);
         }
 
+        targetElement.empty();
         templateElement = document.createElement("template");
         templateElement.insertAdjacentHTML('beforeend', html);
         targetElement.appendElement(templateElement);

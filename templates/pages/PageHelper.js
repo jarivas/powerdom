@@ -30,9 +30,7 @@ const markAsEdited = () => {
 
 }
 
-const save = (data) => {
-    PageHelper.prototype.data[index].push(data);
-
+const save = () => {
     Request.json('curriculum/set', PageHelper.prototype.data,
         Request.handleError, { AUTH: PageHelper.prototype.token })
         .then(addedSuccessfully);
@@ -40,43 +38,43 @@ const save = (data) => {
 
 const addItem = () => {
     let data = {};
-    let send = true;
+    let sendSave = true;
 
     PageHelper.prototype.fields.getElements().forEach(field => {
         if (field.value.length > 0)
             data[field.id] = field.value;
         else
-            send = false;
+            sendSave = false;
     });
 
-    if (send) {
+    if (sendSave) {
         const index = PageHelper.prototype.index;
 
         if (!PageHelper.prototype.data.hasOwnProperty(index))
             PageHelper.prototype.data[index] = [];
 
-        save(data);
+        PageHelper.prototype.data[index].push(data);
+        save();
     }
 }
 
 const addedSuccessfully = (result) => {
     console.log(result);
 
-    PageHelper.prototype.form
-        .addClass('hide');
-    PersonalData.prototype.btn
-        .setAttribute('disabled')
-        .setContent('Up to date');
-
-    window.UIHelpers.Loading.close();
+    PageHelper.changePage(PageHelper.prototype.index);
 }
 
-const editItem = () => {
+const showForm = (e) => {
 
 }
 
-const deleteItem = () => {
-
+const showAlert = (e) => {
+    const i = e.target.dataset.index;
+    const body = `<p>Are you sure?`+
+        `</p><p><button class="btn small solid green" onclick="UIHelpers.Modal.close()">No</button>`+ 
+        `<button class="btn small solid red" onclick="PageHelper.deleteItem(${i})">Yes</button><p>`;
+    UIHelpers.Modal.setContent(body);
+    UIHelpers.Modal.show();
 }
 
 class PageHelper {
@@ -145,19 +143,23 @@ class PageHelper {
             .setContent(`You have added ${itemsAdded} items in this section`);
     }
 
-    static setTable(){
+    static setTable() {
         const index = PageHelper.prototype.index;
         const tbody = PD('table > tbody');
+        const el = tbody.getElements();
         let html = '';
 
         PageHelper.prototype.data[index].forEach((data, i) => {
             html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
-            `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
-            `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
+                `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
+                `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
         });
 
         tbody.setContent(html);
-        
+
+        PD('button.orange', el).listen('click', showForm);
+        PD('button.red', el).listen('click', showAlert);
+
         PageHelper.prototype.tbody = tbody;
     }
 
@@ -176,6 +178,29 @@ class PageHelper {
         PageHelper.prototype.btn = btn;
     }
 
+    static editItem (arrayPosition) {
+        let data = {};
+        let sendSave = true;
+    
+        PageHelper.prototype.fields.getElements().forEach(field => {
+            if (field.value.length > 0)
+                data[field.id] = field.value;
+            else
+                sendSave = false;
+        });
+    
+        if (sendSave) {
+            PageHelper.prototype.data[PageHelper.prototype.index][arrayPosition] = data;
+    
+            save();
+        }
+    }
+
+    static deleteItem (arrayPositiion) {
+        UIHelpers.Loading.close();
+        PageHelper.prototype.data[PageHelper.prototype.index].splice(arrayPositiion, 1);
+        save();
+    }
 }
 
 export default PageHelper;
