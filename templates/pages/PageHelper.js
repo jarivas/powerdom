@@ -105,6 +105,8 @@ class PageHelper {
             .then((structure) => {
                 PageHelper.prototype.structure = structure;
 
+                PD('.header nav a.logo', document).remove();
+
                 Object.keys(structure).forEach((key) => {
                     let page = null;
                     if (key != 'personalData') {
