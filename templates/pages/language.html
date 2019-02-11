@@ -11,8 +11,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Degree</th>
-                    <th>School</th>
+                    <th>Language</th>
+                    <th>Level</th>
                     <th>Manage</th>
                 </tr>
             </thead>
@@ -35,36 +35,12 @@
 
             <div class="col-1-2">
                 <label>
-                    <input type="text" id="degree" placeholder="Degree">
+                    <input type="text" id="name" placeholder="Language">
                 </label>
             </div>
             <div class="col-1-2">
                 <label>
-                    <input type="text" id="fieldOfStudy" placeholder="Field of study">
-                </label>
-            </div>
-            <div class="clear"></div>
-
-            <div class="col-1-2">
-                <label>
-                    <input type="email" id="startDate" placeholder="September 2000">
-                </label>
-            </div>
-            <div class="col-1-2">
-                <label>
-                    <input type="text" id="endDate" placeholder="May 2001">
-                </label>
-            </div>
-            <div class="clear"></div>
-
-            <div class="col-1-2">
-                <label>
-                    <input type="text" id="schoolName" placeholder="school name">
-                </label>
-            </div>
-            <div class="col-1-2">
-                <label>
-                    <textarea id="notes" placeholder="Write here your notes" rows="4"></textarea>
+                    <input type="text" id="level" placeholder="Level">
                 </label>
             </div>
             <div class="clear"></div>
@@ -91,7 +67,7 @@
                 return;
 
         PageHelper.prototype.data[index].forEach((data, i) => {
-            html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
+            html += `<tr><td>${data.name}</td><td>${data.level}</td>` + // this kind of string
                 `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
                 `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
         });

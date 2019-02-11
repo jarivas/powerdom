@@ -11,8 +11,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Degree</th>
-                    <th>School</th>
+                    <th>Company</th>
+                    <th>Current</th>
                     <th>Manage</th>
                 </tr>
             </thead>
@@ -35,12 +35,12 @@
 
             <div class="col-1-2">
                 <label>
-                    <input type="text" id="degree" placeholder="Degree">
+                    <input type="text" id="company" placeholder="Company">
                 </label>
             </div>
             <div class="col-1-2">
                 <label>
-                    <input type="text" id="fieldOfStudy" placeholder="Field of study">
+                    <input type="text" id="name" placeholder="Position">
                 </label>
             </div>
             <div class="clear"></div>
@@ -57,14 +57,14 @@
             </div>
             <div class="clear"></div>
 
-            <div class="col-1-2">
+            <div class="col-1-3">
                 <label>
-                    <input type="text" id="schoolName" placeholder="school name">
+                    <input type="text" id="isCurrent" placeholder="Yes or No" pattern="Yes\b|No\b" class="capitalize">
                 </label>
             </div>
-            <div class="col-1-2">
+            <div class="col-2-3">
                 <label>
-                    <textarea id="notes" placeholder="Write here your notes" rows="4"></textarea>
+                    <textarea id="description" placeholder="Talk about your tasks" rows="6"></textarea>
                 </label>
             </div>
             <div class="clear"></div>
@@ -87,11 +87,11 @@
         const el = tbody.getElements();
         let html = '';
 
-        if(typeof PageHelper.prototype.data[index] == 'undefined')
-                return;
+        if (typeof PageHelper.prototype.data[index] == 'undefined')
+            return;
 
         PageHelper.prototype.data[index].forEach((data, i) => {
-            html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
+            html += `<tr><td>${data.company}</td><td class="capitalize">${data.isCurrent}</td>` + // this kind of string
                 `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
                 `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
         });

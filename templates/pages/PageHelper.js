@@ -12,12 +12,20 @@ const addNewClick = (e) => {
 }
 
 const markAsEdited = () => {
+    const elements = PageHelper.prototype.fields.getElements();
     let mark = true;
+    let pattern = null;
 
-    PageHelper.prototype.fields.getElements().forEach(field => {
-        if (field.value.length == 0)
-            mark = false;
-    });
+    if ('forEach' in elements) {
+        elements.forEach(field => {
+            if (field.value.length == 0)
+                mark = false;
+            else if ((pattern = field.getAttribute('pattern')) && !(RegExp(pattern, 'i').test(field.value)))
+                mark = false;
+        });
+    } else if (elements.value.length == 0) {
+        mark = false;
+    }
 
     if (mark) {
         PageHelper.prototype.btn
@@ -36,45 +44,48 @@ const save = () => {
         .then(addedSuccessfully);
 }
 
+const processForm = () => {
+    if (typeof PageHelper.prototype.btn.getData('index') == 'undefined')
+        addItem();
+    else
+        editItem(PageHelper.prototype.btn.getData('index'));
+}
+
 const addItem = () => {
-    let data = {};
-    let sendSave = true;
+    const elements = PageHelper.prototype.fields.getElements();
+    const index = PageHelper.prototype.index;
+    const data = {};
 
-    PageHelper.prototype.fields.getElements().forEach(field => {
-        if (field.value.length > 0)
-            data[field.id] = field.value;
-        else
-            sendSave = false;
-    });
+    if ('forEach' in elements)
+        elements.forEach(field => data[field.id] = field.value);
+    else if (elements.value.length > 0)
+        data[elements.id] = elements.value;
 
-    if (sendSave) {
-        const index = PageHelper.prototype.index;
+    if (!PageHelper.prototype.data.hasOwnProperty(index))
+        PageHelper.prototype.data[index] = [];
 
-        if (!PageHelper.prototype.data.hasOwnProperty(index))
-            PageHelper.prototype.data[index] = [];
+    PageHelper.prototype.data[index].push(data);
 
-        PageHelper.prototype.data[index].push(data);
-        save();
-    }
+    save();
 }
 
 const addedSuccessfully = (result) => {
-    console.log(result);
-
     PageHelper.changePage(PageHelper.prototype.index);
 }
 
-const showForm = (e) => {
+const editItem = (arrayPosition) => {
+    const elements = PageHelper.prototype.fields.getElements();
+    const index = PageHelper.prototype.index;
+    const data = {};
 
-}
+    if ('forEach' in elements)
+        elements.forEach(field => data[field.id] = field.value);
+    else if (elements.value.length > 0)
+        data[elements.id] = elements.value;
 
-const showAlert = (e) => {
-    const i = e.target.dataset.index;
-    const body = `<p>Are you sure?`+
-        `</p><p><button class="btn small solid green" onclick="UIHelpers.Modal.close()">No</button>`+ 
-        `<button class="btn small solid red" onclick="PageHelper.deleteItem(${i})">Yes</button><p>`;
-    UIHelpers.Modal.setContent(body);
-    UIHelpers.Modal.show();
+    PageHelper.prototype.data[index][arrayPosition] = data;
+
+    save();
 }
 
 class PageHelper {
@@ -143,26 +154,6 @@ class PageHelper {
             .setContent(`You have added ${itemsAdded} items in this section`);
     }
 
-    static setTable() {
-        const index = PageHelper.prototype.index;
-        const tbody = PD('table > tbody');
-        const el = tbody.getElements();
-        let html = '';
-
-        PageHelper.prototype.data[index].forEach((data, i) => {
-            html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
-                `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
-                `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
-        });
-
-        tbody.setContent(html);
-
-        PD('button.orange', el).listen('click', showForm);
-        PD('button.red', el).listen('click', showAlert);
-
-        PageHelper.prototype.tbody = tbody;
-    }
-
     static setAddNew() {
         PD('button#add_new').listen('click', addNewClick);
     }
@@ -171,32 +162,38 @@ class PageHelper {
         const form = PD('.full-width-forms.hide');
         const element = form.getElements();
         const fields = PD('input,textarea', element).listen('change', markAsEdited);
-        const btn = PD('button#save', element).listen('click', addItem);
+        const btn = PD('button#save', element).listen('click', processForm);
 
         PageHelper.prototype.form = form;
         PageHelper.prototype.fields = fields;
         PageHelper.prototype.btn = btn;
     }
 
-    static editItem (arrayPosition) {
-        let data = {};
-        let sendSave = true;
-    
-        PageHelper.prototype.fields.getElements().forEach(field => {
-            if (field.value.length > 0)
-                data[field.id] = field.value;
-            else
-                sendSave = false;
-        });
-    
-        if (sendSave) {
-            PageHelper.prototype.data[PageHelper.prototype.index][arrayPosition] = data;
-    
-            save();
-        }
+    static showForm(e) {
+        const i = e.target.dataset.index;
+        const index = PageHelper.prototype.index;
+        const data = PageHelper.prototype.data[index][i];
+        const elements = PageHelper.prototype.fields.getElements();
+
+        if ('forEach' in elements)
+            elements.forEach((field) => field.value = data[field.id]);
+        else
+            elements.value = data[elements.id];
+
+        PageHelper.prototype.form.removeClass('hide');
+        PageHelper.prototype.btn.setData('index', i);
     }
 
-    static deleteItem (arrayPositiion) {
+    static showAlert(e) {
+        const i = e.target.dataset.index;
+        const body = `<p>Are you sure?` +
+            `</p><p><button class="btn small solid green" onclick="UIHelpers.Modal.close()">No</button>` +
+            `<button class="btn small solid red" onclick="PageHelper.deleteItem(${i})">Yes</button><p>`;
+        UIHelpers.Modal.setContent(body);
+        UIHelpers.Modal.show();
+    }
+
+    static deleteItem(arrayPositiion) {
         UIHelpers.Loading.close();
         PageHelper.prototype.data[PageHelper.prototype.index].splice(arrayPositiion, 1);
         save();

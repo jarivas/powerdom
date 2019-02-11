@@ -11,8 +11,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Degree</th>
-                    <th>School</th>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>Icon</th>
                     <th>Manage</th>
                 </tr>
             </thead>
@@ -33,38 +34,19 @@
     <div class="section">
         <div class="full-width-forms hide">
 
-            <div class="col-1-2">
+            <div class="col-1-3">
                 <label>
-                    <input type="text" id="degree" placeholder="Degree">
+                    <input type="text" id="name" placeholder="Skill">
                 </label>
             </div>
-            <div class="col-1-2">
+            <div class="col-1-3">
                 <label>
-                    <input type="text" id="fieldOfStudy" placeholder="Field of study">
+                    <input type="number" id="level" placeholder="5">
                 </label>
             </div>
-            <div class="clear"></div>
-
-            <div class="col-1-2">
+            <div class="col-1-3">
                 <label>
-                    <input type="email" id="startDate" placeholder="September 2000">
-                </label>
-            </div>
-            <div class="col-1-2">
-                <label>
-                    <input type="text" id="endDate" placeholder="May 2001">
-                </label>
-            </div>
-            <div class="clear"></div>
-
-            <div class="col-1-2">
-                <label>
-                    <input type="text" id="schoolName" placeholder="school name">
-                </label>
-            </div>
-            <div class="col-1-2">
-                <label>
-                    <textarea id="notes" placeholder="Write here your notes" rows="4"></textarea>
+                    <textarea id="icon" placeholder="Paste the icon base64 code" rows="4"></textarea>
                 </label>
             </div>
             <div class="clear"></div>
@@ -81,6 +63,8 @@
     </div>
 </div>
 <script>
+    const star = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgNi43NmwxLjM3OSA0LjI0Nmg0LjQ2NWwtMy42MTIgMi42MjUgMS4zNzkgNC4yNDYtMy42MTEtMi42MjUtMy42MTIgMi42MjUgMS4zNzktNC4yNDYtMy42MTItMi42MjVoNC40NjVsMS4zOC00LjI0NnptMC02LjQ3MmwtMi44MzMgOC43MThoLTkuMTY3bDcuNDE2IDUuMzg5LTIuODMzIDguNzE4IDcuNDE3LTUuMzg4IDcuNDE2IDUuMzg4LTIuODMzLTguNzE4IDcuNDE3LTUuMzg5aC05LjE2N2wtMi44MzMtOC43MTh6Ii8+PC9zdmc+';
+
     function setTable() {
         const index = PageHelper.prototype.index;
         const tbody = PD('table > tbody');
@@ -91,9 +75,15 @@
                 return;
 
         PageHelper.prototype.data[index].forEach((data, i) => {
-            html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
-                `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
-                `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
+            let stars = '';
+
+            for(let i = 0; i < data.level; ++i)
+                stars += `<img src="${star}">`;
+
+            html += `<tr><td>${data.name}</td><td>${stars}</td>` + // this kind of string
+                `<td><img src="${data.icon}"></td>` +// supports multiline
+                `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // but means add extra text nodes
+                `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` 
         });
 
         tbody.setContent(html);
