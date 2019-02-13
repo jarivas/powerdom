@@ -57,17 +57,11 @@
             </div>
             <div class="clear"></div>
 
-            <div class="col-1-3">
-                <label>
-                    <input type="text" id="isCurrent" placeholder="Yes or No" pattern="Yes\b|No\b" class="capitalize">
-                </label>
-            </div>
-            <div class="col-2-3">
+            <div>
                 <label>
                     <textarea id="description" placeholder="Talk about your tasks" rows="6"></textarea>
                 </label>
             </div>
-            <div class="clear"></div>
 
             <div class="col-1-3 space"></div>
             <div class="col-1-3">
@@ -91,7 +85,7 @@
             return;
 
         PageHelper.prototype.data[index].forEach((data, i) => {
-            html += `<tr><td>${data.company}</td><td class="capitalize">${data.isCurrent}</td>` + // this kind of string
+            html += `<tr><td>${data.company}</td><td class="capitalize">${data.name}</td>` + // this kind of string
                 `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
                 `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
         });
