@@ -52,6 +52,50 @@
             </div>
         </div>
     </div>
+    <script>
+        const web = PageHelper.prototype.data.web;
+        const tabs = PD('.tabs-block div');
+        const colorInputs = PD('#color input');
+        const save = () => {
+            return Request.json('curriculum/set', PageHelper.prototype.data,
+                Request.handleError, { AUTH: PageHelper.prototype.token })
+                .then(UIHelpers.Loading.close);
+        }
+        const colorBtn = PD('#color button').listen('click', () => {
+            const colors = {};
+
+            UIHelpers.Loading.show();
+
+            colorInputs.getElements().forEach(input => colors[input.id] = input.value);
+
+            PageHelper.prototype.data.web.color = colors;
+
+            save().then(() => UIHelpers.Notification.show('Colors updated, check your site, fist time will be slower'));
+        });
+
+        if (typeof web.image == 'undefined')
+            web.image = {};
+
+        PD('.tabs-block a').listen('click', (e) => {
+            const a = e.target;
+            let showEl = '#image', hideEl = '#color';
+
+            e.preventDefault();
+
+            tabs.removeClass('here');
+            a.parentNode.classList.add('here');
+
+            if (a.dataset.id == 'color') {
+                showEl = '#color';
+                hideEl = '#image';
+            }
+
+            PD(hideEl).addClass('hide');
+            PD(showEl).removeClass('hide');
+        });
+
+        colorInputs.getElements().forEach(el => el.value = web.color[el.id]);
+    </script>
 </div>
 <div class="row hide" id="image">
     <div class="section">
@@ -64,7 +108,7 @@
                 Upload it, visit your site
             </div>
             <div class="col-1-3">
-                Consolidate it to finish
+                Click to consolidate
             </div>
             <div class="clear"></div>
 
@@ -92,7 +136,7 @@
                 Upload it, visit your site
             </div>
             <div class="col-1-3">
-                Consolidate it to finish
+                Click to consolidate
             </div>
             <div class="clear"></div>
 
@@ -126,95 +170,70 @@
             </div>
             <div class="col-1-2">
                 <label>
-                    <button class="btn solid green" id="resume-upload" disabled>Upload</button>
+                    <button class="btn green" id="resume-upload" disabled>Upload</button>
                 </label>
             </div>
             <div class="clear"></div>
         </div>
     </div>
-</div>
-<script>
-    const web = PageHelper.prototype.data.web;
-    const tabs = PD('.tabs-block div');
-    const colorInputs = PD('#color input');
-    const resume = PD('textarea#resume');
-    const resumeUpload = PD('button#resume-upload');
-    const save = () => {
-        Request.json('curriculum/set', PageHelper.prototype.data,
-            Request.handleError, { AUTH: PageHelper.prototype.token })
-            .then(UIHelpers.Loading.close);
-    }
-    const colorBtn = PD('#color button').listen('click', () => {
-        const colors = {};
-
-        UIHelpers.Loading.show();
-
-        colorInputs.getElements().forEach(input => colors[input.id] = input.value);
-
-        PageHelper.prototype.data.web.color = colors;
-
-        save();
-    });
-    const getBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
-        });
-    }
-    const consolidate = (index) => {
-        delete web.image[index];
-        save();
-    };
-
-    if (typeof web.image == 'undefined')
-        web.image = {};
-
-    PD('.tabs-block a').listen('click', (e) => {
-        const a = e.target;
-        let showEl = '#image', hideEl = '#color';
-
-        e.preventDefault();
-
-        tabs.removeClass('here');
-        a.parentNode.classList.add('here');
-
-        if (a.dataset.id == 'color') {
-            showEl = '#color';
-            hideEl = '#image';
+    <script>
+        const uploadBtn = PD('#image button.orange');
+        const consolidateBtn = PD('#image button.solid.green');
+        const resume = PD('#image textarea#resume');
+        const resumeUpload = PD('#image button#resume-upload');
+        const getBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
         }
+        const consolidate = (e) => {
+            const btn = e.target;
+            const index = btn.id.replace('-consolidate', '');
 
-        PD(hideEl).addClass('hide');
-        PD(showEl).removeClass('hide');
-    });
+            UIHelpers.Loading.show();
 
-    colorInputs.getElements().forEach(el => el.value = web.color[el.id]);
+            btn.disabled = 'disabled';
 
-    PD('input[type="file"]').listen('change', (e) => {
-        const input = e.target;
-        const file = input.files[0];
-        const id = input.id;
+            delete web.image[index];
 
-        PD(`button#${id}-upload`).removeAttribute('disabled')
-            .listen('click', () => {
+            save().then(() => UIHelpers.Notification.show('Image consolidated'));
+        };
 
-                PD(`button#${id}-consolidate`).removeAttribute('disabled')
-                    .listen('click', () => consolidate(id));
+        PD('input[type="file"]').listen('change', (e) => PD(`button#${e.target.id}-upload`).removeAttribute('disabled'));
 
-                getBase64(file).then((data) => {
-                    web.image[id] = data;
+        uploadBtn.listen('click', (e) => {
+            const btn = e.target;
+            const id = btn.id.replace('-upload', '');
+            const input = select(`#${id}`);
+            const file = input.files[0];
 
-                    save();
+            UIHelpers.Loading.show();
+
+            getBase64(file).then((data) => {
+                web.image[id] = data;
+
+                save().then(() => {
+                    btn.setAttribute('disabled', 'disabled');
+                    input.value = '';
+                    PD(`#${id}-consolidate`).removeAttribute('disabled');
+
+                    UIHelpers.Notification.show('Check your site, and do not forget consolidate it');
                 });
             });
-    });
+        });
 
-    resume.listen('change', () => resumeUpload.removeAttribute('disabled'));
+        consolidateBtn.listen('click', consolidate);
 
-    resumeUpload.listen('click', () => {
-        web.image.resume = resume.getValue();
+        resume.listen('change', () => resumeUpload.removeAttribute('disabled'));
 
-        save();
-    });
-</script>
+        resumeUpload.listen('click', () => {
+            UIHelpers.Loading.show();
+            web.image.resume = resume.getValue();
+
+            save().then(() => UIHelpers.Notification.show('Check your site a new button should be there'));
+        });
+    </script>
+</div>

@@ -63,7 +63,7 @@ class Importer {
 
     static async importTemplate(url, targetElementSelector) {
         let targetElement = getTargetElement(targetElementSelector);
-        let templateElement = null, html = '';
+        let templateElement = null, html = '', js = '';
 
         if (templates.has(url)) {
             html = templates.get(url);
@@ -78,9 +78,11 @@ class Importer {
         targetElement.appendElement(templateElement);
 
         selectAll('script', templateElement).forEach(script => {
-            eval(script.textContent);
+            js += script.textContent;
             script.remove();
         });
+
+        eval(js);
 
         targetElement.setContentMultipleElements(templateElement.childNodes);
         templateElement.remove();
