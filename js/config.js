@@ -29,7 +29,7 @@ window.config = {
         }
     },
     defaultLogin: {
-        username: 'john',
+        username: 'jose',
         password: 'hola'
     }
 };

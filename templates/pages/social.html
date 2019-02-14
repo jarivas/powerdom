@@ -19,7 +19,7 @@
             <tbody></tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="2">
                         <button id="add_new" class="btn small round green">
                             + Add New</button>
                     </td>
@@ -72,7 +72,7 @@
             return;
 
         PageHelper.prototype.data[index].forEach((data, i) => {
-            html += `<tr><td>${data.name}</td><td><img src="${data.icon}"></td>` + // this kind of string
+            html += `<tr><td>${data.name}</td>` + // this kind of string
                 `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
                 `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>`// but means add extra text nodes
         });
