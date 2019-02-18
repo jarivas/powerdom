@@ -1,11 +1,13 @@
 class Login {
     static init() {
         const form = select('div.full-width-forms');
-        const defaultValues = window.config.defaultLogin;
 
         Login.prototype.inputs = selectAll('input', form);
 
-        Login.prototype.inputs.forEach(input => input.value = defaultValues[input.id]);
+        if( window.config.hasOwnProperty('defaultLogin') ){
+            const defaultValues = window.config.defaultValues;
+            Login.prototype.inputs.forEach(input => input.value = defaultValues[input.id]);
+        }
 
         PD('button').listen('click', Login.click);
     }
