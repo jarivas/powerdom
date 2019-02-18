@@ -5,7 +5,7 @@ class Login {
         Login.prototype.inputs = selectAll('input', form);
 
         if( window.config.hasOwnProperty('defaultLogin') ){
-            const defaultValues = window.config.defaultValues;
+            const defaultValues = window.config.defaultLogin;
             Login.prototype.inputs.forEach(input => input.value = defaultValues[input.id]);
         }
 
