@@ -213,7 +213,7 @@
             UIHelpers.Loading.show();
 
             getBase64(file).then((data) => {
-                if( (typeof web.image == 'undefined') && (Array.isArray(web.image)))
+                if( (typeof web.image == 'undefined') || (Array.isArray(web.image)))
                     web.image = {};
 
                 web.image[id] = data;
