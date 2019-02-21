@@ -1,4 +1,5 @@
 const DialogElement = PD('dialog');
+dialogPolyfill.registerDialog(DialogElement.getElements());
 const closeBtn = `<br><br><button class="btn tiny" onclick="window.UIHelpers.Modal.close()">Close</button>`;
 
 class Notification {
