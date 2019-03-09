@@ -184,6 +184,8 @@ class PageHelper {
 
         PageHelper.prototype.form.removeClass('hide');
         PageHelper.prototype.btn.setData('index', i);
+
+        window.scrollTo(0,document.body.scrollHeight);
     }
 
     static showAlert(e) {
