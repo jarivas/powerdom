@@ -1,21 +1,42 @@
 class PowerDom {
+    
     /**
      * A shortcut to instanciate 
-     * @param {DOMString|Document|DocumentFragment|Element} selector one or more comma separated
+     * @param {DOMString|Document|DocumentFragment|Element} selector
      * @param {Document|DocumentFragment|Element} [element]
      * @returns {PowerDom}
      */
     static getInstance(selector, element) {
-        const el = (typeof PageHelper == 'undefined') ? document : PageHelper.prototype.mainElement;
-        let elements = null;
+        return (typeof selector == 'string') ?
+            PowerDom.getInstanceBySelector(selector, element) :
+            PowerDom.getInstanceByElement(selector);
+    }
 
-        element = (typeof element == 'undefined') ? el : element;
+    /**
+     * @param DOMString selector one or more comma separated
+     * @param {Document|DocumentFragment|Element} [element]
+     * @returns {PowerDom}
+     */
+    static getInstanceBySelector(selector, element) {
+        let elements = null;
+        
+        if(typeof element == 'undefined')
+            element = document;
+
         elements = element.querySelectorAll(selector);
 
         if (!elements)
             throw 'No elements selected';
 
         return new PowerDom(elements);
+    }
+
+    /**
+     * @param {Document|DocumentFragment|Element} [element]
+     * @returns {PowerDom}
+     */
+    static getInstanceByElement(element) {
+        return new PowerDom([element]);
     }
 
     /**

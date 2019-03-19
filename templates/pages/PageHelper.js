@@ -1,3 +1,7 @@
+const PowerDom = app.PowerDom;
+const PD = app.PD;
+const select = app.select;
+
 const menuClick = (e) => {
     e.preventDefault();
     PageHelper.changePage(e.target.dataset.page);
@@ -90,13 +94,14 @@ const editItem = (arrayPosition) => {
 
 class PageHelper {
     static init() {
-        PageHelper.prototype.mainElement = select(config.mainElementSelector);
+
+        PageHelper.prototype.mainElement = select(app.config.mainElementSelector);
         PageHelper.prototype.mainElementPD = new PowerDom([PageHelper.prototype.mainElement]);
         PageHelper.prototype.title = PD('title', document.head);
     }
 
     static async buildMenu() {
-        const config = window.config;
+        const config = app.config;
         const pages = config.pages;
         const menu = PD('.header nav ul.menu', document);
         let html = '';
@@ -131,19 +136,20 @@ class PageHelper {
     }
 
     static changePage(index) {
-        const page = window.config.pages[index];
+        const page = app.config.pages[index];
+        const Loading = app.Loading;
 
         if (page.auth && typeof PageHelper.prototype.token == 'undefined')
             return false;
 
-        UIHelpers.Loading.show();
+        Loading.show();
 
         PageHelper.prototype.index = index;
 
         Importer.importTemplate(page.template, PageHelper.prototype.mainElementPD)
             .then(() => {
                 PageHelper.prototype.title.setContent(page.title);
-                UIHelpers.Loading.close();
+                Loading.close();
             });
     }
 
@@ -191,14 +197,14 @@ class PageHelper {
     static showAlert(e) {
         const i = e.target.dataset.index;
         const body = `<p>Are you sure?` +
-            `</p><p><button class="btn small solid green" onclick="UIHelpers.Modal.close()">No</button>` +
-            `<button class="btn small solid red" onclick="PageHelper.deleteItem(${i})">Yes</button><p>`;
-        UIHelpers.Modal.setContent(body);
-        UIHelpers.Modal.show();
+            `</p><p><button class="btn small solid green" onclick="app.Modal.close()">No</button>` +
+            `<button class="btn small solid red" onclick="app.PageHelper.deleteItem(${i})">Yes</button><p>`;
+        app.Modal.setContent(body);
+        app.Modal.show();
     }
 
     static deleteItem(arrayPositiion) {
-        UIHelpers.Loading.close();
+        app.Loading.close();
         PageHelper.prototype.data[PageHelper.prototype.index].splice(arrayPositiion, 1);
         save();
     }

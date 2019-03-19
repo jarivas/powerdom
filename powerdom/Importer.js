@@ -1,7 +1,7 @@
-import { PowerDom, selectAll } from '/powerdom/PowerDom.js';
-
 const templates = new Map();
 const modules = new Map();
+
+let PowerDom = null, selectAll = null, Request = null;
 
 function getTargetElement(targetElementSelector) {
     const selectorType = typeof targetElementSelector;
@@ -61,6 +61,12 @@ function appendJsToHead(url, code) {
 
 class Importer {
 
+    static init(){
+        PowerDom = app.PowerDom;
+        selectAll = app.selectAll;
+        Request = app.Request;
+    }
+
     static async importTemplate(url, targetElementSelector) {
         let targetElement = getTargetElement(targetElementSelector);
         let templateElement = null, html = '', js = '';
@@ -96,6 +102,10 @@ class Importer {
         return modules.get(url);
     }
 
+    static async loadJSON(url) {
+        return JSON.parse(await await Request.getRemoteText(url));
+    }
+
     static loadCss(url) {
         const head = document.head;
         const css = document.createElement('link');
@@ -116,10 +126,12 @@ class Importer {
     }
 
     static async loadMultipleJs(files) {
-        files.forEach(url => {
-            Request.getRemoteText(url)
-                .then((code) => eval(appendJsToHead(url, code)));
-        });
+        for(let i = 0; i < files.length; ++i){
+            const url = files[i];
+            const code = await Request.getRemoteText(url);
+            
+            eval(appendJsToHead(url, code));
+        }
     }
 }
 

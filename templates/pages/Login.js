@@ -1,15 +1,15 @@
 class Login {
     static init() {
-        const form = select('div.full-width-forms');
+        const form = app.select('div.full-width-forms');
 
-        Login.prototype.inputs = selectAll('input', form);
+        Login.prototype.inputs = app.selectAll('input', form);
 
-        if( window.config.hasOwnProperty('defaultLogin') ){
-            const defaultValues = window.config.defaultLogin;
+        if( app.config.hasOwnProperty('defaultLogin') ){
+            const defaultValues = app.config.defaultLogin;
             Login.prototype.inputs.forEach(input => input.value = defaultValues[input.id]);
         }
 
-        PD('button').listen('click', Login.click);
+        app.PD('button').listen('click', Login.click);
     }
 
     static click() {
@@ -30,8 +30,8 @@ class Login {
 
     static handleToken(response){
         if(response.hasOwnProperty('success') && response.success){
-            PageHelper.prototype.token= response.token;
-            PageHelper.changePage('home');
+            app.PageHelper.prototype.token= response.token;
+            app.PageHelper.changePage('home');
         } else {
             throw response.message;
         }

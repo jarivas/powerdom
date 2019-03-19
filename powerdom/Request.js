@@ -8,7 +8,7 @@ class Request {
 
         headers['Content-Type'] = 'application/json';
 
-        return fetch(window.config.apiUrl + path, {
+        return fetch(app.config.apiUrl + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -63,6 +63,7 @@ class Request {
     }
 
     static handleError(error) {
+        const app = window.app;
         let message = '';
 
         if (typeof error == "string")
@@ -72,8 +73,9 @@ class Request {
         else if (error.hasOwnProperty('error'))
             message = error.error;
 
-        window.UIHelpers.Notification.show(message);
-        console.log(error);
+        app.Notification.show(message);
+
+        console.error(error);
     }
 }
 export default Request;

@@ -1,6 +1,5 @@
-const DialogElement = PD('dialog');
-dialogPolyfill.registerDialog(DialogElement.getElements());
 const closeBtn = `<br><br><button class="btn tiny" onclick="window.UIHelpers.Modal.close()">Close</button>`;
+let DialogElement = null;
 
 class Notification {
     static show(message, displayTime) {
@@ -61,4 +60,13 @@ class Modal {
     }
 }
 
-export { Notification, Loading, Modal }
+class UIHelpers{
+    static init (){
+        const d = app.select('dialog')
+
+        DialogElement = app.PD(d);
+        dialogPolyfill.registerDialog(d);
+    }
+}
+
+export { Notification, Loading, Modal, UIHelpers }

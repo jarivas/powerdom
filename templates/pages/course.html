@@ -50,31 +50,34 @@
     </div>
 </div>
 <script>
-        function setTable() {
-            const index = PageHelper.prototype.index;
-            const tbody = PD('table > tbody');
-            const el = tbody.getElements();
-            let html = '';
+    const PageHelper = app.PageHelper
+    const PD = app.PD
 
-            if(typeof PageHelper.prototype.data[index] == 'undefined')
-                return;
-    
-            PageHelper.prototype.data[index].forEach((data, i) => {
-                html += `<tr><td>${data.name}</td>` + // this kind of string
-                    `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
-                    `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
-            });
-    
-            tbody.setContent(html);
-    
-            PD('button.orange', el).listen('click', PageHelper.showForm);
-            PD('button.red', el).listen('click', PageHelper.showAlert);
-        }
-    
-        PageHelper.sectionItemWarning();
-    
-        setTable();
-    
-        PageHelper.setAddNew();
-        PageHelper.setFormEvents();
+    function setTable() {
+        const index = PageHelper.prototype.index;
+        const tbody = PD('table > tbody');
+        const el = tbody.getElements();
+        let html = '';
+
+        if (typeof PageHelper.prototype.data[index] == 'undefined')
+            return;
+
+        PageHelper.prototype.data[index].forEach((data, i) => {
+            html += `<tr><td>${data.name}</td>` + // this kind of string
+                `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
+                `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
+        });
+
+        tbody.setContent(html);
+
+        PD('button.orange', el).listen('click', PageHelper.showForm);
+        PD('button.red', el).listen('click', PageHelper.showAlert);
+    }
+
+    PageHelper.sectionItemWarning();
+
+    setTable();
+
+    PageHelper.setAddNew();
+    PageHelper.setFormEvents();
 </script>

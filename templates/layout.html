@@ -13,11 +13,16 @@
 <dialog>This is da dialog!</dialog>
 <script>
     Importer.importModule('/powerdom/UIHelpers.js')
-        .then((UIHelpers) => {
-            window.UIHelpers = UIHelpers;
+        .then((m) => {
+            m.UIHelpers.init();
+
+            app.Notification = m.Notification;
+            app.Loading = m.Loading;
+            app.Modal = m.Modal;
+
             Importer.importModule('/templates/pages/PageHelper.js')
                 .then((PageHelper) => {
-                    window.PageHelper = PageHelper;
+                    app.PageHelper = PageHelper;
                     PageHelper.init();
                     PageHelper.changePage('default');
                 })

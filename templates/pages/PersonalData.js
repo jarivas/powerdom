@@ -7,8 +7,10 @@ const savedSuccessfully = (result) => {
         .setAttribute('disabled')
         .setContent('Up to date');
 
-    UIHelpers.Loading.close();
+    app.Loading.close();
 }
+
+const PageHelper = app.PageHelper
 
 class PersonalData {
     static init(fields, btn) {
@@ -41,6 +43,7 @@ class PersonalData {
         });
 
         if (send){
+            app.Loading.show()
             PageHelper.prototype.data.personalData = data;
 
             Request.json('curriculum/set', PageHelper.prototype.data,

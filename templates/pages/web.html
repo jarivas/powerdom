@@ -53,24 +53,30 @@
         </div>
     </div>
     <script>
+        const PageHelper = app.PageHelper
+        const PD = app.PD
+        const select = app.select
+        const Loading = app.Loading
+        const Notification = app.Notification
+
         const web = PageHelper.prototype.data.web;
         const tabs = PD('.tabs-block div');
         const colorInputs = PD('#color input');
         const save = () => {
             return Request.json('curriculum/set', PageHelper.prototype.data,
                 Request.handleError, { AUTH: PageHelper.prototype.token })
-                .then(UIHelpers.Loading.close);
+                .then(Loading.close);
         }
         const colorBtn = PD('#color button').listen('click', () => {
             const colors = {};
 
-            UIHelpers.Loading.show();
+            Loading.show();
 
             colorInputs.getElements().forEach(input => colors[input.id] = input.value);
 
             PageHelper.prototype.data.web.color = colors;
 
-            save().then(() => UIHelpers.Notification.show('Colors updated, check your site, fist time will be slower'));
+            save().then(() => Notification.show('Colors updated, check your site, fist time will be slower'));
         });
 
         if (typeof web.image == 'undefined')
@@ -193,13 +199,13 @@
             const btn = e.target;
             const index = btn.id.replace('-consolidate', '');
 
-            UIHelpers.Loading.show();
+            Loading.show();
 
             btn.disabled = 'disabled';
 
             delete web.image[index];
 
-            save().then(() => UIHelpers.Notification.show('Image consolidated'));
+            save().then(() => Notification.show('Image consolidated'));
         };
 
         PD('input[type="file"]').listen('change', (e) => PD(`button#${e.target.id}-upload`).removeAttribute('disabled'));
@@ -210,10 +216,10 @@
             const input = select(`#${id}`);
             const file = input.files[0];
 
-            UIHelpers.Loading.show();
+            Loading.show();
 
             getBase64(file).then((data) => {
-                if( (typeof web.image == 'undefined') || (Array.isArray(web.image)))
+                if ((typeof web.image == 'undefined') || (Array.isArray(web.image)))
                     web.image = {};
 
                 web.image[id] = data;
@@ -223,7 +229,7 @@
                     input.value = '';
                     PD(`#${id}-consolidate`).removeAttribute('disabled');
 
-                    UIHelpers.Notification.show('Check your site, and do not forget consolidate it');
+                    Notification.show('Check your site, and do not forget consolidate it');
                 });
             });
         });
@@ -233,10 +239,10 @@
         resume.listen('change', () => resumeUpload.removeAttribute('disabled'));
 
         resumeUpload.listen('click', () => {
-            UIHelpers.Loading.show();
+            Loading.show();
             web.image.resume = resume.getValue();
 
-            save().then(() => UIHelpers.Notification.show('Check your site a new button should be there'));
+            save().then(() => Notification.show('Check your site a new button should be there'));
         });
     </script>
 </div>
