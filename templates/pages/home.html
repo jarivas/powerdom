@@ -70,7 +70,6 @@
     </div>
 </div>
 <script>
-    const PD = app.PD;
     const PageHelper = app.PageHelper;
     const fields = PD('.full-width-forms input,textarea');
 
@@ -93,7 +92,7 @@
 
                         Importer.importModule('/templates/pages/PersonalData.js')
                             .then((PersonalData) => {
-                                window.PersonalData = PersonalData;
+                                app.PersonalData = PersonalData;
                                 PersonalData.init(fields, PD('button'))
                             });
                     })
@@ -103,7 +102,7 @@
 
         Importer.importModule('/templates/pages/PersonalData.js')
             .then((PersonalData) => {
-                window.PersonalData = PersonalData;
+                app.PersonalData = PersonalData;
                 PersonalData.init(fields, PD('button'))
             });
     }

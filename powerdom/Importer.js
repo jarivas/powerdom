@@ -1,7 +1,8 @@
 const templates = new Map();
 const modules = new Map();
 
-let PowerDom = null, selectAll = null, Request = null;
+let PD = null, select = null, selectAll = null, Request = null,
+Notification = null, Loading = null, Modal = null;
 
 function getTargetElement(targetElementSelector) {
     const selectorType = typeof targetElementSelector;
@@ -11,7 +12,7 @@ function getTargetElement(targetElementSelector) {
         targetElement = PD('body');
     else if (selectorType == 'string')
         selectorType = PD(targetElementSelector);
-    else if ((selectorType == 'object') && (targetElementSelector instanceof PowerDom))
+    else if ((selectorType == 'object') && (targetElementSelector instanceof app.PowerDom))
         targetElement = targetElementSelector;
     else
         throw 'Invalid selector';
@@ -62,9 +63,16 @@ function appendJsToHead(url, code) {
 class Importer {
 
     static init(){
-        PowerDom = app.PowerDom;
+        PD = app.PD
+        select = app.select;
         selectAll = app.selectAll;
         Request = app.Request;
+    }
+
+    static setUIHelpers(m) {
+        Notification = m.Notification;
+        Loading = m.Loading;
+        Modal = m.Modal;
     }
 
     static async importTemplate(url, targetElementSelector) {

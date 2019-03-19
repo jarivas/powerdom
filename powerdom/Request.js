@@ -63,7 +63,6 @@ class Request {
     }
 
     static handleError(error) {
-        const app = window.app;
         let message = '';
 
         if (typeof error == "string")

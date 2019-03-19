@@ -19,6 +19,8 @@
             app.Notification = m.Notification;
             app.Loading = m.Loading;
             app.Modal = m.Modal;
+            
+            Importer.setUIHelpers(m)
 
             Importer.importModule('/templates/pages/PageHelper.js')
                 .then((PageHelper) => {

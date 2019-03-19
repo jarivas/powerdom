@@ -1,4 +1,5 @@
-const closeBtn = `<br><br><button class="btn tiny" onclick="window.UIHelpers.Modal.close()">Close</button>`;
+const closeBtn = `<br><br><button class="btn tiny" onclick="app.Modal.close()">Close</button>`;
+let DialogElementPD = null;
 let DialogElement = null;
 
 class Notification {
@@ -6,34 +7,34 @@ class Notification {
         if (typeof displayTime == 'undefined')
             displayTime = 2000;
 
-        DialogElement.removeAllClasses()
+        DialogElementPD.removeAllClasses()
             .addClass('notification')
             .setContent(message)
             .getElements()
             .show();
 
         setTimeout(() => {
-            DialogElement.getElements().close();
+            DialogElement.close();
         }, displayTime)
     }
 }
 
 class Loading {
     static show(displayTime) {
-        DialogElement.removeAllClasses()
+        DialogElementPD.removeAllClasses()
             .setContent('<span class="load"></span>')
             .getElements()
             .showModal();
 
         if (typeof displayTime != 'undefined') {
             setTimeout(() => {
-                DialogElement.getElements().close();
+                DialogElement.close();
             }, displayTime)
         }
     }
 
     static close() {
-        DialogElement.getElements().close();
+        DialogElement.close();
     }
 }
 
@@ -42,30 +43,30 @@ class Modal {
         if (typeof addCloseBtn != 'undefined' && addCloseBtn)
             content = content.concat(closeBtn);
 
-        DialogElement.removeAllClasses()
+        DialogElementPD.removeAllClasses()
             .setContent(content);
     }
 
     static setContentElement(content) {
-        DialogElement.removeAllClasses()
+        DialogElementPD.removeAllClasses()
             .setContentElement(content);
     }
 
     static show() {
-        DialogElement.getElements().showModal();
+        DialogElement.showModal();
     }
 
     static close() {
-        DialogElement.getElements().close();
+        DialogElement.close();
     }
 }
 
-class UIHelpers{
-    static init (){
-        const d = app.select('dialog')
+class UIHelpers {
+    static init() {
+        DialogElement = select('dialog')
 
-        DialogElement = app.PD(d);
-        dialogPolyfill.registerDialog(d);
+        DialogElementPD = PD(DialogElement);
+        dialogPolyfill.registerDialog(DialogElement);
     }
 }
 

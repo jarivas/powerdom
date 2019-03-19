@@ -1,7 +1,3 @@
-const PowerDom = app.PowerDom;
-const PD = app.PD;
-const select = app.select;
-
 const menuClick = (e) => {
     e.preventDefault();
     PageHelper.changePage(e.target.dataset.page);
@@ -96,7 +92,7 @@ class PageHelper {
     static init() {
 
         PageHelper.prototype.mainElement = select(app.config.mainElementSelector);
-        PageHelper.prototype.mainElementPD = new PowerDom([PageHelper.prototype.mainElement]);
+        PageHelper.prototype.mainElementPD = PD(PageHelper.prototype.mainElement);
         PageHelper.prototype.title = PD('title', document.head);
     }
 
@@ -137,7 +133,6 @@ class PageHelper {
 
     static changePage(index) {
         const page = app.config.pages[index];
-        const Loading = app.Loading;
 
         if (page.auth && typeof PageHelper.prototype.token == 'undefined')
             return false;
@@ -199,12 +194,12 @@ class PageHelper {
         const body = `<p>Are you sure?` +
             `</p><p><button class="btn small solid green" onclick="app.Modal.close()">No</button>` +
             `<button class="btn small solid red" onclick="app.PageHelper.deleteItem(${i})">Yes</button><p>`;
-        app.Modal.setContent(body);
-        app.Modal.show();
+        Modal.setContent(body);
+        Modal.show();
     }
 
     static deleteItem(arrayPositiion) {
-        app.Loading.close();
+        Loading.close();
         PageHelper.prototype.data[PageHelper.prototype.index].splice(arrayPositiion, 1);
         save();
     }
