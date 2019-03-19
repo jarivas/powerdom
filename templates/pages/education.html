@@ -79,30 +79,30 @@
     const PageHelper = app.PageHelper
     
     function setTable() {
-        const index = PageHelper.prototype.index;
-        const tbody = PD('table > tbody');
-        const el = tbody.getElements();
-        let html = '';
+        const index = PageHelper.prototype.index
+        const tbody = PD('table > tbody')
+        const el = tbody.getElements()
+        let html = ''
 
         if(typeof PageHelper.prototype.data[index] == 'undefined')
-                return;
+                return
 
         PageHelper.prototype.data[index].forEach((data, i) => {
             html += `<tr><td>${data.degree}</td><td>${data.schoolName}</td>` + // this kind of string
                 `<td><button class="btn tiny orange round" data-index="${i}">edit</button>` + // supports multiline
                 `<button class="btn tiny red round" data-index="${i}">delete</button><td></tr>` // but means add extra text nodes
-        });
+        })
 
-        tbody.setContent(html);
+        tbody.setContent(html)
 
-        PD('button.orange', el).listen('click', PageHelper.showForm);
-        PD('button.red', el).listen('click', PageHelper.showAlert);
+        PD('button.orange', el).listen('click', PageHelper.showForm)
+        PD('button.red', el).listen('click', PageHelper.showAlert)
     }
 
-    PageHelper.sectionItemWarning();
+    PageHelper.sectionItemWarning()
 
-    setTable();
+    setTable()
 
-    PageHelper.setAddNew();
-    PageHelper.setFormEvents();
+    PageHelper.setAddNew()
+    PageHelper.setFormEvents()
 </script>

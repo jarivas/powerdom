@@ -1,5 +1,5 @@
 class PowerDom {
-    
+
     /**
      * A shortcut to instanciate 
      * @param {DOMString|Document|DocumentFragment|Element} selector
@@ -9,7 +9,7 @@ class PowerDom {
     static getInstance(selector, element) {
         return (typeof selector == 'string') ?
             PowerDom.getInstanceBySelector(selector, element) :
-            PowerDom.getInstanceByElement(selector);
+            PowerDom.getInstanceByElement(selector)
     }
 
     /**
@@ -18,17 +18,17 @@ class PowerDom {
      * @returns {PowerDom}
      */
     static getInstanceBySelector(selector, element) {
-        let elements = null;
-        
-        if(typeof element == 'undefined')
-            element = document;
+        let elements = null
 
-        elements = element.querySelectorAll(selector);
+        if (typeof element == 'undefined')
+            element = document
+
+        elements = element.querySelectorAll(selector)
 
         if (!elements)
-            throw 'No elements selected';
+            throw 'No elements selected'
 
-        return new PowerDom(elements);
+        return new PowerDom(elements)
     }
 
     /**
@@ -36,7 +36,7 @@ class PowerDom {
      * @returns {PowerDom}
      */
     static getInstanceByElement(element) {
-        return new PowerDom([element]);
+        return new PowerDom([element])
     }
 
     /**
@@ -44,55 +44,34 @@ class PowerDom {
      * @param {Element[]|NodeList} elements 
      */
     constructor(elements) {
-        this.elements = elements;
+        this.elements = elements
     }
 
     /**
-     * @param {string} html 
+     * @param {string|Document|DocumentFragment|Element} html 
      * @returns {PowerDom} this
      */
     setContent(html) {
+        const isString = (typeof html == 'string')
+
         this.elements.forEach(element => {
 
             while (element.hasChildNodes())
-                element.removeChild(element.lastChild);
+                element.removeChild(element.lastChild)
 
-            element.insertAdjacentHTML('beforeend', html);
-        });
-
-        return this;
-    }
-
-    /**
-     * @param {Document|DocumentFragment|Element} el
-     * @returns {PowerDom} this
-     */
-    setContentElement(el) {
-        this.elements.forEach(element => {
-
-            while (element.hasChildNodes())
-                element.removeChild(element.lastChild);
-
-            element.insertAdjacentElement('beforeend', el);
-        });
-
-        return this;
-    }
-
-    setContentMultipleElements(nodes) {
-        {
-            this.elements.forEach(element => {
-
-                while (element.hasChildNodes())
-                    element.removeChild(element.lastChild);
-
-                nodes.forEach(n => {
-                    if(n.nodeType == Node.ELEMENT_NODE )
+            if (isString) {
+                element.insertAdjacentHTML('beforeend', html)
+            } else if (html.length) {
+                html.forEach(n => {
+                    if (n.nodeType == Node.ELEMENT_NODE)
                         element.insertAdjacentElement('beforeend', n)
                 })
-            });
+            } else {
+                element.insertAdjacentElement('beforeend', html)
+            }
+        })
 
-        }
+        return this
     }
 
     /**
@@ -100,13 +79,12 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getContent() {
-        const content = [];
+        const content = []
 
-        this.elements.forEach(element => content.push(element.innerHTML));
+        this.elements.forEach(element => content.push(element.innerHTML))
 
-        return (content.length == 1) ? content[0] : content;
+        return (content.length == 1) ? content[0] : content
     }
-
 
     /**
      * Set the property value
@@ -114,9 +92,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     setValue(value) {
-        this.elements.forEach(element => element.value = value);
+        this.elements.forEach(element => element.value = value)
 
-        return this;
+        return this
     }
 
     /**
@@ -124,148 +102,102 @@ class PowerDom {
      * @returns {string|number|{string|number}[]}
      */
     getValue() {
-        const values = [];
+        const values = []
 
-        this.elements.forEach(element => values.push(element.value));
+        this.elements.forEach(element => values.push(element.value))
 
-        return (values.length == 1) ? values[0] : values;
+        return (values.length == 1) ? values[0] : values
     }
 
     /**
      * Replace element(s) with a html string
-     * @param {string} html 
+     * @param {string|Document|DocumentFragment|Element} html 
      * @returns {PowerDom} this
      */
     replace(html) {
-        let parent = null;
+        const isString = (typeof html == 'string')
+        let parent = null
 
         this.elements.forEach(element => {
-            element.insertAdjacentHTML('beforebegin', html);
-            parent = element.parentNode
-            parent.removeChild(element);
-            element = parent.querySelector(this.selector);
-        });
+            if (isString)
+                element.insertAdjacentHTML('beforebegin', html)
+            else
+                element.insertAdjacentElement('beforebegin', html)
 
-        return this;
-    }
+            parent = element.parentElement
+            parent.removeChild(element)
+            element = parent.querySelector(this.selector)
+        })
 
-    /**
-     * Replace element(s) with another element
-     * @param {Document|DocumentFragment|Element} el
-     * @returns {PowerDom} this
-     */
-    replaceElement(el) {
-        let parent = null;
-
-        this.elements.forEach(element => {
-            element.insertAdjacentElement('beforebegin', el);
-            parent = element.parentNode
-            parent.removeChild(element);
-            element = parent.querySelector(this.selector);
-        });
-
-        return this;
+        return this
     }
 
     /**
      * Inserts the resulting nodes into the DOM tree inside the element, before its first child.
-     * @param {string} html 
+     * @param {string|Document|DocumentFragment|Element} html 
      * @returns {PowerDom} this
      */
     prepend(html) {
-        this.elements.forEach(element => element.insertAdjacentHTML('afterbegin', html));
+        if (typeof html == 'string')
+            this.elements.forEach(element => element.insertAdjacentHTML('afterbegin', html))
+        else
+            this.elements.forEach(element => element.insertAdjacentElement('afterbegin', html))
 
-        return this;
-    }
-
-    /**
-     * Inserts the nodes into the DOM tree inside the element, before its first child.
-     * @param {Document|DocumentFragment|Element} el
-     * @returns {PowerDom} this
-     */
-    prependElement(el) {
-        this.elements.forEach(element => element.insertAdjacentElement('afterbegin', el));
-
-        return this;
+        return this
     }
 
     /**
      * Inserts the resulting nodes into the DOM tree inside the element, after its last child.
-     * @param {string} html 
+     * @param {string|Document|DocumentFragment|Element} html 
      * @returns {PowerDom} this
      */
     append(html) {
-        this.elements.forEach(element => element.insertAdjacentHTML('beforeend', html));
+        if (typeof html == 'string')
+            this.elements.forEach(element => element.insertAdjacentHTML('beforeend', html))
+        else
+            this.elements.forEach(element => element.insertAdjacentElement('beforeend', html))
 
-        return this;
-    }
-
-    /**
-     * Inserts the nodes into the DOM tree inside the element, after its last child.
-     * @param {Document|DocumentFragment|Element} el
-     * @returns {PowerDom} this
-     */
-    appendElement(el) {
-        this.elements.forEach(element => element.insertAdjacentElement('beforeend', el));
-
-        return this;
+        return this
     }
 
     /**
      * Inserts the resulting nodes into the DOM tree before the element itself
-     * @param {string} html 
+     * @param {string|Document|DocumentFragment|Element} html 
      * @returns {PowerDom} this
      */
     insertBefore(html) {
-        this.elements.forEach(element => element.insertAdjacentHTML('beforebegin', html));
+        if (typeof html == 'string')
+            this.elements.forEach(element => element.insertAdjacentHTML('beforebegin', html))
+        else
+            this.elements.forEach(element => element.insertAdjacentElement('beforebegin', html))
 
-        return this;
-    }
-
-    /**
-     * Inserts the resulting nodes into the DOM tree before the element itself
-     * @param {Document|DocumentFragment|Element} el
-     * @returns {PowerDom} this
-     */
-    insertElement(el) {
-        this.elements.forEach(element => element.insertAdjacentElement('beforebegin', el));
-
-        return this;
+        return this
     }
 
     /**
      * Inserts the resulting nodes into the DOM tree after the element itself
-     * @param {string} html 
+     * @param {string|Document|DocumentFragment|Element} html 
      * @returns {PowerDom} this
      */
     insertAfter(html) {
-        this.elements.forEach(element => element.insertAdjacentHTML('afterend', html));
+        if (typeof html == 'string')
+            this.elements.forEach(element => element.insertAdjacentHTML('afterend', html))
+        else
+            this.elements.forEach(element => element.insertAdjacentElement('afterend', el))
 
-        return this;
+        return this
     }
-
-    /**
-     * Inserts the resulting nodes into the DOM tree after the element itself
-     * @param {string} html 
-     * @returns {PowerDom} this
-     */
-    insertAfterElement(el) {
-        this.elements.forEach(element => element.insertAdjacentElement('afterend', el));
-
-        return this;
-    }
-
 
     /**
      * Returns an string or string[] with the copies  
      * @returns {string|string[]}
      */
     getHtml() {
-        const clones = [];
+        const clones = []
 
-        this.elements.forEach(element => clones.push(element.outerHTML));
+        this.elements.forEach(element => clones.push(element.outerHTML))
 
-        return (clones.length == 1) ? clones[0] : clones;
+        return (clones.length == 1) ? clones[0] : clones
     }
 
     /**
@@ -276,18 +208,25 @@ class PowerDom {
     empty() {
         this.elements.forEach(element => {
             while (element.hasChildNodes())
-                element.removeChild(element.lastChild);
-        });
+                element.removeChild(element.lastChild)
+        })
 
-        return this;
+        return this
     }
 
     /**
      * Removes all the elements
      */
     remove() {
-        this.elements.forEach(element => element.parentNode.removeChild(element));
-        this.elements = [];
+        this.elements.forEach(element => {
+            while (element.hasChildNodes())
+                element.removeChild(element.lastChild)
+
+            if(element.parentElement)
+                element.parentElement.removeChild(element)
+        })
+
+        delete this
     }
 
     /**
@@ -297,9 +236,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     listen(event, callback) {
-        this.elements.forEach(element => element.addEventListener(event, callback));
+        this.elements.forEach(element => element.addEventListener(event, callback))
 
-        return this;
+        return this
     }
 
     /**
@@ -307,9 +246,9 @@ class PowerDom {
      * @param {string} event 
      */
     fire(event) {
-        this.elements.forEach(element => element.dispatchEvent(new CustomEvent(event)));
+        this.elements.forEach(element => element.dispatchEvent(new CustomEvent(event)))
 
-        return this;
+        return this
     }
 
     /**
@@ -319,20 +258,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     mute(event, callback) {
-        this.elements.forEach(element => element.removeEventListener(event, callback));
+        this.elements.forEach(element => element.removeEventListener(event, callback))
 
-        return this;
-    }
-
-    /**
-     * Invokes the callback for every element
-     * @param {foreachCallback} callback 
-     * @returns {PowerDom} this
-     */
-    foreach(callback) {
-        this.elements.forEach((element, index) => callback(PD(element), index));
-
-        return this;
+        return this
     }
 
     /**
@@ -341,9 +269,9 @@ class PowerDom {
      * @param {string} cssClass 
      */
     addClass(cssClass) {
-        this.elements.forEach(element => element.classList.add(cssClass));
+        this.elements.forEach(element => element.classList.add(cssClass))
 
-        return this;
+        return this
     }
 
     /**
@@ -351,18 +279,18 @@ class PowerDom {
      * @param {string} cssClass 
      */
     removeClass(cssClass) {
-        this.elements.forEach(element => element.classList.remove(cssClass));
+        this.elements.forEach(element => element.classList.remove(cssClass))
 
-        return this;
+        return this
     }
 
     removeAllClasses() {
         this.elements.forEach(element => {
-            const list = element.classList;
-            list.forEach(css => list.remove(css));
-        });
+            const list = element.classList
+            list.forEach(css => list.remove(css))
+        })
 
-        return this;
+        return this
     }
 
     /**
@@ -370,9 +298,9 @@ class PowerDom {
      * @param {string} cssClass 
      */
     toggleClass(cssClass) {
-        this.elements.forEach(element => element.classList.toggle(cssClass));
+        this.elements.forEach(element => element.classList.toggle(cssClass))
 
-        return this;
+        return this
     }
 
     /**
@@ -382,9 +310,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     setAttribute(index, value) {
-        this.elements.forEach(element => element.setAttribute(index, value));
+        this.elements.forEach(element => element.setAttribute(index, value))
 
-        return this;
+        return this
     }
 
     /**
@@ -393,9 +321,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     removeAttribute(index) {
-        this.elements.forEach(element => element.removeAttribute(index));
+        this.elements.forEach(element => element.removeAttribute(index))
 
-        return this;
+        return this
     }
 
     /**
@@ -404,11 +332,11 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getProperty(index) {
-        const values = [];
+        const values = []
 
-        this.elements.forEach(element => values.push(element[index]));
+        this.elements.forEach(element => values.push(element[index]))
 
-        return (values.length == 1) ? values[0] : values;
+        return (values.length == 1) ? values[0] : values
     }
 
     /**
@@ -417,9 +345,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     removeProperty(index) {
-        this.elements.forEach(element => delete element[index]);
+        this.elements.forEach(element => delete element[index])
 
-        return this;
+        return this
     }
 
     /**
@@ -429,9 +357,9 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     setData(index, value) {
-        this.elements.forEach(element => element.dataset[index] = value);
+        this.elements.forEach(element => element.dataset[index] = value)
 
-        return this;
+        return this
     }
 
     /**
@@ -440,20 +368,39 @@ class PowerDom {
      * @returns {string|string[]}
      */
     getData(index) {
-        const data = [];
+        const data = []
 
-        this.elements.forEach(element => data.push(element.dataset[index]));
+        this.elements.forEach(element => data.push(element.dataset[index]))
 
-        return (data.length == 1) ? data[0] : data;
+        return (data.length == 1) ? data[0] : data
     }
 
     /**
      * Get the reference or references to the contained nodes
      */
     getElements() {
-        const elements = this.elements;
+        const elements = this.elements
 
-        return (elements.length == 1) ? elements[0] : elements;
+        return (elements.length == 1) ? elements[0] : elements
+    }
+
+    select(selector) {
+        const data = []
+
+        this.elements(element => data.push(select(selector, element)))
+
+        return (data.length == 1) ? data[0] : data
+    }
+    
+    selectAll(selector) {
+        let data = []
+
+        this.elements.forEach(element => {
+            const nodeList = selectAll(selector, element)
+            data = data.concat(nodeList)
+        })
+
+        return (data.length == 1) ? data[0] : data
     }
 }
 
@@ -465,8 +412,8 @@ class PowerDom {
  * @returns {Element|Node}
  */
 function select(selector, element) {
-    element = (typeof element == 'undefined') ? document : element;
-    return element.querySelector(selector);
+    element = (typeof element == 'undefined') ? document : element
+    return element.querySelector(selector)
 }
 
 /**
@@ -477,19 +424,15 @@ function select(selector, element) {
  * @returns {Element[]|NodeList}
  */
 function selectAll(selector, element) {
-    element = (typeof element == 'undefined') ? document : element;
-    return element.querySelectorAll(selector);
+    element = (typeof element == 'undefined') ? document : element
+    return element.querySelectorAll(selector)
 }
 
-export { PowerDom, select, selectAll };
+export { PowerDom, select, selectAll }
 /**
  * @callback errorCallback
  * @param {object} error
  *
  * @callback EventListener
  * @param {object} event
- *
- * @callback foreachCallback
- * @param {PowerDom} element
- * @param {index} indexOptional
  */

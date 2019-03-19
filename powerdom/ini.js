@@ -1,6 +1,6 @@
-import { PowerDom, select, selectAll } from '/powerdom/PowerDom.js';
-import Request from '/powerdom/Request.js';
-import Importer from '/powerdom/Importer.js';
+import { PowerDom, select, selectAll } from '/powerdom/PowerDom.js'
+import Request from '/powerdom/Request.js'
+import Importer from '/powerdom/Importer.js'
 
 const app = {
     PowerDom: PowerDom,
@@ -9,21 +9,19 @@ const app = {
     selectAll: selectAll,
     Request: Request,
     Importer: Importer
-};
+}
 
-window.app = app;
-
-Importer.init();
+window.app = app
 
 Importer.loadJSON('/powerdom/config.json').then(config => {
-    app.config = config;
+    app.config = config
 
     Importer.loadMultipleJs(config.js).then(() => {
-        const layout = config.layout;
+        const layout = config.layout
 
-        config.css.forEach(css => Importer.loadCss(css));
+        config.css.forEach(css => Importer.loadCss(css))
 
         Importer.importTemplate(layout.template, app.PD(layout.selector))
-    });
+    })
 })
 

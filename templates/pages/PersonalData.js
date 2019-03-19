@@ -1,56 +1,56 @@
 const savedSuccessfully = (result) => {
-    console.log(result);
+    console.log(result)
 
     PersonalData.prototype.fields
-        .removeAttribute('disabled');
+        .removeAttribute('disabled')
     PersonalData.prototype.btn
         .setAttribute('disabled')
-        .setContent('Up to date');
+        .setContent('Up to date')
 
-    Loading.close();
+    Loading.close()
 }
 
 const PageHelper = app.PageHelper
 
 class PersonalData {
     static init(fields, btn) {
-        const personalData = PageHelper.prototype.data.personalData;
+        const personalData = PageHelper.prototype.data.personalData
 
-        PersonalData.prototype.fields = fields;
-        PersonalData.prototype.btn = btn;
+        PersonalData.prototype.fields = fields
+        PersonalData.prototype.btn = btn
 
         fields.listen('change', PersonalData.markAsEdited)
-            .getElements().forEach((node) => node.value = personalData[node.id]);
+            .getElements().forEach((node) => node.value = personalData[node.id])
             
-        btn.listen('click', PersonalData.save);
+        btn.listen('click', PersonalData.save)
     }
 
     static markAsEdited() {
         PersonalData.prototype.btn
             .removeAttribute('disabled')
-            .setContent('Click to save!');
+            .setContent('Click to save!')
     }
 
     static save() {
-        let data = {};
-        let send = true;
+        let data = {}
+        let send = true
 
         PersonalData.prototype.fields.getElements().forEach(field => {
             if (field.value.length > 0)
-                data[field.id] = field.value;
+                data[field.id] = field.value
             else
-                send = false;
-        });
+                send = false
+        })
 
         if (send){
             Loading.show()
-            PageHelper.prototype.data.personalData = data;
+            PageHelper.prototype.data.personalData = data
 
             Request.json('curriculum/set', PageHelper.prototype.data,
                 Request.handleError, { AUTH: PageHelper.prototype.token})
-                .then(savedSuccessfully);
+                .then(savedSuccessfully)
         }
     }
 }
 
-export default PersonalData;
+export default PersonalData

@@ -1,146 +1,131 @@
-const templates = new Map();
-const modules = new Map();
+const helper = {
+    templates: new Map(),
+    modules: new Map(),
+    getTargetElement: function (targetElementSelector) {
+        const selectorType = typeof targetElementSelector
+        let targetElement = ''
 
-let PD = null, select = null, selectAll = null, Request = null,
-Notification = null, Loading = null, Modal = null;
+        if (selectorType == 'undefined')
+            targetElement = PD('body')
+        else if (selectorType == 'string')
+            selectorType = PD(targetElementSelector)
+        else if ((selectorType == 'object') && (targetElementSelector instanceof app.PowerDom))
+            targetElement = targetElementSelector
+        else
+            throw 'Invalid selector'
 
-function getTargetElement(targetElementSelector) {
-    const selectorType = typeof targetElementSelector;
-    let targetElement = '';
+        return targetElement
+    },
+    appendJsToHead: function (url, code) {
+        const temp = url.split('/')
 
-    if (selectorType == 'undefined')
-        targetElement = PD('body');
-    else if (selectorType == 'string')
-        selectorType = PD(targetElementSelector);
-    else if ((selectorType == 'object') && (targetElementSelector instanceof app.PowerDom))
-        targetElement = targetElementSelector;
-    else
-        throw 'Invalid selector';
+        return `${code} //# sourceURL=${temp.pop()}`
+    },
+    getCode: async function (url) {
+        const removeComments = /\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm
+        const exportDefault = /export\s+default\s+(\w*)/
+        const multiExport = /export\s*\{(.+)\}/
+        const splitMultiExport = /\w+/g
+        let lineToReplace = '', replacingLine = '', code = ''
 
-    return targetElement;
-}
+        code = await app.Request.getRemoteText(url)
+        code = code.replace(removeComments, '')
 
-async function getCode(url) {
-    const removeComments = /\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm;
-    const exportDefault = /export\s+default\s+(\w*)/;
-    const multiExport = /export\s*\{(.+)\}/;
-    const splitMultiExport = /\w+/g;
-    let lineToReplace = '', replacingLine = '', code = '';
+        if (exportDefault.test(code)) {
+            const matches = code.match(exportDefault)
+            lineToReplace = matches[0]
+            replacingLine = `modules.set('${url}', ${matches[1]})\n`
 
-    code = await Request.getRemoteText(url);
-    code = code.replace(removeComments, '');
+        } else if (multiExport.test(code)) {
+            const matches = code.match(multiExport)
 
-    if (exportDefault.test(code)) {
-        const matches = code.match(exportDefault);
-        lineToReplace = matches[0];
-        replacingLine = `modules.set('${url}', ${matches[1]});\n`;
+            lineToReplace = matches[0]
+            replacingLine = 'const m = {}\n'
 
-    } else if (multiExport.test(code)) {
-        const matches = code.match(multiExport);
+            matches[1].match(splitMultiExport).forEach(exported => {
+                replacingLine += `m.${exported} = ${exported}\n`
+            })
 
-        lineToReplace = matches[0];
-        replacingLine = 'const m = {};\n';
+            replacingLine += `modules.set('${url}', m)\n`
+        } else {
+            throw `Not a valid url: ${url}`
+        }
 
-        matches[1].match(splitMultiExport).forEach(exported => {
-            replacingLine += `m.${exported} = ${exported};\n`;
-        });
+        code = code.replace(lineToReplace, replacingLine)
 
-        replacingLine += `modules.set('${url}', m);\n`;
-    } else {
-        throw `Not a valid url: ${url}`;
+        return helper.appendJsToHead(url, code)
     }
-
-    code = code.replace(lineToReplace, replacingLine);
-
-    return appendJsToHead(url, code);
-}
-
-function appendJsToHead(url, code) {
-    const temp = url.split('/');
-    return `${code} //# sourceURL=${temp.pop()}`;
 }
 
 class Importer {
 
-    static init(){
-        PD = app.PD
-        select = app.select;
-        selectAll = app.selectAll;
-        Request = app.Request;
-    }
-
-    static setUIHelpers(m) {
-        Notification = m.Notification;
-        Loading = m.Loading;
-        Modal = m.Modal;
-    }
-
     static async importTemplate(url, targetElementSelector) {
-        let targetElement = getTargetElement(targetElementSelector);
-        let templateElement = null, html = '', js = '';
+        const templates = helper.templates
+        let targetElement = helper.getTargetElement(targetElementSelector)
+        let template = null, html = '', js = ''
 
         if (templates.has(url)) {
-            html = templates.get(url);
+            html = templates.get(url)
         } else {
-            html = await Request.getRemoteText(url);
-            templates.set(url, html);
+            html = await app.Request.getRemoteText(url)
+            templates.set(url, html)
         }
 
-        targetElement.empty();
-        templateElement = document.createElement("template");
-        templateElement.insertAdjacentHTML('beforeend', html);
-        targetElement.appendElement(templateElement);
+        targetElement.empty()
+        template = app.PD(document.createElement("template")).setContent(html)
 
-        selectAll('script', templateElement).forEach(script => {
-            js += script.textContent;
-            script.remove();
-        });
+        template.selectAll('script', template).forEach(script => {
+            js += script.textContent
+            script.remove()
+        })
 
-        eval(js);
+        eval(js)
 
-        targetElement.setContentMultipleElements(templateElement.childNodes);
-        templateElement.remove();
+        targetElement.setContent(template.getElements().childNodes)
+        template.remove()
     }
 
     static async importModule(url) {
+        const modules = helper.modules
+
         if (!modules.has(url)) {
-            eval(await getCode(url));
+            eval(await helper.getCode(url))
         }
 
-        return modules.get(url);
+        return modules.get(url)
     }
 
     static async loadJSON(url) {
-        return JSON.parse(await await Request.getRemoteText(url));
+        return JSON.parse(await app.Request.getRemoteText(url))
     }
 
     static loadCss(url) {
-        const head = document.head;
-        const css = document.createElement('link');
-        let cssAdded = false;
+        const head = document.head
+        const css = document.createElement('link')
+        let cssAdded = false
 
-        css.href = url;
-        css.type = 'text/css';
-        css.rel = 'stylesheet';
+        css.href = url
+        css.type = 'text/css'
+        css.rel = 'stylesheet'
 
         css.onload = css.onreadystatechange = function () {
             if (!cssAdded && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
-                cssAdded = true;
-                css.onload = css.onreadystatechange = null;
+                cssAdded = true
+                css.onload = css.onreadystatechange = null
             }
-        };
+        }
 
-        head.appendChild(css);
+        head.appendChild(css)
     }
 
     static async loadMultipleJs(files) {
-        for(let i = 0; i < files.length; ++i){
-            const url = files[i];
-            const code = await Request.getRemoteText(url);
-            
-            eval(appendJsToHead(url, code));
+        for (let i = 0; i < files.length; ++i) {
+            const url = files[i]
+            const code = await app.Request.getRemoteText(url)
+
+            eval(helper.appendJsToHead(url, code))
         }
     }
 }
 
-export default Importer;
+export default Importer

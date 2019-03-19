@@ -70,40 +70,40 @@
     </div>
 </div>
 <script>
-    const PageHelper = app.PageHelper;
-    const fields = PD('.full-width-forms input,textarea');
+    const PageHelper = app.PageHelper
+    const PD = app.PD
+    const Request = app.Request
 
     function sectionsFilledWarning(data) {
-        const filledSections = Object.keys(data).length;
-        const totalSections = Object.keys(PageHelper.prototype.structure).length;
+        const filledSections = Object.keys(data).length
+        const totalSections = Object.keys(PageHelper.prototype.structure).length
 
         PD("#sectionsFilled")
-            .setContent(`Hello <b>${data.personalData.firstName}</b>, ${filledSections} of ${totalSections} sections filled`);
+            .setContent(`Hello <b>${data.personalData.firstName}</b>, ${filledSections} of ${totalSections} sections filled`)
+    }
+
+    function initPersonalData(PersonalData) {
+        app.PersonalData = PersonalData
+        PersonalData.init(PD('.full-width-forms input,textarea'), PD('button'))
     }
 
     if (typeof PageHelper.prototype.structure == 'undefined') {
         PageHelper.buildMenu()
             .then(() => {
-                Request.json('curriculum/get', {}, Request.handleError, { AUTH: PageHelper.prototype.token})
+                Request.json('curriculum/get', {}, Request.handleError, { AUTH: PageHelper.prototype.token })
                     .then((data) => {
-                        PageHelper.prototype.data = data;
+                        PageHelper.prototype.data = data
 
-                        sectionsFilledWarning(data);
+                        sectionsFilledWarning(data)
 
                         Importer.importModule('/templates/pages/PersonalData.js')
-                            .then((PersonalData) => {
-                                app.PersonalData = PersonalData;
-                                PersonalData.init(fields, PD('button'))
-                            });
+                            .then(initPersonalData)
                     })
-            });
+            })
     } else {
-        sectionsFilledWarning(PageHelper.prototype.data);
+        sectionsFilledWarning(PageHelper.prototype.data)
 
         Importer.importModule('/templates/pages/PersonalData.js')
-            .then((PersonalData) => {
-                app.PersonalData = PersonalData;
-                PersonalData.init(fields, PD('button'))
-            });
+            .then(initPersonalData)
     }
 </script>
