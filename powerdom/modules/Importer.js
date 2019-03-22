@@ -3,16 +3,20 @@ const helper = {
     modules: new Map(),
     getTargetElement: function (targetElementSelector) {
         const selectorType = typeof targetElementSelector
-        let targetElement = ''
+        let targetElement = null
 
-        if (selectorType == 'undefined')
-            targetElement = PD('body')
-        else if (selectorType == 'string')
-            selectorType = PD(targetElementSelector)
-        else if ((selectorType == 'object') && (targetElementSelector instanceof app.PowerDom))
-            targetElement = targetElementSelector
-        else
+        if (selectorType == 'undefined') {
+            targetElement = app.PD('body')
+        } else if (selectorType == 'string') {
+            targetElement = app.PD(targetElementSelector)
+        } else if (selectorType == 'object') {
+            if (targetElementSelector instanceof app.PowerDom)
+                targetElement = targetElementSelector
+            else if (targetElementSelector instanceof Node)
+                targetElement = app.PD(targetElementSelector)
+        } else {
             throw 'Invalid selector'
+        }
 
         return targetElement
     },
@@ -59,7 +63,7 @@ const helper = {
 
 class Importer {
 
-    static async importTemplate(url, targetElementSelector) {
+    static async importTemplate(url, targetElementSelector, replaceTargetElement) {
         const templates = helper.templates
         let targetElement = helper.getTargetElement(targetElementSelector)
         let template = null, html = '', js = ''
@@ -71,18 +75,20 @@ class Importer {
             templates.set(url, html)
         }
 
-        targetElement.empty()
         template = app.PD(document.createElement("template")).setContent(html)
-
         template.selectAll('script', template).forEach(script => {
             js += script.textContent
             script.remove()
         })
 
-        eval(js)
+        if (typeof replaceTargetElement == 'undefined' || !replaceTargetElement)
+            targetElement.setContent(template.getElements().childNodes)
+        else
+            targetElement.replace(template.getElements().childNodes)
 
-        targetElement.setContent(template.getElements().childNodes)
         template.remove()
+
+        eval(js)
     }
 
     static async importModule(url) {

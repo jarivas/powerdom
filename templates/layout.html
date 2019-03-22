@@ -10,21 +10,3 @@
     </div>
 </div>
 <div class="contents page-content"></div>
-<dialog>This is da dialog!</dialog>
-<script>
-    Importer.importModule('/powerdom/UIHelpers.js')
-        .then((m) => {
-            m.UIHelpers.init()
-
-            app.Notification = m.Notification
-            app.Loading = m.Loading
-            app.Modal = m.Modal
-
-            Importer.importModule('/templates/pages/PageHelper.js')
-                .then((PageHelper) => {
-                    app.PageHelper = PageHelper
-                    PageHelper.init()
-                    PageHelper.changePage('default')
-                })
-        })
-</script>

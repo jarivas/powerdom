@@ -11,6 +11,8 @@ const savedSuccessfully = (result) => {
 }
 
 const PageHelper = app.PageHelper
+const Loading = app.Loading
+const Request = app.Request
 
 class PersonalData {
     static init(fields, btn) {
@@ -47,7 +49,7 @@ class PersonalData {
             PageHelper.prototype.data.personalData = data
 
             Request.json('curriculum/set', PageHelper.prototype.data,
-                Request.handleError, { AUTH: PageHelper.prototype.token})
+                Request.handleError, {AUTH: PageHelper.prototype.token})
                 .then(savedSuccessfully)
         }
     }

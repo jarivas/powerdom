@@ -1,3 +1,25 @@
+const ELEMENT_NODE = Node.ELEMENT_NODE
+
+const helper = {
+    POSITION_BEFORE_BEGIN: 'beforebegin',
+    POSITION_AFTER_END: 'afterbegin',
+    POSITION_BEFORE_END: 'beforeend',
+    POSITION_AFTER_END: 'afterend',
+    insertAdjacent: function(isString, element, position, html) {
+        if (isString) {
+            element.insertAdjacentHTML(position, html)
+        } else if (html.length) {
+            html.forEach(n => {
+                if (n.nodeType == ELEMENT_NODE)
+                    element.insertAdjacentElement(position, n)
+            })
+        } else {
+            element.insertAdjacentElement(position, html)
+        }
+    }
+}
+
+
 class PowerDom {
 
     /**
@@ -59,16 +81,7 @@ class PowerDom {
             while (element.hasChildNodes())
                 element.removeChild(element.lastChild)
 
-            if (isString) {
-                element.insertAdjacentHTML('beforeend', html)
-            } else if (html.length) {
-                html.forEach(n => {
-                    if (n.nodeType == Node.ELEMENT_NODE)
-                        element.insertAdjacentElement('beforeend', n)
-                })
-            } else {
-                element.insertAdjacentElement('beforeend', html)
-            }
+            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_END, html)
         })
 
         return this
@@ -119,14 +132,10 @@ class PowerDom {
         let parent = null
 
         this.elements.forEach(element => {
-            if (isString)
-                element.insertAdjacentHTML('beforebegin', html)
-            else
-                element.insertAdjacentElement('beforebegin', html)
+            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_BEGIN, html)
 
             parent = element.parentElement
             parent.removeChild(element)
-            element = parent.querySelector(this.selector)
         })
 
         return this
@@ -138,10 +147,11 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     prepend(html) {
-        if (typeof html == 'string')
-            this.elements.forEach(element => element.insertAdjacentHTML('afterbegin', html))
-        else
-            this.elements.forEach(element => element.insertAdjacentElement('afterbegin', html))
+        const isString = (typeof html == 'string')
+
+        this.elements.forEach(element => {
+            helper.insertAdjacent(isString, element, helper.POSITION_AFTER_BEGIN, html)
+        })
 
         return this
     }
@@ -152,11 +162,11 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     append(html) {
-        if (typeof html == 'string')
-            this.elements.forEach(element => element.insertAdjacentHTML('beforeend', html))
-        else
-            this.elements.forEach(element => element.insertAdjacentElement('beforeend', html))
+        const isString = (typeof html == 'string')
 
+        this.elements.forEach(element => {
+            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_END, html)
+        })
         return this
     }
 
@@ -166,10 +176,11 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     insertBefore(html) {
-        if (typeof html == 'string')
-            this.elements.forEach(element => element.insertAdjacentHTML('beforebegin', html))
-        else
-            this.elements.forEach(element => element.insertAdjacentElement('beforebegin', html))
+        const isString = (typeof html == 'string')
+
+        this.elements.forEach(element => {
+            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_BEGIN, html)
+        })
 
         return this
     }
@@ -180,10 +191,11 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     insertAfter(html) {
-        if (typeof html == 'string')
-            this.elements.forEach(element => element.insertAdjacentHTML('afterend', html))
-        else
-            this.elements.forEach(element => element.insertAdjacentElement('afterend', el))
+        const isString = (typeof html == 'string')
+
+        this.elements.forEach(element => {
+            helper.insertAdjacent(isString, element, helper.POSITION_AFTER_END, html)
+        })
 
         return this
     }

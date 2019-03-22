@@ -2,6 +2,7 @@ const PD = app.PD
 const select = app.select
 const Loading = app.Loading
 const Request = app.Request
+const Modal = app.Modal
 
 const menuClick = (e) => {
     e.preventDefault()

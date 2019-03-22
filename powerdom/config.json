@@ -3,16 +3,12 @@
     "mainElementSelector": ".page-content",
     "css": [
         "/css/vital.min.css",
-        "/css/dialog-polyfill.css",
-        "/css/UIHelpers.css"
+        "/powerdom/css/dialog-polyfill.css",
+        "/powerdom/css/UIHelpers.css"
     ],
     "js": [
-        "/js/dialog-polyfill.js"
+        "/powerdom/js/dialog-polyfill.js"
     ],
-    "layout": {
-        "selector": "body",
-        "template": "/templates/layout.html"
-    },
     "pages": {
         "default": {
             "template": "templates/pages/login.html",
