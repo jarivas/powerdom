@@ -20,14 +20,18 @@ const app = {
 window.app = app
 
 Importer.loadJSON('/powerdom/config.json').then(config => {
+    const head = app.PD('head')
+
     app.config = config
+
+    config.meta.forEach(meta => head.prepend(`<meta ${meta}>`))
 
     Importer.loadMultipleJs(config.js).then(() => {
         config.css.forEach(css => Importer.loadCss(css))
 
         UIHelpers.init()
 
-        Template.loadAll()
+        Template.parse(select('html'))
     })
 
 })

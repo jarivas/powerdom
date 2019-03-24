@@ -65,8 +65,9 @@ class Importer {
 
     static async importTemplate(url, targetElementSelector, replaceTargetElement) {
         const templates = helper.templates
+        const template = document.createElement('template')
         let targetElement = helper.getTargetElement(targetElementSelector)
-        let template = null, html = '', js = ''
+        let html = '', js = ''
 
         if (templates.has(url)) {
             html = templates.get(url)
@@ -75,20 +76,20 @@ class Importer {
             templates.set(url, html)
         }
 
-        template = app.PD(document.createElement("template")).setContent(html)
-        template.selectAll('script', template).forEach(script => {
+        template.insertAdjacentHTML('beforeend', html)
+        app.selectAll('script', template).forEach(script => {
             js += script.textContent
             script.remove()
         })
 
         if (typeof replaceTargetElement == 'undefined' || !replaceTargetElement)
-            targetElement.setContent(template.getElements().childNodes)
+            targetElement.setContent(template.childNodes)
         else
-            targetElement.replace(template.getElements().childNodes)
+            targetElement.replace(template.childNodes)
 
         template.remove()
 
-        eval(js)
+        window.eval(js)
     }
 
     static async importModule(url) {

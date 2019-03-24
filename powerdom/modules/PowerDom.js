@@ -2,13 +2,13 @@ const ELEMENT_NODE = Node.ELEMENT_NODE
 
 const helper = {
     POSITION_BEFORE_BEGIN: 'beforebegin',
-    POSITION_AFTER_END: 'afterbegin',
+    POSITION_AFTER_BEGIN: 'afterbegin',
     POSITION_BEFORE_END: 'beforeend',
     POSITION_AFTER_END: 'afterend',
     insertAdjacent: function(isString, element, position, html) {
         if (isString) {
             element.insertAdjacentHTML(position, html)
-        } else if (html.length) {
+        } else if (html instanceof NodeList) {
             html.forEach(n => {
                 if (n.nodeType == ELEMENT_NODE)
                     element.insertAdjacentElement(position, n)
