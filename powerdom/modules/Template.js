@@ -102,19 +102,19 @@ const helper = {
 helper.attrSelectors = Object.keys(helper).filter(key => key.startsWith('ATTR_'))
 
 class Template {
-    static parse(element) {
+    static async parse(element) {
         Template.loadAll(element)
         helper.process(element)
     }
 
+    static load(tpl) {
+        const url = tpl.getAttribute('src')
+
+        app.Importer.importTemplate(url, tpl, true).then(helper.process)
+    }
+
     static loadAll(element) {
-        app.selectAll('tpl', element).forEach(tpl => {
-            const url = tpl.getAttribute('src')
-
-            app.Importer.importTemplate(url, tpl, true)
-
-            helper.process(tpl)
-        });
+        app.selectAll('tpl', element).forEach(Template.load);
     }
 }
 

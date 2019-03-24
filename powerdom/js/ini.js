@@ -3,6 +3,7 @@ import Request from '/powerdom/modules/Request.js'
 import Importer from '/powerdom/modules/Importer.js'
 import { Notification, Loading, Modal, UIHelpers } from '/powerdom/modules/UIHelpers.js'
 import Template from '/powerdom/modules/Template.js'
+import Pages from '/powerdom/modules/Pages.js'
 
 const app = {
     PowerDom: PowerDom,
@@ -14,7 +15,8 @@ const app = {
     Notification: Notification,
     Loading: Loading,
     Modal: Modal,
-    Template: Template
+    Template: Template,
+    Pages: Pages
 }
 
 window.app = app
@@ -31,7 +33,7 @@ Importer.loadJSON('/powerdom/config.json').then(config => {
 
         UIHelpers.init()
 
-        Template.parse(select('html'))
+        Template.parse(select('html')).then(app.Pages.init)
     })
 
 })
