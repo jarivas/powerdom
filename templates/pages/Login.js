@@ -1,35 +1,20 @@
-const PD = app.PD
-const select = app.select
-const selectAll = app.selectAll
 const Request = app.Request
 const Loading = app.Loading
 
 class Login {
-    static init() {
-        const form = select('div.full-width-forms')
 
-        Login.prototype.inputs = selectAll('input', form)
-
-        if( app.config.hasOwnProperty('defaultLogin') ){
-            const defaultValues = app.config.defaultLogin
-            Login.prototype.inputs.forEach(input => input.value = defaultValues[input.id])
-        }
-
-        PD('button').listen('click', Login.click)
+    constructor(){
+        this.username = ''
+        this.password = ''
     }
 
-    static click() {
-        const data = {}
-        let send = true
-        
-        Login.prototype.inputs.forEach(input => {
-            if (input.value.length > 0)
-                data[input.id] = input.value
-            else
-                send = false
-        })
+    send() {
+        const data = {
+            username: app.login.username,
+            pasword: app.login.password
+        }
 
-        if(send){
+        if(data.username.length > 0 && data.pasword.length > 0){
             Loading.show()
             Request.json('curriculum/login', data, Request.handleError)
                 .then(Login.handleToken)
@@ -38,9 +23,10 @@ class Login {
 
     static handleToken(response){
         Loading.close()
+
         if(response.hasOwnProperty('success') && response.success){
             app.PageHelper.prototype.token = response.token
-            app.PageHelper.changePage('home')
+            app.PageHelper.go('home')
         } else {
             throw response.message
         }

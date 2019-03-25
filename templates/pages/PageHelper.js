@@ -95,12 +95,7 @@ const editItem = (arrayPosition) => {
 }
 
 class PageHelper {
-    static init() {
-        PageHelper.prototype.mainElement = select(app.config.mainElementSelector)
-        PageHelper.prototype.mainElementPD = PD(PageHelper.prototype.mainElement)
-        PageHelper.prototype.title = PD('title', document.head)
-    }
-
+    
     static async buildMenu() {
         const config = app.config
         const pages = config.pages
@@ -137,21 +132,15 @@ class PageHelper {
             })
     }
 
-    static changePage(index) {
-        const page = app.config.pages[index]
+    static go(index) {
+        const page = Pages.getPage(index)
 
-        if (page.auth && typeof PageHelper.prototype.token == 'undefined')
+        if (!page || (page.auth && typeof PageHelper.prototype.token == 'undefined'))
             return false
-
-        Loading.show()
 
         PageHelper.prototype.index = index
 
-        Importer.importTemplate(page.template, PageHelper.prototype.mainElementPD)
-            .then(() => {
-                PageHelper.prototype.title.setContent(page.title)
-                Loading.close()
-            })
+        Pages.navigate(page)
     }
 
     static sectionItemWarning() {
