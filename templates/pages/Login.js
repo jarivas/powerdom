@@ -11,10 +11,10 @@ class Login {
     send() {
         const data = {
             username: app.login.username,
-            pasword: app.login.password
+            password: app.login.password
         }
 
-        if(data.username.length > 0 && data.pasword.length > 0){
+        if(data.username.length > 0 && data.password.length > 0){
             Loading.show()
             Request.json('curriculum/login', data, Request.handleError)
                 .then(Login.handleToken)
