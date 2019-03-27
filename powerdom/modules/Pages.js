@@ -14,15 +14,19 @@ class Pages {
 
         return page
     }
+    static fireImported(){
+        Pages.prototype.imported()
+    }
     static navigate(page) {
         app.Loading.show()
 
-        app.Importer.importTemplate(page.template, Pages.prototype.mainElement)
-        .then(() => {
+        Pages.prototype.imported = () => {
             app.config.title = page.title
             app.Template.parse(Pages.prototype.mainElement)
             app.Loading.close()
-        })
+        }
+
+        app.Importer.importTemplate(page.template, Pages.prototype.mainElement)
     }
     static go (index) {
         const page = Pages.getPage(index)

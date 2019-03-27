@@ -82,14 +82,14 @@ class Importer {
             script.remove()
         })
 
+        window.eval(js)
+
         if (typeof replaceTargetElement == 'undefined' || !replaceTargetElement)
             targetElement.setContent(template.childNodes)
         else
             targetElement.replace(template.childNodes)
 
         template.remove()
-
-        window.eval(js)
     }
 
     static async importModule(url) {

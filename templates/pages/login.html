@@ -30,8 +30,12 @@
 </div>
 
 <script>
-    const Login = await app.Importer.importModule('/templates/pages/Login.js')
-    app.PageHelper = await app.Importer.importModule('/templates/pages/PageHelper.js')
-    
-    app.login = new Login()
+    app.Importer.importModule('/templates/pages/PageHelper.js').then(PageHelper => {
+        app.PageHelper = PageHelper
+        
+        app.Importer.importModule('/templates/pages/Login.js').then(Login => {
+            app.login = new Login()
+            app.Pages.fireImported()
+        })
+    })
 </script>

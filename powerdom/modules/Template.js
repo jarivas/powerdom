@@ -2,20 +2,36 @@ const helper = {
     DEFAULT_SELECTOR: '[linkd]',
     ATTR_VAL: 'val',
     ATTR_REF: 'ref',
+    ATTR_LISTEN: 'listen',
     attrSelectors: [],
     proxiedObjectsFn: new Map(),
+    process_listen_helper: function(strListener, el){
+        const [event, callback] = strListener.split(':')
+
+        app.PD(el).listen(event, window.eval(callback))
+    },
+    process_listen: function(el){
+        const strListeners = el.getAttribute(helper.ATTR_LISTEN)
+
+        strListeners.split(",").forEach(strListener => helper.process_listen_helper(strListener, el))
+    },
     valueSetter: function (el, value) {
+        let formInput = false
+
         switch(el.tagName){
             case "INPUT": 
             case "SELECT": el.value = value
+                formInput = true
             break
             default: app.PD(el).setContent(value)
         }
+
+        return formInput
     },
     process_ref_helper_prepare: function (strVar) {
         let prop = null,
             parentKey = '',
-            v = null
+            parentObj = null
 
         strVar = strVar.replace('window.', '')
 
@@ -24,17 +40,17 @@ const helper = {
 
             prop = arrayVar[arrayVar.length - 1]
             parentKey = strVar.replace(`.${prop}`, '')
-            v = window[arrayVar[0]]
+            parentObj = window[arrayVar[0]]
 
-            for (let i = 1; i < arrayVar.length ; ++i)
-                v = v[arrayVar[i]]
+            for (let i = 1; i < arrayVar.length - 1 ; ++i)
+                parentObj = parentObj[arrayVar[i]]
         } else {
             prop = strVar
             parentKey = 'window'
             parentObj = window
         }
 
-        return [prop, parentKey, v]
+        return [prop, parentKey, parentObj]
     },
     process_ref_helper_proxy: function (prop, parentKey, el) {
         let proxyFunctions
@@ -65,10 +81,15 @@ const helper = {
     process_ref: function (el) {
         const strVar = el.getAttribute(helper.ATTR_REF)
         const prepared = helper.process_ref_helper_prepare(strVar)
-        const [prop, parentKey, value] = prepared
+        const [prop, parentKey, parentObj] = prepared
+        let formInput = false
 
         helper.process_ref_helper_proxy(prop, parentKey, el)
-        helper.valueSetter(el, value)
+        formInput = helper.valueSetter(el, parentObj[prop])
+
+        if(formInput){
+            app.PD(el).listen('change', (e) => parentObj[prop] = e.target.value)
+        }
     },
     process_val: function(el) {
         const strVar = el.getAttribute(helper.ATTR_VAL).replace('window.', '')
