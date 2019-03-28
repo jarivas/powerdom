@@ -17,16 +17,10 @@
     ],
     "pages": {
         "default": {
-            "template": "templates/pages/login.html",
-            "title": "Log in",
+            "template": "templates/pages/default.html",
+            "title": "Documentation",
             "navigation": false,
             "auth": false
-        },
-        "home": {
-            "template": "templates/pages/home.html",
-            "title": "Home",
-            "navigation": true,
-            "auth": true
         }
     }
 }
