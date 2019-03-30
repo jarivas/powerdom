@@ -1,3 +1,8 @@
+import {PowerDom, selectAll} from './src/modules/PowerDom.js'
+import Importer from './src/modules/Importer.js'
+
+const $ = PowerDom.getInstance
+
 const helper = {
     DEFAULT_SELECTOR: '[linkd]',
     ATTR_VAL: 'val',
@@ -8,7 +13,7 @@ const helper = {
     process_listen_helper: function(strListener, el){
         const [event, callback] = strListener.split(':')
 
-        app.PD(el).listen(event, window.eval(callback))
+        _(el).listen(event, window.eval(callback))
     },
     process_listen: function(el){
         const strListeners = el.getAttribute(helper.ATTR_LISTEN)
@@ -23,7 +28,7 @@ const helper = {
             case "SELECT": el.value = value
                 formInput = true
             break
-            default: app.PD(el).setContent(value)
+            default: _(el).setContent(value)
         }
 
         return formInput
@@ -88,7 +93,7 @@ const helper = {
         formInput = helper.valueSetter(el, parentObj[prop])
 
         if(formInput){
-            app.PD(el).listen('change', (e) => parentObj[prop] = e.target.value)
+            _(el).listen('change', (e) => parentObj[prop] = e.target.value)
         }
     },
     process_val: function(el) {
@@ -108,7 +113,7 @@ const helper = {
         helper.valueSetter(el, value)
     },
     process: function (element) {
-        app.selectAll(helper.DEFAULT_SELECTOR, element).forEach(el => {
+        selectAll(helper.DEFAULT_SELECTOR, element).forEach(el => {
             helper.attrSelectors.forEach(attr => {
                 attr = helper[attr]
 
@@ -132,13 +137,13 @@ class Template {
     static async load(tpl) {
         const url = tpl.getAttribute('src')
 
-        await app.Importer.importTemplate(url, tpl, true)
+        await Importer.importTemplate(url, tpl, true)
 
         helper.process(tpl)
     }
 
     static async loadAll(element) {
-        const tpls = app.selectAll('tpl', element)
+        const tpls = selectAll('tpl', element)
 
         for(let i = 0; i < tpls.length; ++i)
             await Template.load(tpls[i])

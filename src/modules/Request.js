@@ -1,3 +1,6 @@
+import config from './src/modules/Config.js'
+
+const config = Config.get()
 const workers = new Map()
 
 class Request {
@@ -8,7 +11,7 @@ class Request {
 
         headers['Content-Type'] = 'application/json'
 
-        return fetch(app.config.apiUrl + path, {
+        return fetch(config.apiUrl + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -32,11 +35,11 @@ class Request {
             worker = workers.get(workerUrl)
         }
 
-        return workerUrl
+        return worker
     }
 
     static worker(path, data, worker) {
-        fetch(window.config.apiUrl + path, {
+        fetch(config.apiUrl + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -72,7 +75,7 @@ class Request {
         else if (error.hasOwnProperty('error'))
             message = error.error
 
-        app.Notification.show(message)
+        Notification.show(message)
 
         console.error(error)
     }

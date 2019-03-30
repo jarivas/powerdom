@@ -1,3 +1,8 @@
+import {PowerDom, selectAll} from './src/modules/PowerDom.js'
+import Request from './src/modules/Request.js'
+
+const $ = PowerDom.getInstance
+
 const helper = {
     templates: new Map(),
     modules: new Map(),
@@ -6,14 +11,14 @@ const helper = {
         let targetElement = null
 
         if (selectorType == 'undefined') {
-            targetElement = app.PD('body')
+            targetElement = $('body')
         } else if (selectorType == 'string') {
-            targetElement = app.PD(targetElementSelector)
+            targetElement = $(targetElementSelector)
         } else if (selectorType == 'object') {
-            if (targetElementSelector instanceof app.PowerDom)
+            if (targetElementSelector instanceof PowerDom)
                 targetElement = targetElementSelector
             else if (targetElementSelector instanceof Node)
-                targetElement = app.PD(targetElementSelector)
+                targetElement = $(targetElementSelector)
         } else {
             throw 'Invalid selector'
         }
@@ -32,7 +37,7 @@ const helper = {
         const splitMultiExport = /\w+/g
         let lineToReplace = '', replacingLine = '', code = ''
 
-        code = await app.Request.getRemoteText(url)
+        code = await Request.getRemoteText(url)
         code = code.replace(removeComments, '')
 
         if (exportDefault.test(code)) {
@@ -72,12 +77,12 @@ class Importer {
         if (templates.has(url)) {
             html = templates.get(url)
         } else {
-            html = await app.Request.getRemoteText(url)
+            html = await Request.getRemoteText(url)
             templates.set(url, html)
         }
 
         template.insertAdjacentHTML('beforeend', html)
-        app.selectAll('script', template).forEach(script => {
+        selectAll('script', template).forEach(script => {
             js += script.textContent
             script.remove()
         })
@@ -96,14 +101,14 @@ class Importer {
         const modules = helper.modules
 
         if (!modules.has(url)) {
-            eval(await helper.getCode(url))
+            window.eval(await helper.getCode(url))
         }
 
         return modules.get(url)
     }
 
     static async loadJSON(url) {
-        return JSON.parse(await app.Request.getRemoteText(url))
+        return JSON.parse(await Request.getRemoteText(url))
     }
 
     static loadCss(url) {
@@ -128,9 +133,9 @@ class Importer {
     static async loadMultipleJs(files) {
         for (let i = 0; i < files.length; ++i) {
             const url = files[i]
-            const code = await app.Request.getRemoteText(url)
+            const code = await Request.getRemoteText(url)
 
-            eval(helper.appendJsToHead(url, code))
+            window.eval(helper.appendJsToHead(url, code))
         }
     }
 }
