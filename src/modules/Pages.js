@@ -1,8 +1,8 @@
-import Config from './src/modules/Config.js'
-import Importer from './src/modules/Importer.js'
-import Template from './src/modules/Template.js'
-import {PowerDom, select} from './src/modules/PowerDom.js'
-import {Loading, UIHelpers} from './src/modules/UIHelpers.js'
+import Config from './Config.js'
+import Importer from './Importer.js'
+import Template from './Template.js'
+import {PowerDom, select} from './PowerDom.js'
+import {Loading, UIHelpers} from './UIHelpers.js'
 
 const config = Config.get()
 const $ = PowerDom.getInstace

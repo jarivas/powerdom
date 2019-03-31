@@ -1,0 +1,33 @@
+{
+  "name": "powerdom",
+  "version": "1.0.0",
+  "description": "The low complexity and lightweigth Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jarivas@github.com/jarivas/powerdom.git"
+  },
+  "keywords": [
+    "spa"
+  ],
+  "author": "jarivas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jarivas/powerdom/issues"
+  },
+  "homepage": "https://github.com/jarivas/powerdom#readme",
+  "dependencies": {
+    "dialog-polyfill": "^0.5.0",
+    "vital-css": "^2.2.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}

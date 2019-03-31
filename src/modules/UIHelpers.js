@@ -1,7 +1,8 @@
-import {select} from './src/modules/PowerDom.js'
+import dialogPolyfill from 'dialog-polyfill'
+import {select} from './PowerDom.js'
 
 const closeBtn = `<br><br><button class="btn tiny" onclick="DialogElement.close()">Close</button>`
-let DialogElement$ = null
+let $dialog = null
 let DialogElement = null
 
 class Notification {
@@ -9,7 +10,7 @@ class Notification {
         if (typeof displayTime == 'undefined')
             displayTime = 2000
 
-        DialogElement$.removeAllClasses()
+        $dialogsuod.removeAllClasses()
             .addClass('notification')
             .setContent(message)
             .getElements()
@@ -23,7 +24,7 @@ class Notification {
 
 class Loading {
     static show(displayTime) {
-        DialogElement$.removeAllClasses()
+        $dialog.removeAllClasses()
             .setContent('<span class="load"></span>')
             .getElements()
             .showModal()
@@ -45,12 +46,12 @@ class Modal {
         if (typeof addCloseBtn != 'undefined' && addCloseBtn)
             content = content.concat(closeBtn)
 
-        DialogElement$.removeAllClasses()
+        $dialog.removeAllClasses()
             .setContent(content)
     }
 
     static setContentElement(content) {
-        DialogElement$.removeAllClasses()
+        $dialog.removeAllClasses()
             .setContentElement(content)
     }
 
@@ -67,7 +68,7 @@ class UIHelpers {
     static init() {
         DialogElement = select('dialog')
 
-        DialogElement$ = $(DialogElement)
+        $dialog = $(DialogElement)
         dialogPolyfill.registerDialog(DialogElement)
 
         return DialogElement

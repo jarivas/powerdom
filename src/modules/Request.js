@@ -1,4 +1,4 @@
-import config from './src/modules/Config.js'
+import Config from './Config.js'
 
 const config = Config.get()
 const workers = new Map()

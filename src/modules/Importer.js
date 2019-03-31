@@ -1,5 +1,5 @@
-import {PowerDom, selectAll} from './src/modules/PowerDom.js'
-import Request from './src/modules/Request.js'
+import {PowerDom, selectAll} from './PowerDom.js'
+import Request from './Request.js'
 
 const $ = PowerDom.getInstance
 
