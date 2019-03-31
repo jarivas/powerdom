@@ -7,7 +7,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack",
+    "sass": "node-sass --include-path node_modules/vital-css/dist/scss src/scss -o dist/css --output-style compressed"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,11 @@
     "url": "https://github.com/jarivas/powerdom/issues"
   },
   "homepage": "https://github.com/jarivas/powerdom#readme",
-  "dependencies": {
-    "dialog-polyfill": "^0.5.0",
-    "vital-css": "^2.2.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "dialog-polyfill": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "vital-css": "^2.2.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   }

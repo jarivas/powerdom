@@ -8,9 +8,10 @@ const config = {
     "apiUrl": "http://localhost:8080/",
     "mainElementSelector": ".page-content",
     "css": [
-        "/powerdom/css/UIHelpers.css"
+        "/css/style.css"
     ],
     "js": [],
+    "layout": "/templates/layout.html",
     "pages": {
         "default": {
             "template": "templates/pages/default.html",

@@ -20,4 +20,4 @@ const PD = {
     Config
 }
 
-export default PD
+window.PD = PD
