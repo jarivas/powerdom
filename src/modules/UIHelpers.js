@@ -1,7 +1,7 @@
 import dialogPolyfill from 'dialog-polyfill'
 import {select} from './PowerDom.js'
 
-const closeBtn = `<br><br><button class="btn tiny" onclick="DialogElement.close()">Close</button>`
+const closeBtn = `<br><br><button class="btn tiny" onclick="PD.Modal.close()">Close</button>`
 let $dialog = null
 let DialogElement = null
 
@@ -70,8 +70,6 @@ class UIHelpers {
 
         $dialog = $(DialogElement)
         dialogPolyfill.registerDialog(DialogElement)
-
-        return DialogElement
     }
 }
 

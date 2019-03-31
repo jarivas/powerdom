@@ -1,21 +1,21 @@
 import Config from './Config.js'
 import Importer from './Importer.js'
 import Template from './Template.js'
-import {PowerDom, select} from './PowerDom.js'
-import {Loading, UIHelpers} from './UIHelpers.js'
+import {
+    select
+} from './PowerDom.js'
+import {
+    Loading,
+    UIHelpers
+} from './UIHelpers.js'
 
 const config = Config.get()
-const $ = PowerDom.getInstace
 
 class Pages {
     static init() {
-        const head = $(document.head)
+        Pages.prototype.$title = $(document.head).setContent(config.title)
 
-        config.meta.forEach(meta => head.prepend(`<meta ${meta}>`))
-
-        Importer.loadMultipleJs(config.js).then(() => {
-            config.css.forEach(css => Importer.loadCss(css))
-    
+        Importer.importTemplate(config.layout, document.body).then(
             Template.parse(select('html')).then(() => {
                 Pages.prototype.mainElement = select(config.mainElementSelector)
 
@@ -23,35 +23,35 @@ class Pages {
 
                 Pages.go('default')
             })
-        })
+        )
     }
     static getPage(index) {
         const pages = config.pages
         let page = null
 
-        if(index in pages)
+        if (index in pages)
             page = pages[index]
 
         return page
     }
-    static fireImported(){
+    static fireImported() {
         Pages.prototype.imported()
     }
     static navigate(page) {
         Loading.show()
 
         Pages.prototype.imported = () => {
-            config.title = page.title
+            Pages.prototype.$title = page.title
             Template.parse(Pages.prototype.mainElement)
             Loading.close()
         }
 
         Importer.importTemplate(page.template, Pages.prototype.mainElement)
     }
-    static go (index) {
+    static go(index) {
         const page = Pages.getPage(index)
 
-        if(!page)
+        if (!page)
             throw `Invalid page index: ${index}`
 
         Pages.navigate(page)
