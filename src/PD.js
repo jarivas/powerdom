@@ -21,3 +21,5 @@ const PD = {
 }
 
 window.PD = PD
+
+Pages.init()

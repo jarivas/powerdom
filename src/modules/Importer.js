@@ -4,6 +4,7 @@ import Request from './Request.js'
 const $ = PowerDom.getInstance
 
 const helper = {
+
     templates: new Map(),
     modules: new Map(),
     getTargetElement: function (targetElementSelector) {
@@ -11,7 +12,7 @@ const helper = {
         let targetElement = null
 
         if (selectorType == 'undefined') {
-            targetElement = $('body')
+            targetElement = $(document.body)
         } else if (selectorType == 'string') {
             targetElement = $(targetElementSelector)
         } else if (selectorType == 'object') {
@@ -87,14 +88,14 @@ class Importer {
             script.remove()
         })
 
-        window.eval(js)
-
         if (typeof replaceTargetElement == 'undefined' || !replaceTargetElement)
             targetElement.setContent(template.childNodes)
         else
             targetElement.replace(template.childNodes)
 
         template.remove()
+
+        window.eval(js)
     }
 
     static async importModule(url) {

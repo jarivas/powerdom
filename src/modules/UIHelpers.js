@@ -1,6 +1,7 @@
 import dialogPolyfill from 'dialog-polyfill'
-import {select} from './PowerDom.js'
+import {PowerDom, select} from './PowerDom.js'
 
+const $ = PowerDom.getInstance
 const closeBtn = `<br><br><button class="btn tiny" onclick="PD.Modal.close()">Close</button>`
 let $dialog = null
 let DialogElement = null
@@ -10,7 +11,7 @@ class Notification {
         if (typeof displayTime == 'undefined')
             displayTime = 2000
 
-        $dialogsuod.removeAllClasses()
+        $dialog.removeAllClasses()
             .addClass('notification')
             .setContent(message)
             .getElements()

@@ -2,7 +2,8 @@ import Config from './Config.js'
 import Importer from './Importer.js'
 import Template from './Template.js'
 import {
-    PowerDom, select
+    PowerDom,
+    select
 } from './PowerDom.js'
 import {
     Loading,
@@ -14,17 +15,18 @@ const config = Config.get()
 
 class Pages {
     static init() {
-        Pages.prototype.$title = $(document.head).setContent(config.title)
+        Pages.prototype.$title = $('title', document.head).setContent(config.title)
 
-        Importer.importTemplate(config.layout, document.body).then(
-            Template.parse(select('html')).then(() => {
-                Pages.prototype.mainElement = select(config.mainElementSelector)
+        Importer.importTemplate(config.layout, document.body).then(() => {
+            PD.Template.parse(select('html'))
+                .then(() => {
+                    Pages.prototype.mainElement = select(config.mainElementSelector)
 
-                UIHelpers.init()
+                    UIHelpers.init()
 
-                Pages.go('default')
-            })
-        )
+                    Pages.go('default')
+                })
+        })
     }
     static getPage(index) {
         const pages = config.pages
