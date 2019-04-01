@@ -1,4 +1,9 @@
-<h1>Hello</h1>
+<div class="row bg-red light-text">
+    <div class="section center">
+        <h1>Welcome to the docs</h1>
+    </div>
+</div>
 <script>
+    PD.Importer.importModule('/js/modules/Menu.js').then(Menu => Menu.build())
     PD.Pages.fireImported()
 </script>

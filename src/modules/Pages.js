@@ -44,7 +44,7 @@ class Pages {
         Loading.show()
 
         Pages.prototype.imported = () => {
-            Pages.prototype.$title = page.title
+            Pages.prototype.$title.setContent(page.title)
             Template.parse(Pages.prototype.mainElement)
             Loading.close()
         }

@@ -4,7 +4,6 @@ import Request from './Request.js'
 const $ = PowerDom.getInstance
 
 const helper = {
-
     templates: new Map(),
     modules: new Map(),
     getTargetElement: function (targetElementSelector) {
@@ -66,6 +65,8 @@ const helper = {
         return helper.appendJsToHead(url, code)
     }
 }
+
+window.modules = helper.modules
 
 class Importer {
 
