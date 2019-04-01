@@ -2,13 +2,14 @@ import Config from './Config.js'
 import Importer from './Importer.js'
 import Template from './Template.js'
 import {
-    select
+    PowerDom, select
 } from './PowerDom.js'
 import {
     Loading,
     UIHelpers
 } from './UIHelpers.js'
 
+const $ = PowerDom.getInstance
 const config = Config.get()
 
 class Pages {
