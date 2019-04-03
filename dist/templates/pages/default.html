@@ -4,6 +4,9 @@
     </div>
 </div>
 <script>
-    PD.Importer.importModule('/js/modules/Menu.js').then(Menu => Menu.build())
+    PD.Importer.importModule('/js/modules/Menu.js').then(Menu => {
+        if(!Menu.isBuilt())
+            Menu.build()
+    })
     PD.Pages.fireImported()
 </script>
