@@ -3,10 +3,12 @@
         <h1>Welcome to the docs</h1>
     </div>
 </div>
+<tpl src="templates/tpl/pages/intro.html"></tpl>
 <script>
     PD.Importer.importModule('/js/modules/Menu.js').then(Menu => {
         if(!Menu.isBuilt())
             Menu.build()
+
+        PD.Pages.firePageReady()
     })
-    PD.Pages.fireImported()
 </script>

@@ -131,22 +131,17 @@ class Template {
     static async parse(element) {
         helper.process(element)
         
-        await Template.loadAll(element)
+        Template.loadAll(element)
     }
 
     static async load(tpl) {
         const url = tpl.getAttribute('src')
 
-        await Importer.importTemplate(url, tpl, true)
-
-        helper.process(tpl)
+        Importer.importTemplate(url, tpl, true).then(helper.process(tpl))
     }
 
     static async loadAll(element) {
-        const tpls = selectAll('tpl', element)
-
-        for(let i = 0; i < tpls.length; ++i)
-            await Template.load(tpls[i])
+        selectAll('tpl', element).forEach(tpl => Template.load(tpl))
     }
 }
 
