@@ -5,8 +5,8 @@ const helper = {
     POSITION_AFTER_BEGIN: 'afterbegin',
     POSITION_BEFORE_END: 'beforeend',
     POSITION_AFTER_END: 'afterend',
-    insertAdjacent: function(isString, element, position, html) {
-        if (isString) {
+    insertAdjacent: function(element, position, html) {
+        if (typeof html == 'string') {
             element.insertAdjacentHTML(position, html)
         } else if (html instanceof NodeList) {
             html.forEach(n => {
@@ -74,14 +74,12 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     setContent(html) {
-        const isString = (typeof html == 'string')
-
         this.elements.forEach(element => {
 
             while (element.hasChildNodes())
                 element.removeChild(element.lastChild)
 
-            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_END, html)
+            helper.insertAdjacent(element, helper.POSITION_BEFORE_END, html)
         })
 
         return this
@@ -125,20 +123,15 @@ class PowerDom {
     /**
      * Replace element(s) with a html string
      * @param {string|Document|DocumentFragment|Element} html 
-     * @returns {PowerDom} this
      */
     replace(html) {
-        const isString = (typeof html == 'string')
-        let parent = null
-
         this.elements.forEach(element => {
-            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_BEGIN, html)
+            helper.insertAdjacent(element, helper.POSITION_BEFORE_BEGIN, html)
 
-            parent = element.parentElement
-            parent.removeChild(element)
+            element.parentElement.removeChild(element)
         })
 
-        return this
+        delete this
     }
 
     /**
@@ -147,10 +140,8 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     prepend(html) {
-        const isString = (typeof html == 'string')
-
         this.elements.forEach(element => {
-            helper.insertAdjacent(isString, element, helper.POSITION_AFTER_BEGIN, html)
+            helper.insertAdjacent(element, helper.POSITION_AFTER_BEGIN, html)
         })
 
         return this
@@ -162,10 +153,8 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     append(html) {
-        const isString = (typeof html == 'string')
-
         this.elements.forEach(element => {
-            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_END, html)
+            helper.insertAdjacent(element, helper.POSITION_BEFORE_END, html)
         })
         return this
     }
@@ -176,10 +165,8 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     insertBefore(html) {
-        const isString = (typeof html == 'string')
-
         this.elements.forEach(element => {
-            helper.insertAdjacent(isString, element, helper.POSITION_BEFORE_BEGIN, html)
+            helper.insertAdjacent(element, helper.POSITION_BEFORE_BEGIN, html)
         })
 
         return this
@@ -191,10 +178,8 @@ class PowerDom {
      * @returns {PowerDom} this
      */
     insertAfter(html) {
-        const isString = (typeof html == 'string')
-
         this.elements.forEach(element => {
-            helper.insertAdjacent(isString, element, helper.POSITION_AFTER_END, html)
+            helper.insertAdjacent(element, helper.POSITION_AFTER_END, html)
         })
 
         return this
@@ -215,15 +200,14 @@ class PowerDom {
     /**
      * Clean the inside of the element(s)
      * @param {string} html 
-     * @returns {PowerDom} this
      */
     empty() {
         this.elements.forEach(element => {
             while (element.hasChildNodes())
                 element.removeChild(element.lastChild)
-        })
 
-        return this
+            element.remove()
+        })
     }
 
     /**

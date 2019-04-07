@@ -21,14 +21,13 @@ class Pages {
         states = PD.State
 
         Importer.importTemplate(config.layout, document.body).then(() => {
-            PD.Template.parse(select('html'))
-                .then(() => {
-                    Pages.prototype.mainElement = select(config.mainElementSelector)
+            PD.Template.parse(document.body)
 
-                    UIHelpers.init()
+            Pages.prototype.mainElement = select(config.mainElementSelector)
 
-                    Pages.go('default')
-                })
+            UIHelpers.init()
+
+            Pages.go('default')
         })
     }
 

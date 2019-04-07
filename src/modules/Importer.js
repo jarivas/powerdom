@@ -84,6 +84,7 @@ class Importer {
         }
 
         template.insertAdjacentHTML('beforeend', html)
+
         selectAll('script', template).forEach(script => {
             js += script.textContent
             script.remove()

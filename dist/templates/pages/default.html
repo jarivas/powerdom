@@ -1,14 +1,9 @@
-<div class="row bg-red light-text">
-    <div class="section center">
-        <h1>Welcome to the docs</h1>
-    </div>
-</div>
-<tpl src="templates/tpl/pages/intro.html"></tpl>
+<tpl src="templates/tpl/common/login.html" fire="loginReady"></tpl>
 <script>
+    PD.State.listen('loginReady', PD.Pages.firePageReady)
+
     PD.Importer.importModule('/js/modules/Menu.js').then(Menu => {
         if(!Menu.isBuilt())
             Menu.build()
-
-        PD.Pages.firePageReady()
     })
 </script>
