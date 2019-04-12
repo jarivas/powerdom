@@ -74,7 +74,7 @@ class Importer {
         const templates = helper.templates
         const template = document.createElement('template')
         let targetElement = helper.getTargetElement(targetElementSelector)
-        let html = '', js = ''
+        let html = ''
 
         if (templates.has(url)) {
             html = templates.get(url)
@@ -85,19 +85,12 @@ class Importer {
 
         template.insertAdjacentHTML('beforeend', html)
 
-        selectAll('script', template).forEach(script => {
-            js += script.textContent
-            script.remove()
-        })
-
         if (typeof replaceTargetElement == 'undefined' || !replaceTargetElement)
             targetElement.setContent(template.childNodes)
         else
             targetElement.replace(template.childNodes)
 
         template.remove()
-
-        window.eval(js)
     }
 
     static async importModule(url) {

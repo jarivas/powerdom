@@ -1,18 +1,42 @@
-import {PowerDom, selectAll} from './PowerDom.js'
+import {
+    selectAll
+} from './PowerDom.js'
 import Importer from './Importer.js'
-
-const $ = PowerDom.getInstance
 
 class Template {
     static parse(element) {
-        selectAll('tpl', element).forEach(Template.import)
+        selectAll('tpl', element).forEach(tpl => {
+            const url = tpl.getAttribute('src')
+            const jsUrl = tpl.getAttribute('module')
+
+            Importer.importTemplate(url, tpl).then(() => {
+                if(jsUrl)
+                    Importer.importModule(jsUrl).then((className) => new className(tpl))
+            })
+        })
     }
 
-    static import(tpl) {
-        const url = tpl.getAttribute('src')
+    constructor(element){
+        this.el = element
+        this.process()
+        this.removeWrapper()
 
-        Importer.importTemplate(url, tpl, true)
     }
+
+    process(){
+
+    }
+
+    removeWrapper(){
+        const el = this.el
+        const parent = el.parentElement
+
+        while (el.hasChildNodes())
+            parent.insertBefore(el.firstChild, el);
+
+        parent.removeChild(el)
+    }
+
 }
 
 export default Template

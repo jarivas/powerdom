@@ -1,0 +1,9 @@
+<tpl src="templates/tpl/common/login.html" fire="loginReady"></tpl>
+<script>
+    PD.State.listen('loginReady', PD.Pages.firePageReady)
+
+    PD.Importer.importModule('/js/modules/Menu.js').then(Menu => {
+        if(!Menu.isBuilt())
+            Menu.build()
+    })
+</script>

@@ -9,20 +9,16 @@ import {
     Loading,
     UIHelpers
 } from './UIHelpers.js'
+import State from './State.js'
 
 const $ = PowerDom.getInstance
 const config = Config.get()
-let states = null
 
 class Pages {
     static init() {
         Pages.prototype.$title = $('title', document.head).setContent(config.title)
 
-        states = PD.State
-
         Importer.importTemplate(config.layout, document.body).then(() => {
-            PD.Template.parse(document.body)
-
             Pages.prototype.mainElement = select(config.mainElementSelector)
 
             UIHelpers.init()
@@ -42,7 +38,7 @@ class Pages {
     }
 
     static firePageReady() {
-        states.fire(Pages.prototype.currenPage.title)
+        State.fire(Pages.prototype.currenPage.title)
     }
 
     static navigate(page) {
@@ -50,13 +46,13 @@ class Pages {
 
         Pages.prototype.currenPage = page
 
-        states.listen(page.title, () => {
+        State.listen(page.title, () => {
             Pages.prototype.$title.setContent(page.title)
-            Template.parse(Pages.prototype.mainElement)
             Loading.close()
         })
 
         Importer.importTemplate(page.template, Pages.prototype.mainElement)
+            .then(() => Template.parse(Pages.prototype.mainElement))
     }
     
     static go(index) {
