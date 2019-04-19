@@ -34,28 +34,26 @@ class Template {
 
             Importer.importTemplate(url, tpl).then(() => {
                 if(module)
-                    Importer.importModule(module).then((className) => {
-                        new className(tpl);
-                        ready()
-                    })
+                    Importer.importModule(module).then((className) => new className(tpl, ready))
                 else
                     ready()
             })
         })
     }
 
-    constructor(element){
+    constructor(element, ready){
         this.el = element
+        this.ready = ready
+        this._ = {}
 
-        PD.selectAll('[_]', element).forEach(el => this[el.getAttribute('_')] = el)
+        PD.selectAll('[_]', element).forEach(el => this._[el.getAttribute('_')] = el)
         
         PD.selectAll('[_listen]').forEach(el => {
             const strListeners = el.getAttribute('_listen')
             strListeners.split(",").forEach(strListener => this._listenHelper(strListener, el))
         });
 
-        this.process()
-        this.removeWrapper()
+        this.process().then(() => this.removeWrapper())
     }
 
     _listenHelper(strListener, el){
@@ -64,7 +62,7 @@ class Template {
         PD.$(el).listen(event, this[callback].bind(this))
     }
 
-    process(){
+    async process(){
         //Overwrite on class
     }
 
@@ -77,6 +75,8 @@ class Template {
 
         parent.removeChild(el)
         delete this.el
+
+        this.ready()
     }
 
 }
