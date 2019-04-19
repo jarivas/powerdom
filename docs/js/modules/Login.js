@@ -1,5 +1,5 @@
-class Login {
-    constructor(){
+class Login extends PD.Template {
+    send() {
         
     }
 }

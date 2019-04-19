@@ -7,7 +7,7 @@ module.exports = {
         filename: 'PD.js'
     },
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
+        contentBase: path.join(__dirname, 'docs'),
         port: 9000,
         index: 'index.html'
     }
