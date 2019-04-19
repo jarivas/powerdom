@@ -3,6 +3,7 @@ document.onreadystatechange = function () {
         
         PD.Config.set({
             "title": "Demo Site",
+            "isDemo": true,
             "layout": "/templates/layout.html",
             "pages": {
                 "default": {

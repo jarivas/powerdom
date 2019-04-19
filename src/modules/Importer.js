@@ -106,34 +106,6 @@ class Importer {
     static async loadJSON(url) {
         return JSON.parse(await Request.getRemoteText(url))
     }
-
-    static loadCss(url) {
-        const head = document.head
-        const css = document.createElement('link')
-        let cssAdded = false
-
-        css.href = url
-        css.type = 'text/css'
-        css.rel = 'stylesheet'
-
-        css.onload = css.onreadystatechange = function () {
-            if (!cssAdded && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
-                cssAdded = true
-                css.onload = css.onreadystatechange = null
-            }
-        }
-
-        head.appendChild(css)
-    }
-
-    static async loadMultipleJs(files) {
-        for (let i = 0; i < files.length; ++i) {
-            const url = files[i]
-            const code = await Request.getRemoteText(url)
-
-            window.eval(helper.appendJsToHead(url, code))
-        }
-    }
 }
 
 export default Importer
