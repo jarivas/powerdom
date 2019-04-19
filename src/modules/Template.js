@@ -46,24 +46,22 @@ class Template {
 
     constructor(element){
         this.el = element
-        this._elements = PD.$('[_]', this.element)
+
+        PD.selectAll('[_]', element).forEach(el => this[el.getAttribute('_')] = el)
         
+        PD.selectAll('[_listen]').forEach(el => {
+            const strListeners = el.getAttribute('_listen')
+            strListeners.split(",").forEach(strListener => this._listenHelper(strListener, el))
+        });
+
         this.process()
         this.removeWrapper()
     }
 
-    _listen(){
-        const self = this;
-        
-        PD.selectAll('[_listen]').forEach(el => {
-            const strListeners = el.getAttribute('_listen')
-            strListeners.split(",").forEach(strListener => self._listenHelper(strListener, el))
-        });
-    }
-
     _listenHelper(strListener, el){
         const [event, callback] = strListener.split(':')
-        PD.$(el).listen(event, window.eval(callback))
+
+        PD.$(el).listen(event, this[callback].bind(this))
     }
 
     process(){
@@ -78,6 +76,7 @@ class Template {
             parent.insertBefore(el.firstChild, el);
 
         parent.removeChild(el)
+        delete this.el
     }
 
 }
