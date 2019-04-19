@@ -9,7 +9,7 @@ import {
     Loading,
     UIHelpers
 } from './UIHelpers.js'
-import State from './State.js'
+import {State} from './State.js'
 
 const $ = PowerDom.getInstance
 const config = Config.get()
@@ -52,7 +52,7 @@ class Pages {
         })
 
         Importer.importTemplate(page.template, Pages.prototype.mainElement)
-            .then(() => Template.parse(Pages.prototype.mainElement))
+            .then(() => Template.parse(Pages.prototype.mainElement, Pages.firePageReady))
     }
     
     static go(index) {

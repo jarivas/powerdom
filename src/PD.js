@@ -5,7 +5,7 @@ import Importer from './modules/Importer.js'
 import { Notification, Loading, Modal } from './modules/UIHelpers.js'
 import Template from './modules/Template.js'
 import Pages from './modules/Pages.js'
-import State from './modules/State.js'
+import {State, CountDown} from './modules/State.js'
 
 const PD = {
     $: PowerDom.getInstance,
@@ -19,7 +19,8 @@ const PD = {
     Template,
     Pages,
     Config,
-    State
+    State,
+    CountDown
 }
 
 window.PD = PD
