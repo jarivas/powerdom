@@ -7,6 +7,11 @@ import Template from './modules/Template.js'
 import Pages from './modules/Pages.js'
 import {State, CountDown} from './modules/State.js'
 
+
+/**
+ * An Object that contains all the modules from the framework,
+ * check the docs for better understanding
+ */
 const PD = {
     $: PowerDom.getInstance,
     select,
@@ -22,5 +27,4 @@ const PD = {
     State,
     CountDown
 }
-
 window.PD = PD

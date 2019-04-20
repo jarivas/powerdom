@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/modules/Request.js | powerdom</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The low complexity and lightweigth Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="powerdom"><meta property="twitter:description" content="The low complexity and lightweigth Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a href="https://jarivas@github.com/jarivas/powerdom.git">Repository</a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#modules">modules</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/Config.js~Config.html">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/Importer.js~Importer.html">Importer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/Pages.js~Pages.html">Pages</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/PowerDom.js~PowerDom.html">PowerDom</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/Request.js~Request.html">Request</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/State.js~CountDown.html">CountDown</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/State.js~State.html">State</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/Template.js~Template.html">Template</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/UIHelpers.js~Loading.html">Loading</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/UIHelpers.js~Modal.html">Modal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/UIHelpers.js~Notification.html">Notification</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/modules/UIHelpers.js~UIHelpers.html">UIHelpers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-select">select</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-selectAll">selectAll</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/modules/Request.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Config from &apos;./Config.js&apos;
+
+const config = Config.get()
+const workers = new Map()
+
+/**
+ * The simplified way of getting data and files from the server
+ */
+class Request {
+
+    /**
+     * Sends and receive JSON data to the server, typically use on api rest calls
+     * @param {string} path 
+     * @param {Object} data 
+     * @param {function} errorCb 
+     * @param {Object} headers 
+     */
+    static async json(path, data, errorCb, headers) {
+        if(typeof headers == &apos;undefined&apos;)
+            headers = {}
+
+        headers[&apos;Content-Type&apos;] = &apos;application/json&apos;
+
+        return fetch(config.apiUrl + path, {
+            method: &apos;post&apos;,
+            body: data ? JSON.stringify(data) : null,
+            mode: &apos;cors&apos;,
+            headers: new Headers(headers)
+        })
+            .then(response =&gt; response.json())
+            .catch(errorCb)
+    }
+
+    /**
+     * Gets a worker to be used in Request.worker
+     * @param {string} workerUrl 
+     * @param {function} callback 
+     * @param {function} errorCb 
+     */
+    static getWorkerForRquest(workerUrl, callback, errorCb) {
+        let worker = null
+
+        if (!workers.has(workerUrl)) {
+            worker = new Worker(workerUrl)
+
+            worker.addEventListener(&apos;message&apos;, callback, false)
+            worker.addEventListener(&apos;error&apos;, errorCb, false)
+
+            workers.set(workerUrl, worker)
+        } else {
+            worker = workers.get(workerUrl)
+        }
+
+        return worker
+    }
+
+    /**
+     * Its process the result data of the call on a background worker
+     * @param {string} path 
+     * @param {Object} data 
+     * @param {Worker} worker 
+     */
+    static worker(path, data, worker) {
+        fetch(config.apiUrl + path, {
+            method: &apos;post&apos;,
+            body: data ? JSON.stringify(data) : null,
+            mode: &apos;cors&apos;,
+            headers: new Headers({
+                &apos;Content-Type&apos;: &apos;application/json&apos;
+            })
+        })
+            .then(response =&gt; response.json())
+            .then(data =&gt; worker.postMessage(data))
+            .catch(errorCb)
+    }
+
+    /**
+     * It gets whatever as plain text
+     * @param {string} url 
+     */
+    static async getRemoteText(url) {
+        let text = &apos;&apos;
+        try {
+            const response = await fetch(url)
+            text = await response.text()
+        }
+        catch (err) {
+            console.log(&apos;fetch failed&apos;, err)
+        }
+
+        return text
+    }
+
+    /**
+     * An universal api rest error handler
+     * @param {string|Object} error 
+     */
+    static handleError(error) {
+        let message = &apos;&apos;
+
+        if (typeof error == &quot;string&quot;)
+            message = error
+        else if (error.hasOwnProperty(&apos;message&apos;))
+            message = error.message
+        else if (error.hasOwnProperty(&apos;error&apos;))
+            message = error.error
+
+        Notification.show(message)
+
+        console.error(error)
+    }
+}
+export default Request</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

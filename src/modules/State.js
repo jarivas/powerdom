@@ -5,7 +5,15 @@ function stateMap() {
     return State.prototype.map
 }
 
+/**
+ * A Class to hold states and its callbacks
+ */
 class State {
+    /**
+     * set the listener
+     * @param {string} state 
+     * @param {function} callback 
+     */
     static listen(state, callback) {
         const map = stateMap()
 
@@ -18,6 +26,10 @@ class State {
         }
     }
 
+    /**
+     * Triggers the listener
+     * @param {string} state 
+     */
     static fire(state) {
         const map = stateMap()
 
@@ -36,7 +48,17 @@ function cdMap() {
     return CountDown.prototype.map
 }
 
+/**
+ * It is used to trigger a callback after a numer of times is called
+ */
 class CountDown {
+
+    /**
+     * Set the countdown
+     * @param {string} key 
+     * @param {int} length 
+     * @param {function} callback 
+     */
     static set(key, length, callback) {
         const map = cdMap()
 
@@ -46,6 +68,10 @@ class CountDown {
         map.set(key, {l: length, cb: callback})
     }
 
+    /**
+     * Reduce the number of times to be called in one
+     * @param {string} key 
+     */
     static decrease(key) {
         const map = cdMap()
 

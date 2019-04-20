@@ -1,4 +1,4 @@
-import {PowerDom, selectAll} from './PowerDom.js'
+import {PowerDom} from './PowerDom.js'
 import Request from './Request.js'
 
 const $ = PowerDom.getInstance
@@ -68,8 +68,17 @@ const helper = {
 
 window.modules = helper.modules
 
+/**
+ * Provides methods to imports the templates, modules and JSON
+ */
 class Importer {
 
+    /**
+     * Reads asynchronously the html file and converts it to nodes
+     * @param {string} url to the file
+     * @param {string, Node, PowerDom} [targetElementSelector] if not selector provided, it will use body
+     * @param {boolean} [replaceTargetElement] in case you want to remove the wrapper element
+     */
     static async importTemplate(url, targetElementSelector, replaceTargetElement) {
         const templates = helper.templates
         const template = document.createElement('template')
@@ -93,6 +102,11 @@ class Importer {
         template.remove()
     }
 
+    /**
+     * Imports the module dinamacally because normal imports can not be used
+     * @param {string} url
+     * @returns {Object}
+     */
     static async importModule(url) {
         const modules = helper.modules
 
@@ -103,6 +117,11 @@ class Importer {
         return modules.get(url)
     }
 
+    /**
+     * Reads a json and return the object that represents it
+     * @param {string} url 
+     * @returns {Object}
+     */
     static async loadJSON(url) {
         return JSON.parse(await Request.getRemoteText(url))
     }

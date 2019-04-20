@@ -35,7 +35,7 @@ class PowerDom {
     }
 
     /**
-     * @param DOMString selector one or more comma separated
+     * @param {DOMString} selector one or more comma separated
      * @param {Document|DocumentFragment|Element} [element]
      * @returns {PowerDom}
      */
@@ -199,7 +199,6 @@ class PowerDom {
 
     /**
      * Clean the inside of the element(s)
-     * @param {string} html 
      */
     empty() {
         this.elements.forEach(element => {

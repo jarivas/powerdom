@@ -3,8 +3,18 @@ import Config from './Config.js'
 const config = Config.get()
 const workers = new Map()
 
+/**
+ * The simplified way of getting data and files from the server
+ */
 class Request {
 
+    /**
+     * Sends and receive JSON data to the server, typically use on api rest calls
+     * @param {string} path 
+     * @param {Object} data 
+     * @param {function} errorCb 
+     * @param {Object} headers 
+     */
     static async json(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {}
@@ -21,6 +31,12 @@ class Request {
             .catch(errorCb)
     }
 
+    /**
+     * Gets a worker to be used in Request.worker
+     * @param {string} workerUrl 
+     * @param {function} callback 
+     * @param {function} errorCb 
+     */
     static getWorkerForRquest(workerUrl, callback, errorCb) {
         let worker = null
 
@@ -38,6 +54,12 @@ class Request {
         return worker
     }
 
+    /**
+     * Its process the result data of the call on a background worker
+     * @param {string} path 
+     * @param {Object} data 
+     * @param {Worker} worker 
+     */
     static worker(path, data, worker) {
         fetch(config.apiUrl + path, {
             method: 'post',
@@ -52,6 +74,10 @@ class Request {
             .catch(errorCb)
     }
 
+    /**
+     * It gets whatever as plain text
+     * @param {string} url 
+     */
     static async getRemoteText(url) {
         let text = ''
         try {
@@ -65,6 +91,10 @@ class Request {
         return text
     }
 
+    /**
+     * An universal api rest error handler
+     * @param {string|Object} error 
+     */
     static handleError(error) {
         let message = ''
 

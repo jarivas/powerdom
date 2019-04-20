@@ -14,7 +14,14 @@ import {State} from './State.js'
 const $ = PowerDom.getInstance
 const config = Config.get()
 
+/**
+ * It is used to control the navigation between pages
+ */
 class Pages {
+
+    /**
+     * Required after imported, but you will never have to
+     */
     static init() {
         Pages.prototype.$title = $('title', document.head).setContent(config.title)
 
@@ -27,6 +34,11 @@ class Pages {
         })
     }
 
+    /**
+     * Get the object that describes the page
+     * @param {string} index 
+     * @returns {Object}
+     */
     static getPage(index) {
         const pages = config.pages
         let page = null
@@ -37,10 +49,17 @@ class Pages {
         return page
     }
 
+    /**
+     * Standard way of knowing the page is 100% loaded
+     */
     static firePageReady() {
         State.fire(Pages.prototype.currenPage.title)
     }
 
+    /**
+     * Triigers the mechanism to change the current page using an Object
+     * @param {Object} page 
+     */
     static navigate(page) {
         Loading.show()
 
@@ -55,6 +74,10 @@ class Pages {
             .then(() => Template.parse(Pages.prototype.mainElement, Pages.firePageReady))
     }
     
+    /**
+     * Triigers the mechanism to change the current page using an string
+     * @param {string} index 
+     */
     static go(index) {
         const page = Pages.getPage(index)
 

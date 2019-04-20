@@ -15,8 +15,23 @@ function createUUID(){
     return uuid;
 }
 
+function _listenHelper(strListener, el, instance){
+    const [event, callback] = strListener.split(':')
+
+    PD.$(el).listen(event, instance[callback].bind(instance))
+}
+
+/**
+ * It handles the template manipulation
+ */
 class Template {
 
+    /**
+     * Serach for template elements defined in the element, replace them with the right html
+     * and invokes the callback when all is ready
+     * @param {Document|DocumentFragment|Element} element 
+     * @param {function} callback 
+     */
     static parse(element, callback) {
         const tpls = selectAll('tpl', element);
         const uiid = createUUID()
@@ -41,31 +56,53 @@ class Template {
         })
     }
 
+    /**
+     * When the parsed template element have a module attribute, it uses as
+     * url of a module to import. This module shoud extend from Templat.
+     * Check the Demo folder for a better understanding with examples
+     * @param {Document|DocumentFragment|Element} element tpl node that is going to be processed
+     * @param {function} ready callback that will be invoke once all is ready
+     */
     constructor(element, ready){
         this.el = element
         this.ready = ready
-        this._ = {}
 
-        PD.selectAll('[_]', element).forEach(el => this._[el.getAttribute('_')] = el)
+        this._elements()
         
-        PD.selectAll('[_listen]').forEach(el => {
-            const strListeners = el.getAttribute('_listen')
-            strListeners.split(",").forEach(strListener => this._listenHelper(strListener, el))
-        });
+        this._listen()
 
         this.process().then(() => this.removeWrapper())
     }
 
-    _listenHelper(strListener, el){
-        const [event, callback] = strListener.split(':')
+    /**
+     * Finds all the elements with _ as attribute and attach them to the current
+     * instance
+     */
+    _elements() {
+        this._ = {}
 
-        PD.$(el).listen(event, this[callback].bind(this))
+        PD.selectAll('[_]', this.el).forEach(el => this._[el.getAttribute('_')] = el)
     }
 
-    async process(){
-        //Overwrite on class
+    /**
+     * Finds all the elements with _listen="event1:callback1,event2:callback2" as attribute
+     * and adds listener to those element where the callback is this.callback, this.callback2 ...
+     */
+    _listen() {
+        PD.selectAll('[_listen]', this.el).forEach(el => {
+            const strListeners = el.getAttribute('_listen')
+            strListeners.split(",").forEach(strListener => _listenHelper(strListener, el, this))
+        });
     }
 
+    /**
+     * Asynchronous function ready to be overriden to fit whatever the need in the class
+     */
+    async process(){}
+
+    /**
+     * Removes the template outerHTML and invokes the ready function
+     */
     removeWrapper(){
         const el = this.el
         const parent = el.parentElement
