@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="section">
+        <div class="full-width-forms">
+            <div class="col-1-3 space"></div>
+            <div class="col-1-3">
+                <label>
+                    <input type="text" _="username" placeholder="Username">
+                </label>
+            </div>
+            <div class="col-1-3 space"></div>
+            <div class="clear"></div>
+            <div class="col-1-3 space"></div>
+            <div class="col-1-3">
+                <label>
+                    <input type="password" _="password" placeholder="Password">
+                </label>
+            </div>
+            <div class="col-1-3 space"></div>
+            <div class="clear"></div>
+            <div class="col-1-3 space"></div>
+            <div class="col-1-3">
+                <label>
+                    <button class="btn solid" _listen="click:send">Log in</button>
+                </label>
+            </div>
+            <div class="col-1-3 space"></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script>
+    Importer.importModule('/js/modules/Login.js').then(Login => login = new Login())
+</script>

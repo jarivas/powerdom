@@ -1,0 +1,40 @@
+{
+  "name": "powerdom",
+  "version": "1.0.0",
+  "description": "The low complexity and lightweigth Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack-dev-server",
+    "sass": "node-sass --include-path node_modules/vital-css/dist/scss src/scss -o dist/css --output-style compressed",
+    "esdoc": "./node_modules/.bin/esdoc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jarivas@github.com/jarivas/powerdom.git"
+  },
+  "keywords": [
+    "spa"
+  ],
+  "author": "jarivas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jarivas/powerdom/issues"
+  },
+  "homepage": "https://github.com/jarivas/powerdom#readme",
+  "dependencies": {
+    "esdoc": "^1.1.0",
+    "esdoc-standard-plugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "dialog-polyfill": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "vital-css": "^2.2.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
