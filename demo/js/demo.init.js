@@ -9,12 +9,6 @@ document.onreadystatechange = function () {
                     "template": "templates/pages/default.html",
                     "title": "Home",
                     "navigation": false
-                },
-                "pData": {
-                    "template": "templates/pages/personal-data.html",
-                    "title": "Personal Data",
-                    "navigation": true,
-                    "default": true
                 }
             }
         })
