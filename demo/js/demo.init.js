@@ -3,16 +3,26 @@ document.onreadystatechange = function () {
         
         PD.Config.set({
             "title": "Demo Site",
-            "layout": "/templates/layout.html",
+            "layout": {
+                "template": "/templates/layout/layout.html",
+                "module": "/templates/layout/Layout.js"
+            },
             "pages": {
                 "default": {
-                    "template": "templates/pages/default.html",
+                    "template": "templates/pages/home.html",
                     "title": "Home",
-                    "navigation": false
+                    "navigation": true,
+                    "default": true
+                },
+                "layout": {
+                    "template": "templates/pages/layout.html",
+                    "title": "Layout",
+                    "navigation": true,
+                    "default": false
                 }
             }
         })
-
+        
         PD.Pages.init()
     }
 }

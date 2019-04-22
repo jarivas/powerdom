@@ -12,7 +12,7 @@ import {
 import {State} from './State.js'
 
 const $ = PowerDom.getInstance
-const config = Config.get()
+let config = null
 
 /**
  * It is used to control the navigation between pages
@@ -23,14 +23,35 @@ class Pages {
      * Required after imported, but you will never have to
      */
     static init() {
-        Pages.prototype.$title = $('title', document.head).setContent(config.title)
+        const conf = Config.get()
+        const layout = conf.layout
+        const loadLayoutModule = (typeof layout == 'object')
+        const lTemplate = (loadLayoutModule) ? layout.template : layout;
+        const body = document.body;
+        const success = (Layout) => {
+            config = conf
 
-        Importer.importTemplate(config.layout, document.body).then(() => {
-            Pages.prototype.mainElement = select(config.mainElementSelector)
+            Layout.init()
+
+            Pages.prototype.mainElement = select(conf.mainElementSelector)
 
             UIHelpers.init()
 
             Pages.go('default')
+        }
+
+        Pages.prototype.$title = $('title', document.head).setContent(conf.title)
+
+        Importer.importTemplate(lTemplate, body).then(() => {
+
+            body.appendChild(document.createElement('dialog'))
+
+            if(loadLayoutModule){
+                Importer.importModule(layout.module).then(success)
+            } else {
+                success()
+            }
+
         })
     }
 

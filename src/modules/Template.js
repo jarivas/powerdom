@@ -34,8 +34,12 @@ class Template {
      */
     static parse(element, callback) {
         const tpls = selectAll('tpl', element);
-        const uiid = createUUID()
+        let uiid = null
 
+        if(tpls.length == 0)
+            return callback()
+
+        uiid = createUUID()
         CountDown.set(uiid, tpls.length, callback)
 
         tpls.forEach(tpl => {
