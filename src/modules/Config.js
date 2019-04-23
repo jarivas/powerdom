@@ -10,6 +10,9 @@ const config = {
             "navigation": false,
             "auth": false
         }
+    },
+    "tpl": {
+        "dir": "/templates/tpl/"
     }
 }
 
@@ -47,10 +50,11 @@ class Config {
 
     /**
      * It will get a copy of the current config
+     * @param {string} key
      * @returns {Object}
      */
-    static get() {
-        return Object.assign({}, config)
+    static get(key) {
+        return Object.assign({}, (typeof key != 'undefined') ? config[key] : config)
     }
 }
 

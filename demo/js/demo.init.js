@@ -9,13 +9,14 @@ document.onreadystatechange = function () {
             },
             "pages": {
                 "default": {
-                    "template": "templates/pages/home.html",
+                    "template": "templates/pages/home/tpl.html",
+                    "module": "templates/pages/home/module.js",
                     "title": "Home",
                     "navigation": true,
                     "default": true
                 },
                 "layout": {
-                    "template": "templates/pages/layout.html",
+                    "template": "templates/pages/layout/tpl.html",
                     "title": "Layout",
                     "navigation": true,
                     "default": false

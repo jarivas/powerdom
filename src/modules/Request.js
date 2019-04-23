@@ -1,6 +1,5 @@
 import Config from './Config.js'
 
-const config = Config.get()
 const workers = new Map()
 
 /**
@@ -21,7 +20,7 @@ class Request {
 
         headers['Content-Type'] = 'application/json'
 
-        return fetch(config.apiUrl + path, {
+        return fetch(Config.get("apiUrl") + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -61,7 +60,7 @@ class Request {
      * @param {Worker} worker 
      */
     static worker(path, data, worker) {
-        fetch(config.apiUrl + path, {
+        fetch(Config.get("apiUrl") + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',

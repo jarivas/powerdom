@@ -82,6 +82,8 @@ class Pages {
      * @param {Object} page 
      */
     static navigate(page) {
+        const mainElement = Pages.prototype.mainElement
+        const ready = () => Template.parse(mainElement, Pages.firePageReady)
         Loading.show()
 
         Pages.prototype.currenPage = page
@@ -91,8 +93,15 @@ class Pages {
             Loading.close()
         })
 
-        Importer.importTemplate(page.template, Pages.prototype.mainElement)
-            .then(() => Template.parse(Pages.prototype.mainElement, Pages.firePageReady))
+        Importer.importTemplate(page.template, mainElement)
+            .then(() => {
+                if(page.hasOwnProperty('module'))
+                    Importer.importModule(page.module).then(template => {
+                        new template(mainElement, ready)
+                    })
+                else
+                    ready()
+            })
     }
     
     /**
@@ -106,6 +115,14 @@ class Pages {
             throw `Invalid page index: ${index}`
 
         Pages.navigate(page)
+    }
+
+    /**
+     * Check if element is the one where all the pages are imported
+     * @param {Element} element 
+     */
+    static isMainElement(element) {
+        return Pages.prototype.mainElement.isSameNode(element);
     }
 }
 

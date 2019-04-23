@@ -15,27 +15,29 @@ class Menu {
 
         Menu.prototype.$li = PD.$('li', menu);
 
-        PD.$('a', menu).listen('click', Menu.changePage)
+        PD.$('a', menu).listen('click', Menu.click)
     }
 
-    static changePage(e){
-        const el = e.target
-        const index = el.dataset.index
-
+    static click(e){
         e.preventDefault()
+
+        Menu.changePage(e.target.dataset.index)
+    }
+
+    static changePage(index){
+        const el = Menu.prototype.$li.removeClass('active')
+        .select(`a[data-index="${index}"]`)
 
         PD.Pages.go(index)
 
-        Menu.prototype.$li.removeClass('active')
-
         PD.$(el.parentNode).addClass('active')
-
     }
 }
 
 class Layout {
     static init(){
         Menu.build()
+        PD.menu = Menu
     }
 }
 

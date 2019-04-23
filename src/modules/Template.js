@@ -4,6 +4,7 @@ import {
 import Importer from './Importer.js'
 
 import {CountDown} from './State'
+import Pages from './Pages.js';
 
 function createUUID(){
     let dt = new Date().getTime();
@@ -33,6 +34,7 @@ class Template {
      * @param {function} callback 
      */
     static parse(element, callback) {
+        const dir = PD.Config.get('tpl').dir
         const tpls = selectAll('tpl', element);
         let uiid = null
 
@@ -43,9 +45,9 @@ class Template {
         CountDown.set(uiid, tpls.length, callback)
 
         tpls.forEach(tpl => {
-            const url = tpl.getAttribute('src')
+            const url = dir + tpl.getAttribute('src')
             const module = tpl.getAttribute('module')
-            const fire =  tpl.getAttribute('fire')
+            const fire = tpl.getAttribute('fire')
             const ready = () => {
                 if(fire) fire()
                 CountDown.decrease(uiid)
@@ -75,7 +77,12 @@ class Template {
         
         this._listen()
 
-        this.process().then(() => this.removeWrapper())
+        this.process().then(() => {
+            if(!Pages.isMainElement(element))
+                this.removeWrapper()
+
+            this.ready()
+        })
     }
 
     /**
@@ -116,8 +123,6 @@ class Template {
 
         parent.removeChild(el)
         delete this.el
-
-        this.ready()
     }
 
 }

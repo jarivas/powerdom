@@ -382,7 +382,12 @@ class PowerDom {
     select(selector) {
         const data = []
 
-        this.elements(element => data.push(select(selector, element)))
+        this.elements.forEach(element => {
+            const node = select(selector, element)
+
+            if(node)
+                data.push(node)
+        })
 
         return (data.length == 1) ? data[0] : data
     }
@@ -392,7 +397,9 @@ class PowerDom {
 
         this.elements.forEach(element => {
             const nodeList = selectAll(selector, element)
-            data = data.concat(nodeList)
+            
+            if(nodeList.length > 0)
+                data = data.concat(nodeList)
         })
 
         return (data.length == 1) ? data[0] : data
