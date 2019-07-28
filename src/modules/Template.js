@@ -6,14 +6,19 @@ import Importer from './Importer.js'
 import {CountDown} from './State'
 import Pages from './Pages.js';
 
+let dt = null
+
+function createUUIDHelper(c) {
+    let r = (dt + Math.random()*16)%16 | 0
+    dt = Math.floor(dt/16)
+
+    return (c=='x' ? r :(r&0x3|0x8)).toString(16)
+}
+
 function createUUID(){
-    let dt = new Date().getTime();
-    let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        let r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
-    });
-    return uuid;
+    dt = new Date().getTime()
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, createUUIDHelper)
 }
 
 function _listenHelper(strListener, el, instance){
@@ -28,10 +33,10 @@ function _listenHelper(strListener, el, instance){
 class Template {
 
     /**
-     * Serach for template elements defined in the element, replace them with the right html
+     * Search for template elements defined in the element, replace them with the right html
      * and invokes the callback when all is ready
-     * @param {Document|DocumentFragment|Element} element 
-     * @param {function} callback 
+     * @param {Document|DocumentFragment|Element} element
+     * @param {function} callback
      */
     static parse(element, callback) {
         const dir = PD.Config.get('tpl').dir
@@ -74,7 +79,7 @@ class Template {
         this.ready = ready
 
         this._elements()
-        
+
         this._listen()
 
         this.process().then(() => {
