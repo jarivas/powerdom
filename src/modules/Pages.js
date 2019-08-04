@@ -24,14 +24,8 @@ class Pages {
      */
     static init() {
         const conf = Config.get()
-        const layout = conf.layout
-        const loadLayoutModule = (typeof layout == 'object')
-        const lTemplate = (loadLayoutModule) ? layout.template : layout;
-        const body = document.body;
-        const success = (Layout) => {
+        const success = () => {
             config = conf
-
-            Layout.init()
 
             Pages.prototype.mainElement = select(conf.mainElementSelector)
 
@@ -42,22 +36,12 @@ class Pages {
 
         Pages.prototype.$title = $('title', document.head).setContent(conf.title)
 
-        Importer.importTemplate(lTemplate, body).then(() => {
-
-            body.appendChild(document.createElement('dialog'))
-
-            if(loadLayoutModule){
-                Importer.importModule(layout.module).then(success)
-            } else {
-                success()
-            }
-
-        })
+        Importer.importTemplate(conf.layout, document.body).then(success)
     }
 
     /**
      * Get the object that describes the page
-     * @param {string} index 
+     * @param {string} index
      * @returns {Object}
      */
     static getPage(index) {
@@ -79,7 +63,7 @@ class Pages {
 
     /**
      * Triigers the mechanism to change the current page using an Object
-     * @param {Object} page 
+     * @param {Object} page
      */
     static navigate(page) {
         const mainElement = Pages.prototype.mainElement
@@ -103,10 +87,10 @@ class Pages {
                     ready()
             })
     }
-    
+
     /**
      * Triigers the mechanism to change the current page using an string
-     * @param {string} index 
+     * @param {string} index
      */
     static go(index) {
         const page = Pages.getPage(index)
@@ -119,7 +103,7 @@ class Pages {
 
     /**
      * Check if element is the one where all the pages are imported
-     * @param {Element} element 
+     * @param {Element} element
      */
     static isMainElement(element) {
         return Pages.prototype.mainElement.isSameNode(element);
