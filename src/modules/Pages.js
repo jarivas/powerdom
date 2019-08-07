@@ -35,8 +35,9 @@ class Pages {
         }
 
         Pages.prototype.$title = $('title', document.head).setContent(conf.title)
+        Pages.prototype.mainElement = null
 
-        Importer.importTemplate(conf.layout, document.body).then(success)
+        Template.parse(document.body, success)
     }
 
     /**
@@ -106,7 +107,9 @@ class Pages {
      * @param {Element} element
      */
     static isMainElement(element) {
-        return Pages.prototype.mainElement.isSameNode(element);
+        if (Pages.prototype.mainElement == null) return false
+
+        return Pages.prototype.mainElement.isEqualNode(element)
     }
 }
 

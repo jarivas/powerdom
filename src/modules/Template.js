@@ -51,7 +51,7 @@ class Template {
 
         tpls.forEach(tpl => {
             const url = dir + tpl.getAttribute('src')
-            const module = tpl.getAttribute('module')
+            const module = dir + tpl.getAttribute('module')
             const fire = tpl.getAttribute('fire')
             const ready = () => {
                 if(fire) fire()
@@ -69,8 +69,7 @@ class Template {
 
     /**
      * When the parsed template element have a module attribute, it uses as
-     * url of a module to import. This module shoud extend from Templat.
-     * Check the Demo folder for a better understanding with examples
+     * url of a module to import. This module should extend from Template.
      * @param {Document|DocumentFragment|Element} element tpl node that is going to be processed
      * @param {function} ready callback that will be invoke once all is ready
      */
@@ -97,7 +96,7 @@ class Template {
     _elements() {
         this._ = {}
 
-        PD.selectAll('[_]', this.el).forEach(el => this._[el.getAttribute('_')] = el)
+        PD.selectAll('[_]', this.el).forEach(el => this._[el.getAttribute('_')] = PD.$(el))
     }
 
     /**

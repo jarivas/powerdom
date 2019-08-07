@@ -66,6 +66,10 @@ const helper = {
     }
 }
 
+const evalHelper = {
+    do: (code) => {return eval(code)}
+}
+
 window.modules = helper.modules
 
 /**
@@ -103,7 +107,7 @@ class Importer {
     }
 
     /**
-     * Imports the module dinamacally because normal imports can not be used
+     * Imports the module dynamically because normal imports can not be used
      * @param {string} url
      * @returns {Object}
      */
@@ -111,7 +115,8 @@ class Importer {
         const modules = helper.modules
 
         if (!modules.has(url)) {
-            window.eval(await helper.getCode(url))
+            const code = await helper.getCode(url)
+            evalHelper.do(code)
         }
 
         return modules.get(url)
@@ -119,7 +124,7 @@ class Importer {
 
     /**
      * Reads a json and return the object that represents it
-     * @param {string} url 
+     * @param {string} url
      * @returns {Object}
      */
     static async loadJSON(url) {
