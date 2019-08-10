@@ -1,5 +1,8 @@
 document.onreadystatechange = function () {
     if (document.readyState == "complete") {
-        PD.Pages.init()
+        import('/js/config.js').then(config => {
+            PD.Config.set(config.default)
+            PD.Pages.init()
+        })
     }
 }

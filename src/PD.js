@@ -25,5 +25,10 @@ window.PD = {
     Pages,
     Config,
     State,
-    CountDown
+    CountDown,
+    Modules: {
+        Auth: {
+            isAuth: () => {return true}
+        }
+    }
 }

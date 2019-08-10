@@ -90,7 +90,7 @@ class Pages {
     }
 
     /**
-     * Triigers the mechanism to change the current page using an string
+     * Triggers the mechanism to change the current page using an string
      * @param {string} index
      */
     static go(index) {
@@ -98,6 +98,9 @@ class Pages {
 
         if (!page)
             throw `Invalid page index: ${index}`
+
+        if(!PD.Modules.Auth.isAuth())
+            return
 
         Pages.navigate(page)
     }

@@ -8,9 +8,9 @@
             <input id="menu-toggle" type="checkbox">
             <div class="icon-menu"></div>
             <ul class="menu">
-                <loop-object items="PD.Config.get('pages')">
-                    <li><a href="#" data-page="${key}" _listen="click:navClick">${item.title}</a></li>
-                </loop-object>
+                <loop-array items="generatePages()">
+                    <li><a href="#" data-page="${item.key}" _listen="click:navClick">${item.title}</a></li>
+                </loop-array>
             </ul>
         </nav>
     </div>

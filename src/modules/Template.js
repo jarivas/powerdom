@@ -83,6 +83,8 @@ class Template {
         this.el = element
         this.ready = ready
 
+        this.loopArray()
+
         this.loopObject()
 
         this._elements()
@@ -116,11 +118,40 @@ class Template {
             const strListeners = el.getAttribute('_listen')
             strListeners.split(",").forEach(strListener => _listenHelper(strListener, el, this))
             el.removeAttribute('_listen')
-        });
+        })
+    }
+
+    loopArray(){
+        let html = ''
+
+        PD.selectAll('loop-array', this.el).forEach(el => {
+            const tpl = el.innerHTML.trim()
+            let items = el.getAttribute('items')
+
+            if(items.includes('(')) {
+                items = items.replace('()', '')
+                items = this[items]()
+            } else {
+                items = this[items]
+            }
+
+            items.forEach(item => {
+                let matches = [...tpl.matchAll(/\${item\.([a-z|_/\$]*)}/gm)]
+
+                html += tpl
+
+                if (typeof matches != 'undefined' && matches.length > 0){
+                    matches.forEach(m => html = html.replace(m[0], item[m[1]]))
+                }
+            })
+
+            PD.$(el).replace(html)
+        })
     }
 
     /**
-     * Loops over all the keys of and object and generates new html using the content as template
+     * Loops over all the keys of a object (items) and generates new html using the content as template.
+     * In that template a couple of variables can be used key and item, to represent the current key and value
      */
     loopObject() {
         let html = ''
@@ -135,7 +166,7 @@ class Template {
                 if(typeof item != 'object') {
                     html = html.replace(/\${item}/gm, item)
                 } else {
-                    let array = [...tpl.matchAll(/\${item\.(.*)}/gm)]
+                    let array = [...tpl.matchAll(/\\${item\.([a-z|_/\$]*)}/gm)]
 
                     if (typeof array != 'undefined' && array[0].length > 0){
                         array = array[0]
