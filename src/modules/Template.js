@@ -27,6 +27,12 @@ function _listenHelper(strListener, el, instance){
     PD.$(el).listen(event, instance[callback].bind(instance))
 }
 
+const evalHelper = {
+    do: (code) => {
+        return eval(code)
+    }
+}
+
 /**
  * It handles the template manipulation
  */
@@ -77,6 +83,8 @@ class Template {
         this.el = element
         this.ready = ready
 
+        this.loopObject()
+
         this._elements()
 
         this._listen()
@@ -107,11 +115,44 @@ class Template {
         PD.selectAll('[_listen]', this.el).forEach(el => {
             const strListeners = el.getAttribute('_listen')
             strListeners.split(",").forEach(strListener => _listenHelper(strListener, el, this))
+            el.removeAttribute('_listen')
         });
     }
 
     /**
-     * Asynchronous function ready to be overriden to fit whatever the need in the class
+     * Loops over all the keys of and object and generates new html using the content as template
+     */
+    loopObject() {
+        let html = ''
+
+        PD.selectAll('loop-object', this.el).forEach(el => {
+            const object = evalHelper.do(el.getAttribute('items'))
+            const tpl = el.innerHTML.trim()
+
+            for(let [key, item] of Object.entries(object)){
+                html += tpl.replace(/\${key}/gm, key)
+
+                if(typeof item != 'object') {
+                    html = html.replace(/\${item}/gm, item)
+                } else {
+                    let array = [...tpl.matchAll(/\${item\.(.*)}/gm)]
+
+                    if (typeof array != 'undefined' && array[0].length > 0){
+                        array = array[0]
+
+                        for(let i = 1; i < array.length; ++i) {
+                            html = html.replace(array[0], item[array[i]])
+                        }
+                    }
+                }
+            }
+
+            PD.$(el).replace(html)
+        })
+    }
+
+    /**
+     * Asynchronous function ready to be overwritten to fit whatever the need in the class
      */
     async process(){}
 

@@ -12,7 +12,7 @@ import {State, CountDown} from './modules/State.js'
  * An Object that contains all the modules from the framework,
  * check the docs for better understanding
  */
-const PD = {
+window.PD = {
     $: PowerDom.getInstance,
     select,
     selectAll,
@@ -27,4 +27,3 @@ const PD = {
     State,
     CountDown
 }
-window.PD = PD

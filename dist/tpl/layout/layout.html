@@ -7,8 +7,10 @@
             <label for="menu-toggle" id="menu-toggle-label"></label>
             <input id="menu-toggle" type="checkbox">
             <div class="icon-menu"></div>
-            <ul _="menu" class="menu">
-                <!-- <li><a href="get-started/">Get Started</a></li> -->
+            <ul class="menu">
+                <loop-object items="PD.Config.get('pages')">
+                    <li><a href="#" data-page="${key}" _listen="click:navClick">${item.title}</a></li>
+                </loop-object>
             </ul>
         </nav>
     </div>
