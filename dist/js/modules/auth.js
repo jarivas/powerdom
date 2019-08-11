@@ -12,7 +12,7 @@ class Auth {
             username: username,
             password: password
         }
-        return PD.Request.json('auth/login', data, PD.Request.handleError)
+        return PD.Request.post('auth/login', data, PD.Request.handleError)
             .then(this.handleResponse.bind(this))
     }
 

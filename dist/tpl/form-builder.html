@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="section">
+        <div class="full-width-forms hide">
+            <loop-array items="getInputs()">
+                <div>
+                    <label>
+                        <input type="${item.type}" _="${item._}" placeholder="${item.placeholder}" _listen="${item._listen}">
+                    </label>
+                </div>
+                <div class="clear"></div>
+            </loop-array>
+            <div>
+                <label>
+                    <button _="saveBtn" class="btn solid green" _listen="click:saveForm">save</button>
+                </label>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

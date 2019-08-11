@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="section">
+        <table>
+            <thead>
+            <tr>
+                <loop-array items="getHeaders()">
+                    <th>${item}</th>
+                </loop-array>
+            </tr>
+            </thead>
+            <tbody>
+            <loop-array items="getRows()">
+                ${item}
+            </loop-array>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3">
+                    <button _="addNewBtn" class="btn small round green" _listen="click:addNew">
+                        + Add New
+                    </button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

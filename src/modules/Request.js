@@ -1,20 +1,18 @@
 import Config from './Config.js'
 
-const workers = new Map()
-
 /**
  * The simplified way of getting data and files from the server
  */
 class Request {
 
     /**
-     * Sends and receive JSON data to the server, typically use on api rest calls
-     * @param {string} path 
-     * @param {Object} data 
-     * @param {function} errorCb 
-     * @param {Object} headers 
+     * Sends a POST json request
+     * @param {string} path
+     * @param {Object} data
+     * @param {function} errorCb
+     * @param {Object} headers
      */
-    static async json(path, data, errorCb, headers) {
+    static async post(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {}
 
@@ -31,51 +29,85 @@ class Request {
     }
 
     /**
-     * Gets a worker to be used in Request.worker
-     * @param {string} workerUrl 
-     * @param {function} callback 
-     * @param {function} errorCb 
+     * Sends a GET request and returns a json
+     * @param {string} path
+     * @param {Object} params it will be used to find the rows to retrieve
+     * @param {function} errorCb
+     * @param {Object} headers
      */
-    static getWorkerForRquest(workerUrl, callback, errorCb) {
-        let worker = null
+    static async get(path, params, errorCb, headers) {
+        if(typeof headers == 'undefined')
+            headers = {}
 
-        if (!workers.has(workerUrl)) {
-            worker = new Worker(workerUrl)
+        path += '?'
 
-            worker.addEventListener('message', callback, false)
-            worker.addEventListener('error', errorCb, false)
-
-            workers.set(workerUrl, worker)
-        } else {
-            worker = workers.get(workerUrl)
+        for(let [param,value] of Object.entries(params)) {
+            path += `${param}=${encodeURIComponent(value)}&`
         }
 
-        return worker
+        return fetch(Config.get("apiUrl") + path, {
+            method: 'get',
+            mode: 'cors',
+            headers: new Headers(headers)
+        })
+            .then(response => response.json())
+            .catch(errorCb)
     }
 
     /**
-     * Its process the result data of the call on a background worker
-     * @param {string} path 
-     * @param {Object} data 
-     * @param {Worker} worker 
+     * Sends a Put json request
+     * @param {string} path
+     * @param {Object} it will be used to find the rows to update
+     * @param {Object} data fields to update
+     * @param {function} errorCb
+     * @param {Object} headers
      */
-    static worker(path, data, worker) {
-        fetch(Config.get("apiUrl") + path, {
-            method: 'post',
+    static async put(path, params, data, errorCb, headers) {
+        if(typeof headers == 'undefined')
+            headers = {}
+
+        path += '?'
+
+        for(let [param,value] of Object.entries(params)) {
+            path += `${param}=${encodeURIComponent(value)}&`
+        }
+
+        return fetch(Config.get("apiUrl") + path, {
+            method: 'put',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
+            headers: new Headers(headers)
         })
             .then(response => response.json())
-            .then(data => worker.postMessage(data))
+            .catch(errorCb)
+    }
+
+    /**
+     * Sends a DELETE json request
+     * @param {string} path
+     * @param {Object} data it will be used to find the rows to delete
+     * @param {function} errorCb
+     * @param {Object} headers
+     */
+    static async delete(path, data, errorCb, headers) {
+        if(typeof headers == 'undefined')
+            headers = {}
+
+        headers['Content-Type'] = 'application/json'
+
+        return fetch(Config.get("apiUrl") + path, {
+            method: 'delete',
+            body: data ? JSON.stringify(data) : null,
+            mode: 'cors',
+            headers: new Headers(headers)
+        })
+            .then(response => response.json())
             .catch(errorCb)
     }
 
     /**
      * It gets whatever as plain text
-     * @param {string} url 
+     * @param {string} url
      */
     static async getRemoteText(url) {
         let text = ''
@@ -92,7 +124,7 @@ class Request {
 
     /**
      * An universal api rest error handler
-     * @param {string|Object} error 
+     * @param {string|Object} error
      */
     static handleError(error) {
         let message = ''

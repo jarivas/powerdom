@@ -17,6 +17,12 @@ export default {
             title: "Home",
             navigation: true,
             auth: true
+        },
+        certification: {
+            template: "pages/certification.html",
+            title: "Certifications",
+            navigation: true,
+            auth: true
         }
     },
     tpl: {

@@ -116,15 +116,19 @@ class Template {
     _listen() {
         PD.selectAll('[_listen]', this.el).forEach(el => {
             const strListeners = el.getAttribute('_listen')
-            strListeners.split(",").forEach(strListener => _listenHelper(strListener, el, this))
+
+            if (strListeners.length > 0) {
+                strListeners.split(",").forEach(strListener => _listenHelper(strListener, el, this))
+            }
+
             el.removeAttribute('_listen')
         })
     }
 
-    loopArray(){
+     loopArray(){
         let html = ''
 
-        PD.selectAll('loop-array', this.el).forEach(el => {
+        PD.selectAll('loop-array', this.el).forEach(async el => {
             const tpl = el.innerHTML.trim()
             let items = el.getAttribute('items')
 
@@ -133,6 +137,11 @@ class Template {
                 items = this[items]()
             } else {
                 items = this[items]
+            }
+
+            if(! Array.isArray(items)) {
+                await items.then(r => console.log(r))
+                console.log(items)
             }
 
             items.forEach(item => {
