@@ -33,6 +33,38 @@ const evalHelper = {
     }
 }
 
+const regexKey = /\${key}/gm
+const regexItem = /\${item}/gm
+const regexItemProp = /\${item\.([a-z|_/\$]*)}/g
+
+function loopArrayHelper(items, el) {
+    const tpl = el.innerHTML.trim()
+    let html = ''
+
+    items.forEach(item => {
+
+        if(regexKey.test(html)) {
+            let matches = Array.from(tpl.matchAll(regexKey))
+            // console.log(matches)
+        }
+
+        if(regexItem.test(html)) {
+            let matches = Array.from(tpl.matchAll(regexItem))
+            // console.log(matches)
+        }
+
+        if(regexItemProp.test(tpl)) {
+            let matches = [...tpl.matchAll(/\${item\.([a-z|_/\$]*)}/gm)]
+            console.log(matches)
+
+            matches.forEach(m => html += tpl.replace(m[0], item[m[1]]))
+        }
+
+    })
+
+    PD.$(el).replace(html)
+}
+
 /**
  * It handles the template manipulation
  */
@@ -125,11 +157,8 @@ class Template {
         })
     }
 
-     loopArray(){
-        let html = ''
-
+     async loopArray(){
         PD.selectAll('loop-array', this.el).forEach(async el => {
-            const tpl = el.innerHTML.trim()
             let items = el.getAttribute('items')
 
             if(items.includes('(')) {
@@ -139,22 +168,12 @@ class Template {
                 items = this[items]
             }
 
-            if(! Array.isArray(items)) {
-                await items.then(r => console.log(r))
-                console.log(items)
+            if(items instanceof Promise) {
+                await items.then((items) => loopArrayHelper(items, el))
+                return
             }
 
-            items.forEach(item => {
-                let matches = [...tpl.matchAll(/\${item\.([a-z|_/\$]*)}/gm)]
-
-                html += tpl
-
-                if (typeof matches != 'undefined' && matches.length > 0){
-                    matches.forEach(m => html = html.replace(m[0], item[m[1]]))
-                }
-            })
-
-            PD.$(el).replace(html)
+            loopArrayHelper(items, el)
         })
     }
 
@@ -170,12 +189,12 @@ class Template {
             const tpl = el.innerHTML.trim()
 
             for(let [key, item] of Object.entries(object)){
-                html += tpl.replace(/\${key}/gm, key)
+                html += tpl.replace(regexKey, key)
 
                 if(typeof item != 'object') {
-                    html = html.replace(/\${item}/gm, item)
+                    html = html.replace(regexItem, item)
                 } else {
-                    let array = [...tpl.matchAll(/\\${item\.([a-z|_/\$]*)}/gm)]
+                    let array = [...tpl.matchAll(regexItemProp)]
 
                     if (typeof array != 'undefined' && array[0].length > 0){
                         array = array[0]

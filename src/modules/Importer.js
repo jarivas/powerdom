@@ -3,6 +3,11 @@ import Request from './Request.js'
 
 const $ = PowerDom.getInstance
 
+const removeComments = /\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm
+const exportDefault = /export\s+default\s+(\w*)/
+const multiExport = /export\s*\{(.+)\}/
+const splitMultiExport = /\w+/g
+
 const helper = {
     templates: new Map(),
     modules: new Map(),
@@ -31,10 +36,6 @@ const helper = {
         return `${code} //# sourceURL=${temp.pop()}`
     },
     getCode: async function (url) {
-        const removeComments = /\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm
-        const exportDefault = /export\s+default\s+(\w*)/
-        const multiExport = /export\s*\{(.+)\}/
-        const splitMultiExport = /\w+/g
         let lineToReplace = '', replacingLine = '', code = ''
 
         code = await Request.getRemoteText(url)

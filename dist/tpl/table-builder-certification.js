@@ -3,8 +3,8 @@ class FormBuilderCertification extends PD.Template {
         return ['Name', 'Authority', 'Date']
     }
 
-    async getRows() {
-        await PD.Request.get('certification/read', {}, this.errorHandler, {token: PD.Modules.Auth.token})
+    getRows() {
+        return PD.Request.get('certification/read', {}, this.errorHandler, {token: PD.Modules.Auth.token})
             .then(r => {
                 let result = []
 
