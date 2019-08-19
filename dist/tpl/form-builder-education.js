@@ -1,26 +1,33 @@
-class FormBuilderCertification extends PD.Template {
+class FormBuilderEducation extends PD.Template {
     getInputs() {
-        this.controller = 'certification'
+        this.controller = 'education'
         return [
             {
                 type: "text",
-                placeholder: "Name",
+                placeholder: "Notes",
                 required: 'required',
-                _: "name",
+                _: "notes",
                 _listen: "keypress:listenEnter"
             },
             {
                 type: "text",
-                placeholder: "Authority",
+                placeholder: "SchoolName",
                 required: 'required',
-                _: "authority",
+                _: "school_name",
                 _listen: "keypress:listenEnter"
             },
             {
                 type: "date",
-                placeholder: "Date",
+                placeholder: "StartDate",
                 required: 'required',
-                _: "date",
+                _: "start_date",
+                _listen: "keypress:listenEnter"
+            },
+            {
+                type: "date",
+                placeholder: "EndDate",
+                required: 'required',
+                _: "end_date",
                 _listen: "keypress:listenEnter"
             }
         ]
@@ -37,4 +44,4 @@ class FormBuilderCertification extends PD.Template {
     }
 }
 
-export default FormBuilderCertification
+export default FormBuilderEducation

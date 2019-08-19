@@ -4,7 +4,14 @@ class Login extends PD.Template {
             this._.username.setValue('jose')
             this._.password.setValue('p4ssw0rt')
         }
-        return PD.Importer.importModule('js/modules/auth.js').then(Auth => {
+
+        PD.Importer.importModule('js/modules/TableBuilderHelper.js')
+            .then(TableBuilderHelper => PD.Modules.TableBuilderHelper = TableBuilderHelper)
+
+        PD.Importer.importModule('js/modules/FormBuilderHelper.js')
+            .then(FormBuilderHelper => PD.Modules.FormBuilderHelper = FormBuilderHelper)
+
+        return PD.Importer.importModule('js/modules/Auth.js').then(Auth => {
             PD.Modules.Auth = new Auth()
         })
     }

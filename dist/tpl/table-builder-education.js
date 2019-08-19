@@ -1,7 +1,7 @@
-class TableBuilderCertification extends PD.Template {
+class TableBuilderEducation extends PD.Template {
     getHeaders() {
-        this.controller = 'certification'
-        return ['Name', 'Authority', 'Date']
+        this.controller = 'education'
+        return ['Notes', 'SchoolName', 'StartDate', 'EndDate']
     }
 
     getRows() {
@@ -25,4 +25,4 @@ class TableBuilderCertification extends PD.Template {
     }
 }
 
-export default TableBuilderCertification
+export default TableBuilderEducation

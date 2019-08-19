@@ -33,11 +33,6 @@ const evalHelper = {
     }
 }
 
-const regexKey = /\${key}/gm
-const regexItem = /\${item}/gm
-const regexItemPropTest = /\${item\.([a-z|_/\$]*)}/gm
-const regexItemProp = new RegExp('\\${item\\.([a-z|_/\\$]*)}', 'gm')
-
 function loopArrayHelper(items, el) {
     const tpl = el.innerHTML.trim().replace(/(\r\n|\n|\r)/gm,"")
     let html = ''
@@ -45,6 +40,10 @@ function loopArrayHelper(items, el) {
     if(items.length == 0) return el.remove()
 
     items.forEach(item => {
+        const regexItemPropTest = /\${item\.([a-z|_/\$]*)}/gm
+        const regexItem = /\${item}/gm
+        const regexItemProp = new RegExp('\\${item\\.([a-z|_/\\$]*)}', 'gm')
+
         if(tpl.length > 0) {
             if(regexItem.test(tpl)) {
                 html += tpl.replace(regexItem, item)
@@ -182,6 +181,8 @@ class Template {
         PD.selectAll('template[loop-object]', this.el).forEach(el => {
             const items = evalHelper.do(el.getAttribute('items'))
             const tpl = el.innerHTML.trim()
+            const regexKey = /\${key}/gm
+            const regexItemProp = new RegExp('\\${item\\.([a-z|_/\\$]*)}', 'gm')
 
             for(let [key, item] of Object.entries(items)){
                 html += tpl.replace(regexKey, key)
