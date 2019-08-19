@@ -1,14 +1,15 @@
 <div class="row">
     <div class="section">
-        <div class="full-width-forms hide">
-            <loop-array items="getInputs()">
+        <div class="full-width-forms">
+            <template loop-array items="getInputs()">
                 <div>
                     <label>
                         <input type="${item.type}" _="${item._}" placeholder="${item.placeholder}" _listen="${item._listen}">
                     </label>
                 </div>
                 <div class="clear"></div>
-            </loop-array>
+            </template>
+            <input type="hidden" value=""/>
             <div>
                 <label>
                     <button _="saveBtn" class="btn solid green" _listen="click:saveForm">save</button>

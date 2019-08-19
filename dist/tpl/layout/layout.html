@@ -8,9 +8,9 @@
             <input id="menu-toggle" type="checkbox">
             <div class="icon-menu"></div>
             <ul class="menu">
-                <loop-array items="generatePages()">
+                <template loop-array items="generatePages()">
                     <li><a href="#" data-page="${item.key}" _listen="click:navClick">${item.title}</a></li>
-                </loop-array>
+                </template>
             </ul>
         </nav>
     </div>

@@ -2,26 +2,18 @@
     <div class="section">
         <table>
             <thead>
-            <tr>
-                <loop-array items="getHeaders()">
-                    <th>${item}</th>
-                </loop-array>
-            </tr>
+                <tr>
+                    <template loop-array items="getHeaders()">
+                        <th>${item}</th>
+                    </template>
+                    <th>Action</th>
+                </tr>
             </thead>
             <tbody>
-            <loop-array items="getRows()">
-                ${item}
-            </loop-array>
+                <template loop-array items="getRows()">
+                    <tr>${item}</tr>
+                </template>
             </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="3">
-                    <button _="addNewBtn" class="btn small round green" _listen="click:addNew">
-                        + Add New
-                    </button>
-                </td>
-            </tr>
-            </tfoot>
         </table>
     </div>
 </div>

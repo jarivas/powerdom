@@ -35,31 +35,30 @@ const evalHelper = {
 
 const regexKey = /\${key}/gm
 const regexItem = /\${item}/gm
-const regexItemProp = /\${item\.([a-z|_/\$]*)}/g
+const regexItemPropTest = /\${item\.([a-z|_/\$]*)}/gm
+const regexItemProp = new RegExp('\\${item\\.([a-z|_/\\$]*)}', 'gm')
 
 function loopArrayHelper(items, el) {
-    const tpl = el.innerHTML.trim()
+    const tpl = el.innerHTML.trim().replace(/(\r\n|\n|\r)/gm,"")
     let html = ''
 
+    if(items.length == 0) return el.remove()
+
     items.forEach(item => {
+        if(tpl.length > 0) {
+            if(regexItem.test(tpl)) {
+                html += tpl.replace(regexItem, item)
+            }
 
-        if(regexKey.test(html)) {
-            let matches = Array.from(tpl.matchAll(regexKey))
-            // console.log(matches)
+            if(regexItemPropTest.test(tpl)) {
+                const matches = Array.from(tpl.matchAll(regexItemProp))
+
+                html += tpl
+                matches.forEach(m => html = html.replace(m[0], item[m[1]]))
+            }
+        } else {
+            html += item
         }
-
-        if(regexItem.test(html)) {
-            let matches = Array.from(tpl.matchAll(regexItem))
-            // console.log(matches)
-        }
-
-        if(regexItemProp.test(tpl)) {
-            let matches = [...tpl.matchAll(/\${item\.([a-z|_/\$]*)}/gm)]
-            console.log(matches)
-
-            matches.forEach(m => html += tpl.replace(m[0], item[m[1]]))
-        }
-
     })
 
     PD.$(el).replace(html)
@@ -157,25 +156,21 @@ class Template {
         })
     }
 
-     async loopArray(){
-        PD.selectAll('loop-array', this.el).forEach(async el => {
-            let items = el.getAttribute('items')
+     loopArray(){
+        for (const el of PD.selectAll('template[loop-array]', this.el)) {
+            let itemsFunction = el.getAttribute('items')
+            let items = null
 
-            if(items.includes('(')) {
-                items = items.replace('()', '')
-                items = this[items]()
-            } else {
-                items = this[items]
-            }
+            itemsFunction = itemsFunction.replace('()', '')
+            items = this[itemsFunction]()
 
             if(items instanceof Promise) {
-                await items.then((items) => loopArrayHelper(items, el))
-                return
+                items.then(result => loopArrayHelper(result, el))
+            } else {
+                loopArrayHelper(items, el)
             }
-
-            loopArrayHelper(items, el)
-        })
-    }
+        }
+     }
 
     /**
      * Loops over all the keys of a object (items) and generates new html using the content as template.
@@ -185,16 +180,16 @@ class Template {
         let html = ''
 
         PD.selectAll('loop-object', this.el).forEach(el => {
-            const object = evalHelper.do(el.getAttribute('items'))
+            const items = evalHelper.do(el.getAttribute('items'))
             const tpl = el.innerHTML.trim()
 
-            for(let [key, item] of Object.entries(object)){
+            for(let [key, item] of Object.entries(items)){
                 html += tpl.replace(regexKey, key)
 
                 if(typeof item != 'object') {
                     html = html.replace(regexItem, item)
                 } else {
-                    let array = [...tpl.matchAll(regexItemProp)]
+                    let array = Array.from(tpl.matchAll(regexItemProp))
 
                     if (typeof array != 'undefined' && array[0].length > 0){
                         array = array[0]

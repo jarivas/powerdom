@@ -1,4 +1,4 @@
-class FormBuilderCertification extends PD.Template {
+class TableBuilderCertification extends PD.Template {
     getHeaders() {
         return ['Name', 'Authority', 'Date']
     }
@@ -8,9 +8,10 @@ class FormBuilderCertification extends PD.Template {
             .then(r => {
                 let result = []
 
-                if(!Array.isArray(r)) return result
+                if(!Array.isArray(r) || r.length == 0) return result
 
-                r.forEach(row => result.push(`<tr id="${row.Id}"><td>${row.Name}</td><td>${row.Authority}</td><td>${row.Date}</td></tr>`))
+                r.forEach(row => result.push(`<td>${row.Name}</td><td>${row.Authority}</td><td>${row.Date}</td>
+<td><button class="btn solid blue" _listen="click:edit" data-id="${row.Id}">Edit</button><button class="btn solid red" _listen="click:delete" data-id="${row.ID}">Delete</button></td>`))
 
                 return result
             })
@@ -20,9 +21,19 @@ class FormBuilderCertification extends PD.Template {
         console.log(data)
     }
 
-    addNew() {
+    async process(){
+        const form = PD.$('.full-width-forms')
+        console.log(form)
+        /*@TODO: use headers to _ form inputs*/
+    }
+
+    edit() {
+
+    }
+
+    delete() {
 
     }
 }
 
-export default FormBuilderCertification
+export default TableBuilderCertification
