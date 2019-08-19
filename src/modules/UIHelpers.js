@@ -38,7 +38,7 @@ class Notification {
 class Loading {
     /**
      * Displays a spinner for a period of time
-     * @param {int} displayTime milliseconds
+     * @param {int} [displayTime] milliseconds
      */
     static show(displayTime) {
         $dialog.removeAllClasses()

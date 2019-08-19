@@ -114,19 +114,19 @@ class Template {
         this.el = element
         this.ready = ready
 
-        this.loopArray()
+        this.loopArray().then(() => {
+            this.loopObject()
 
-        this.loopObject()
+            this._elements()
 
-        this._elements()
+            this._listen()
 
-        this._listen()
+            this.process().then(() => {
+                if(!Pages.isMainElement(element))
+                    this.removeWrapper()
 
-        this.process().then(() => {
-            if(!Pages.isMainElement(element))
-                this.removeWrapper()
-
-            this.ready()
+                this.ready()
+            })
         })
     }
 
@@ -156,7 +156,7 @@ class Template {
         })
     }
 
-     loopArray(){
+     async loopArray(){
         for (const el of PD.selectAll('template[loop-array]', this.el)) {
             let itemsFunction = el.getAttribute('items')
             let items = null
@@ -165,7 +165,7 @@ class Template {
             items = this[itemsFunction]()
 
             if(items instanceof Promise) {
-                items.then(result => loopArrayHelper(result, el))
+                await items.then(result => loopArrayHelper(result, el))
             } else {
                 loopArrayHelper(items, el)
             }
@@ -179,7 +179,7 @@ class Template {
     loopObject() {
         let html = ''
 
-        PD.selectAll('loop-object', this.el).forEach(el => {
+        PD.selectAll('template[loop-object]', this.el).forEach(el => {
             const items = evalHelper.do(el.getAttribute('items'))
             const tpl = el.innerHTML.trim()
 

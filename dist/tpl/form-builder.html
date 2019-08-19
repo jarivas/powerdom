@@ -1,15 +1,15 @@
 <div class="row">
     <div class="section">
-        <div class="full-width-forms">
+        <div id="form-builder" class="full-width-forms">
             <template loop-array items="getInputs()">
                 <div>
                     <label>
-                        <input type="${item.type}" _="${item._}" id="${item.placeholder}" placeholder="${item.placeholder}" _listen="${item._listen}">
+                        <input type="${item.type}" _="${item._}" id="${item.placeholder}" placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}">
                     </label>
                 </div>
                 <div class="clear"></div>
             </template>
-            <input type="hidden" value=""/>
+            <input type="hidden" value="" _="id" id="Id"/>
             <div>
                 <label>
                     <button _="saveBtn" class="btn solid green" _listen="click:saveForm">save</button>
