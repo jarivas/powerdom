@@ -36,12 +36,6 @@ export default {
             navigation: true,
             auth: true
         },
-        personalData: {
-            template: "pages/personal-data.html",
-            title: "PersonalData",
-            navigation: true,
-            auth: true
-        },
         position: {
             template: "pages/position.html",
             title: "Position",
