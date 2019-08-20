@@ -24,7 +24,12 @@ class Auth {
     handleResponse(response) {
         PD.Loading.close()
 
-        if(!response.hasOwnProperty('success')) {
+        if(typeof response == 'undefined') {
+            PD.Notification.show('Error on request', 1000)
+            return false
+        }
+
+        if(!response.hasOwnProperty('success', 1000)) {
             PD.Notification.show(response.message)
             return false
         }

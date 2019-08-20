@@ -1,6 +1,6 @@
 class TableBuilderHelper {
     static getRows(controller, headers) {
-        return PD.Request.get(`${controller}/read`, {}, TableBuilderHelper.errorHandler, {token: PD.Modules.Auth.token})
+        return PD.Request.get(`${controller}/read`, {}, TableBuilderHelper.errorHandler)
             .then(r => {
                 let result = []
 

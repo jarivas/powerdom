@@ -10,7 +10,7 @@ class Request {
      * @param {string} path
      * @param {Object} data
      * @param {function} errorCb
-     * @param {Object} headers
+     * @param {Object} [headers]
      */
     static async post(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
@@ -33,7 +33,7 @@ class Request {
      * @param {string} path
      * @param {Object} params it will be used to find the rows to retrieve
      * @param {function} errorCb
-     * @param {Object} headers
+     * @param {Object} [headers]
      */
     static async get(path, params, errorCb, headers) {
         if(typeof headers == 'undefined')
@@ -60,7 +60,7 @@ class Request {
      * @param {Object} it will be used to find the rows to update
      * @param {Object} data fields to update
      * @param {function} errorCb
-     * @param {Object} headers
+     * @param {Object} [headers]
      */
     static async put(path, params, data, errorCb, headers) {
         if(typeof headers == 'undefined')
@@ -87,7 +87,7 @@ class Request {
      * @param {string} path
      * @param {Object} data it will be used to find the rows to delete
      * @param {function} errorCb
-     * @param {Object} headers
+     * @param {Object} [headers]
      */
     static async delete(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
@@ -136,7 +136,7 @@ class Request {
         else if (error.hasOwnProperty('error'))
             message = error.error
 
-        Notification.show(message)
+        PD.Notification.show(message)
 
         console.error(error)
     }

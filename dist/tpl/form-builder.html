@@ -2,17 +2,37 @@
     <div class="section">
         <div id="form-builder" class="full-width-forms">
             <template loop-array items="getInputs()">
-                <div>
-                    <label>
-                        <input type="${item.type}" _="${item._}" id="${item.placeholder}" placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}">
-                    </label>
-                </div>
+                <template if="${item.type}">
+                    <div>
+                        <label>
+                            <input type="${item.type}" _="${item._}" id="${item.placeholder}" placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}">
+                        </label>
+                    </div>
+                </template>
+                <template if="${item.textarea}">
+                    <div>
+                        <label>
+                            <textarea type="${item.type}" _="${item._}" id="${item.placeholder}" placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}"></textarea>
+                        </label>
+                    </div>
+                </template>
+                <template if="${item.select}">
+                    <div>
+                        <label>
+                            <select type="${item.type}" _="${item._}" id="${item.placeholder}" placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}">
+                                <template loop-array items="${item.options}">
+                                    <option value="item.value">${item.text}</option>
+                                </template>
+                            </select>
+                        </label>
+                    </div>
+                </template>
                 <div class="clear"></div>
             </template>
             <input type="hidden" value="" _="id" id="Id"/>
             <div>
                 <label>
-                    <button _="saveBtn" class="btn solid green" _listen="click:saveForm">save</button>
+                    <button _="saveBtn" class="btn solid green" _listen="click:saveForm">Save</button>
                 </label>
             </div>
             <div class="clear"></div>
