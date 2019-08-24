@@ -178,6 +178,8 @@ class Template {
     loopObject() {
         let html = ''
 
+        /* @TODO: read again the web components, custom elements and replace tpl and template */
+
         PD.selectAll('template[loop-object]', this.el).forEach(el => {
             const items = evalHelper.do(el.getAttribute('items'))
             const tpl = el.innerHTML.trim()
