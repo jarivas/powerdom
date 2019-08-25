@@ -10,9 +10,6 @@ const config = {
             auth: false
         }
     },
-    tpl: {
-        dir: "/tpl/"
-    },
     dev: true
 }
 

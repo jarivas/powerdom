@@ -60,8 +60,5 @@ export default {
             navigation: true,
             auth: true
         }
-    },
-    tpl: {
-        dir: "/tpl/"
     }
 }

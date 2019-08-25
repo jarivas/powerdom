@@ -10,7 +10,7 @@ const helper = {
             element.insertAdjacentHTML(position, html)
         } else if (html instanceof NodeList) {
             html.forEach(n => {
-                if (n.nodeType == ELEMENT_NODE)
+                if (n.nodeType === ELEMENT_NODE)
                     element.insertAdjacentElement(position, n)
             })
         } else {
@@ -23,19 +23,19 @@ const helper = {
 class PowerDom {
 
     /**
-     * A shortcut to instanciate 
-     * @param {DOMString|Document|DocumentFragment|Element} selector
+     * A shortcut to instantiate 
+     * @param {string|Document|DocumentFragment|Element} selector
      * @param {Document|DocumentFragment|Element} [element]
      * @returns {PowerDom}
      */
-    static getInstance(selector, element) {
+    static $(selector, element) {
         return (typeof selector == 'string') ?
             PowerDom.getInstanceBySelector(selector, element) :
             PowerDom.getInstanceByElement(selector)
     }
 
     /**
-     * @param {DOMString} selector one or more comma separated
+     * @param {string} selector one or more comma separated
      * @param {Document|DocumentFragment|Element} [element]
      * @returns {PowerDom}
      */
@@ -94,7 +94,7 @@ class PowerDom {
 
         this.elements.forEach(element => content.push(element.innerHTML))
 
-        return (content.length == 1) ? content[0] : content
+        return (content.length > 1) ? content : content[0]
     }
 
     /**
@@ -117,7 +117,7 @@ class PowerDom {
 
         this.elements.forEach(element => values.push(element.value))
 
-        return (values.length == 1) ? values[0] : values
+        return (values.length > 1) ? values : values[0]
     }
 
     /**
@@ -194,7 +194,7 @@ class PowerDom {
 
         this.elements.forEach(element => clones.push(element.outerHTML))
 
-        return (clones.length == 1) ? clones[0] : clones
+        return (clones.length > 1) ? clones : clones[0]
     }
 
     /**
@@ -299,7 +299,7 @@ class PowerDom {
     }
 
     /**
-     * Sets a property with its value
+     * Sets an attribute with its value
      * @param {string} index 
      * @param {string} value 
      * @returns {PowerDom} this
@@ -311,7 +311,7 @@ class PowerDom {
     }
 
     /**
-     * Sets a property with its value
+     * removes an attribute
      * @param {string} index 
      * @returns {PowerDom} this
      */
@@ -331,7 +331,7 @@ class PowerDom {
 
         this.elements.forEach(element => values.push(element[index]))
 
-        return (values.length == 1) ? values[0] : values
+        return (values.length > 1) ? values : values[0]
     }
 
     /**
@@ -367,7 +367,7 @@ class PowerDom {
 
         this.elements.forEach(element => data.push(element.dataset[index]))
 
-        return (data.length == 1) ? data[0] : data
+        return (data.length > 1) ? data : data[0]
     }
 
     /**
@@ -376,7 +376,7 @@ class PowerDom {
     getElements() {
         const elements = this.elements
 
-        return (elements.length == 1) ? elements[0] : elements
+        return (elements.length > 1) ? elements : elements[0]
     }
 
     select(selector) {
@@ -389,7 +389,7 @@ class PowerDom {
                 data.push(node)
         })
 
-        return (data.length == 1) ? data[0] : data
+        return (data.length > 1) ? data : data[0]
     }
     
     selectAll(selector) {
@@ -402,14 +402,14 @@ class PowerDom {
                 data = data.concat(nodeList)
         })
 
-        return (data.length == 1) ? data[0] : data
+        return (data.length > 1) ? data : data[0]
     }
 }
 
 /**
  * Returns the first Element within the document that matches the specified selector,
  * or group of selectors. If no matches are found, null is returned.
- * @param {DOMString} selector one or more comma separated
+ * @param {string} selector one or more comma separated
  * @param {Document|DocumentFragment|Element} [element]
  * @returns {Element|Node}
  */
@@ -421,7 +421,7 @@ function select(selector, element) {
 /**
  * Returns a static (not live) NodeList representing a list of the document's element
  *  that match the specified group of selectors.
- * @param {DOMString} selector one or more comma separated
+ * @param {string} selector one or more comma separated
  * @param {Document|DocumentFragment|Element} [element]
  * @returns {Element[]|NodeList}
  */

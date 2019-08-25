@@ -1,9 +1,15 @@
-import Config from './Config.js'
-
 /**
  * The simplified way of getting data and files from the server
  */
 class Request {
+
+    /**
+     * @constructor
+     * @param {string} url
+     */
+    constructor(url) {
+        this.url = url
+    }
 
     /**
      * Sends a POST json request
@@ -12,13 +18,13 @@ class Request {
      * @param {function} errorCb
      * @param {Object} [headers]
      */
-    static async post(path, data, errorCb, headers) {
+    async post(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {}
 
         headers['Content-Type'] = 'application/json'
 
-        return fetch(Config.get("apiUrl") + path, {
+        return fetch(this.url + path, {
             method: 'post',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -35,7 +41,7 @@ class Request {
      * @param {function} errorCb
      * @param {Object} [headers]
      */
-    static async get(path, params, errorCb, headers) {
+    async get(path, params, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {}
 
@@ -45,7 +51,7 @@ class Request {
             path += `${param}=${encodeURIComponent(value)}&`
         }
 
-        return fetch(Config.get("apiUrl") + path, {
+        return fetch(this.url + path, {
             method: 'get',
             mode: 'cors',
             headers: new Headers(headers)
@@ -62,7 +68,7 @@ class Request {
      * @param {function} errorCb
      * @param {Object} [headers]
      */
-    static async put(path, params, data, errorCb, headers) {
+    async put(path, params, data, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {}
 
@@ -72,7 +78,7 @@ class Request {
             path += `${param}=${encodeURIComponent(value)}&`
         }
 
-        return fetch(Config.get("apiUrl") + path, {
+        return fetch(this.url + path, {
             method: 'put',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -89,13 +95,13 @@ class Request {
      * @param {function} errorCb
      * @param {Object} [headers]
      */
-    static async delete(path, data, errorCb, headers) {
+    async delete(path, data, errorCb, headers) {
         if(typeof headers == 'undefined')
             headers = {}
 
         headers['Content-Type'] = 'application/json'
 
-        return fetch(Config.get("apiUrl") + path, {
+        return fetch(this.url + path, {
             method: 'delete',
             body: data ? JSON.stringify(data) : null,
             mode: 'cors',
@@ -109,17 +115,8 @@ class Request {
      * It gets whatever as plain text
      * @param {string} url
      */
-    static async getRemoteText(url) {
-        let text = ''
-        try {
-            const response = await fetch(url)
-            text = await response.text()
-        }
-        catch (err) {
-            console.log('fetch failed', err)
-        }
-
-        return text
+    static async getRemoteText(url, errorCb) {
+        return fetch(url).then(response => response.text()).catch(errorCb)
     }
 
     /**
@@ -135,8 +132,6 @@ class Request {
             message = error.message
         else if (error.hasOwnProperty('error'))
             message = error.error
-
-        PD.Notification.show(message)
 
         console.error(error)
     }

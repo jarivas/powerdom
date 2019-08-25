@@ -1,19 +1,22 @@
-<div class="row header">
-    <div class="section">
-        <nav>
-            <a href="/" class="logo">
-                <img src="img/logo.svg" alt="Logo">
-            </a>
-            <label for="menu-toggle" id="menu-toggle-label"></label>
-            <input id="menu-toggle" type="checkbox">
-            <div class="icon-menu"></div>
-            <ul class="menu">
-                <template loop-array items="generatePages()">
-                    <li><a href="#" data-page="${item.key}" _listen="click:navClick">${item.title}</a></li>
-                </template>
-            </ul>
-        </nav>
+<template>
+    <div class="row header">
+        <div class="section">
+            <nav>
+                <a href="/" class="logo">
+                    <img src="img/logo.svg" alt="Logo">
+                </a>
+                <label for="menu-toggle" id="menu-toggle-label"></label>
+                <input id="menu-toggle" type="checkbox">
+                <div class="icon-menu"></div>
+                <ul class="menu">
+                    <li pd-loop data="generatePages"><a href="#" data-page="${item.key}" _listen="click:navClick">${item.title}</a></li>
+                </ul>
+            </nav>
+        </div>
     </div>
-</div>
-<div class="contents page-content"></div>
-<dialog>This is da dialog!</dialog>
+    <div class="contents page-content">
+        <pd-page />
+    </div>
+    <pd-modal>This is da dialog!</pd-modal>
+</template>
+

@@ -1,14 +1,14 @@
 {
   "name": "powerdom",
   "version": "1.0.0",
-  "description": "The low complexity and lightweigth Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
+  "description": "The low complexity and lightweight Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "sass": "node-sass --include-path node_modules/vital-css/dist/scss src/scss -o dist/css --output-style compressed",
-    "build": "rollup main.js --file bundle.js --format iife",
+    "build": "rollup --config --watch",
     "esdoc": "./node_modules/.bin/esdoc"
   },
   "repository": {
