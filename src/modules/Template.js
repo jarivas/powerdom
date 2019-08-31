@@ -1,7 +1,10 @@
-import {selectAll, select, PowerDom as PD} from "./PowerDom";
+import {selectAll, select, PowerDom as PD} from "./PowerDom"
+
+function loopHelper(item, index, tpl) {
+    return eval('`' + tpl + '`')
+}
 
 class Template {
-
     static process(element) {
         const template = select('template', element)
         const content = template.content
@@ -10,6 +13,8 @@ class Template {
                 Template._elements(content)
 
                 Template._listen(element, content)
+
+                PD.$(element).setContent(content.firstElementChild)
 
                 if (element.dataset.hasOwnProperty('ready')) {
                     this[element.dataset.ready]()
@@ -20,13 +25,25 @@ class Template {
 
     static async loop(element, content) {
         selectAll('[pd-loop]', content).forEach(el => {
-            if (!el.hasAttribute('data')) {
+            if (!el.hasAttribute('items')) {
                 PD.$(el).remove()
             } else {
-                const dataAttr = el.getAttribute('data')
-                let data = (typeof element[dataAttr] === 'function') ? element[dataAttr]() : element[dataAttr]
+                const dataAttr = el.getAttribute('items')
+                let items = (typeof element[dataAttr] === 'function') ? element[dataAttr]() : element[dataAttr]
+                let html = ''
+                let tpl = ''
 
-                console.log('data', data)
+                el.removeAttribute('items')
+                el.removeAttribute('pd-loop')
+
+                tpl = el.outerHTML.trim()
+
+                if (!Array.isArray(items)) {
+                    throw 'Items is not an array'
+                }
+
+                items.forEach((item, index) => html += loopHelper(item, index, tpl))
+                PD.$(el).replace(html)
             }
         })
     }

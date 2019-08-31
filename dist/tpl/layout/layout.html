@@ -9,7 +9,9 @@
                 <input id="menu-toggle" type="checkbox">
                 <div class="icon-menu"></div>
                 <ul class="menu">
-                    <li pd-loop data="generatePages"><a href="#" data-page="${item.key}" _listen="click:navClick">${item.title}</a></li>
+                    <li pd-loop items="generatePages">
+                        <a href="#" data-page="${item.key}" _listen="click:navClick">${item.title}</a>
+                    </li>
                 </ul>
             </nav>
         </div>
