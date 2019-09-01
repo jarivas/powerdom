@@ -4,6 +4,7 @@ import Template from "./modules/Template"
 import {select, selectAll, PowerDom} from "./modules/PowerDom"
 
 import './tags/pd-tpl'
+import './tags/pd-modal'
 
 const PD = {
     Config,

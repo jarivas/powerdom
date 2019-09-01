@@ -14,7 +14,7 @@ class Template {
 
                 Template._listen(element, content)
 
-                PD.$(element).setContent(content.firstElementChild)
+                PD.$(element).replace(content.childNodes)
 
                 if (element.dataset.hasOwnProperty('ready')) {
                     this[element.dataset.ready]()
