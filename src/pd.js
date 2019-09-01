@@ -5,8 +5,10 @@ import {select, selectAll, PowerDom} from "./modules/PowerDom"
 
 import './tags/pd-tpl'
 import './tags/pd-modal'
+import './tags/pd-page'
 
 const PD = {
+    $: PowerDom.$,
     Config,
     Request,
     Template,

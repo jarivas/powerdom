@@ -1,18 +1,18 @@
-class Login extends PD.Template {
+class Login {
     async process(){
         if(PD.Config.get('dev')) {
             this._.username.setValue('jose')
             this._.password.setValue('p4ssw0rt')
         }
 
-        PD.Importer.importModule('js/modules/TableBuilderHelper.js')
-            .then(TableBuilderHelper => PD.Modules.TableBuilderHelper = TableBuilderHelper)
+        import('/js/modules/TableBuilderHelper.js')
+            .then(module => PD.Modules.TableBuilderHelper = module.default)
 
-        PD.Importer.importModule('js/modules/FormBuilderHelper.js')
-            .then(FormBuilderHelper => PD.Modules.FormBuilderHelper = FormBuilderHelper)
+        import('/js/modules/FormBuilderHelper.js')
+            .then(module => PD.Modules.FormBuilderHelper = module.default)
 
-        return PD.Importer.importModule('js/modules/Auth.js').then(Auth => {
-            PD.Modules.Auth = new Auth()
+        return import('/js/modules/Auth.js').then(module => {
+            PD.Modules.Auth = new module.default()
         })
     }
 
@@ -33,7 +33,7 @@ class Login extends PD.Template {
 
     afterLogin(result) {
         if(result) {
-            PD.Pages.go('home')
+            PD.Page.go('home')
         }
     }
 }

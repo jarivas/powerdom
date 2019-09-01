@@ -146,5 +146,7 @@ customElements.define('pd-modal',
             this.notification = new Notification(this, modalBody)
             this.loading = new Loading(this, modalBody)
             this.modal = new Modal(this, modalBody)
+
+            PD.UI = this
         }
     })

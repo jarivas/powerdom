@@ -622,69 +622,87 @@ function loopHelper(item, index, tpl) {
 }
 
 class Template {
-    static process(element) {
+    static replace(element){
         const template = select('template', element);
         const content = template.content;
 
-        Template.loop(element, content).then(() => {
-                Template._elements(content);
-
-                Template._listen(element, content);
-
-                PowerDom.$(element).replace(content.childNodes);
-
-                if (element.dataset.hasOwnProperty('ready')) {
-                    this[element.dataset.ready]();
-                }
-            }
-        );
+        PowerDom.$(element).replace(content.childNodes);
     }
 
-    static async loop(element, content) {
+    static async process(element, module) {
+        const template = select('template', element);
+        const content = template.content;
+
+        module.loopHelper = loopHelper;
+
+        return Template._loop(module, content).then(() => {
+                Template._elements(content, module);
+
+                Template._listen(module, content);
+
+                PowerDom.$(element).replace(content.childNodes);
+            }
+        )
+    }
+
+    static async _loop(module, content) {
+        const promises = [];
+
         selectAll('[pd-loop]', content).forEach(el => {
             if (!el.hasAttribute('items')) {
                 PowerDom.$(el).remove();
             } else {
-                const dataAttr = el.getAttribute('items');
-                let items = (typeof element[dataAttr] === 'function') ? element[dataAttr]() : element[dataAttr];
-                let html = '';
-                let tpl = '';
-
-                el.removeAttribute('items');
-                el.removeAttribute('pd-loop');
-
-                tpl = el.outerHTML.trim();
-
-                if (!Array.isArray(items)) {
-                    throw 'Items is not an array'
-                }
-
-                items.forEach((item, index) => html += loopHelper(item, index, tpl));
-                PowerDom.$(el).replace(html);
+                promises.push(Template.loopHelper(el, module));
             }
         });
+
+        await Promise.all(promises);
+    }
+
+    static async loopHelper(el, module) {
+        const dataAttr = el.getAttribute('items');
+        let items = (typeof module[dataAttr] === 'function') ? module[dataAttr]() : module[dataAttr];
+        let html = '';
+        let tpl = '';
+
+        if(items instanceof Promise) {
+            await items.then(result => items = result);
+        }
+
+        el.removeAttribute('items');
+        el.removeAttribute('pd-loop');
+
+        tpl = el.outerHTML.trim();
+
+        if (!Array.isArray(items)) {
+            throw 'Items is not an array'
+        }
+
+        items.forEach((item, index) => html += module.loopHelper(item, index, tpl));
+
+        PowerDom.$(el).replace(html);
     }
 
     /**
      * Finds all the elements with _ as attribute and attach them to the current
      * instance
      */
-    static _elements(content) {
-        content._ = {};
+    static _elements(content, module) {
+        module._ = {};
 
-        selectAll('[_]', content).forEach(el => content._[el.getAttribute('_')] = $(el));
+        selectAll('[_]', content).forEach(el => module._[el.getAttribute('_')] = PowerDom.$(el));
     }
 
     /**
      * Finds all the elements with _listen="event1:callback1,event2:callback2" as attribute
      * and adds listener to those element where the callback is this.callback, this.callback2 ...
      */
-    static _listen(element, content) {
+    static _listen(module, content) {
         selectAll('[_listen]', content).forEach(el => {
             const strListeners = el.getAttribute('_listen');
 
             if (strListeners.length > 0) {
-                strListeners.split(",").forEach(strListener => Template._listenHelper(strListener, el, element));
+                strListeners.split(",").forEach(strListener => Template._listenHelper(strListener, el, module));
             }
 
             el.removeAttribute('_listen');
@@ -694,7 +712,7 @@ class Template {
     static _listenHelper(strListener, el, instance) {
         const [event, callback] = strListener.split(':');
 
-        PowerDom.$(el).listen(event, instance[callback].bind(instance));
+        PowerDom.$(el).listen(event, instance[callback]);
     }
 }
 
@@ -710,16 +728,11 @@ customElements.define('pd-tpl',
             Request.getRemoteText(this.dataset.template).then(html => {
                 PowerDom.$(this).setContent(html);
 
-                if (this.dataset.hasOwnProperty('class')) {
-                    import(this.dataset.class).then(trait => {
-                        for (let [name, method] of Object.entries(trait)) {
-                            this[name] = method;
-                        }
-
-                        Template.process(this);
-                    });
+                if (this.dataset.hasOwnProperty('module')) {
+                    import(this.dataset.module)
+                        .then(module => Template.process(this, new module.default()));
                 } else {
-                    Template.process(this);
+                    Template.replace(this);
                 }
             });
         }
@@ -871,10 +884,79 @@ customElements.define('pd-modal',
             this.notification = new Notification(this, modalBody);
             this.loading = new Loading(this, modalBody);
             this.modal = new Modal(this, modalBody);
+
+            PowerDom.UI = this;
         }
     });
 
-const PD = {
+customElements.define('pd-page',
+    class extends HTMLElement {
+        constructor() {
+            super();
+
+            this.pages = PD.Config.get('pages');
+            this.currentTitle = PD.$('title', document.head);
+
+            PD.Page = this;
+
+            this.go('default');
+        }
+
+        /**
+         * Get the object that describes the page
+         * @param {string} index
+         * @returns {Object}
+         */
+        getPage(index) {
+            const pages = this.pages;
+            let page = null;
+
+            if (index in pages)
+                page = pages[index];
+
+            return page
+        }
+
+        /**
+         * Triggers the mechanism to change the current page using an string
+         * @param {string} index
+         */
+        go(index) {
+            const page = this.getPage(index);
+
+            if (!page)
+                throw `Invalid page index: ${index}`
+
+            this.navigate(page);
+        }
+
+        /**
+         * Triggers the mechanism to change the current page using an Object
+         * @param {Object} page
+         */
+         navigate(page) {
+            this.currentTitle.setContent(page.title);
+
+            Request.getRemoteText(page.template).then(html => {
+                PD.$(this).setContent(html);
+
+                if (page.hasOwnProperty('module')) {
+                    import(page.module)
+                        .then(module => {
+                            const instance = new module.default();
+
+                            Template.process(this, instance)
+                                .then(instance.process.bind(instance));
+                        });
+                } else {
+                    Template.replace(this);
+                }
+            });
+        }
+    });
+
+const PD$1 = {
+    $: PowerDom.$,
     Config,
     Request,
     Template,
@@ -888,4 +970,4 @@ const PD = {
     }
 };
 
-window.PD = PD;
+window.PD = PD$1;

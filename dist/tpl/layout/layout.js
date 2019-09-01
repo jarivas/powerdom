@@ -1,20 +1,22 @@
-function generatePages() {
-    const result = []
-    const pages = PD.Config.get('pages')
+class Layout {
+    generatePages() {
+        const result = []
+        const pages = PD.Config.get('pages')
 
-    for (let [key, data] of Object.entries(pages)) {
-        if (data.navigation) {
-            result.push({key: key, title: data.title})
+        for (let [key, data] of Object.entries(pages)) {
+            if (data.navigation) {
+                result.push({key: key, title: data.title})
+            }
         }
+
+        return result
     }
 
-    return result
+    navClick(e) {
+        e.preventDefault()
+        const $link = PD.$(e.target)
+        PD.Page.go($link.getData('page'))
+    }
 }
 
-function navClick(e) {
-    e.preventDefault()
-    const $link = PD.$(e.target)
-    PD.Pages.go($link.getData('page'))
-}
-
-export {generatePages, navClick}
+export default Layout

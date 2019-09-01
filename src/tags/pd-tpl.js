@@ -14,16 +14,11 @@ customElements.define('pd-tpl',
             Request.getRemoteText(this.dataset.template).then(html => {
                 PD.$(this).setContent(html)
 
-                if (this.dataset.hasOwnProperty('class')) {
-                    import(this.dataset.class).then(trait => {
-                        for (let [name, method] of Object.entries(trait)) {
-                            this[name] = method
-                        }
-
-                        Template.process(this)
-                    })
+                if (this.dataset.hasOwnProperty('module')) {
+                    import(this.dataset.module)
+                        .then(module => Template.process(this, new module.default()))
                 } else {
-                    Template.process(this)
+                    Template.replace(this)
                 }
             })
         }
