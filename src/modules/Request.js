@@ -4,6 +4,38 @@
 class Request {
 
     /**
+     * Set and instance to PD.Request so can be used globally to access the API
+     */
+    static setConfigUrl() {
+        PD.Request = new Request(PD.Config.get('apiUrl'))
+    }
+
+    /**
+     * It gets whatever as plain text
+     * @param {string} url
+     */
+    static async getRemoteText(url, errorCb) {
+        return fetch(url).then(response => response.text()).catch(errorCb)
+    }
+
+    /**
+     * An universal api rest error handler
+     * @param {string|Object} error
+     */
+    static handleError(error) {
+        let message = ''
+
+        if (typeof error == "string")
+            message = error
+        else if (error.hasOwnProperty('message'))
+            message = error.message
+        else if (error.hasOwnProperty('error'))
+            message = error.error
+
+        console.error(error)
+    }
+
+    /**
      * @constructor
      * @param {string} url
      */
@@ -109,31 +141,6 @@ class Request {
         })
             .then(response => response.json())
             .catch(errorCb)
-    }
-
-    /**
-     * It gets whatever as plain text
-     * @param {string} url
-     */
-    static async getRemoteText(url, errorCb) {
-        return fetch(url).then(response => response.text()).catch(errorCb)
-    }
-
-    /**
-     * An universal api rest error handler
-     * @param {string|Object} error
-     */
-    static handleError(error) {
-        let message = ''
-
-        if (typeof error == "string")
-            message = error
-        else if (error.hasOwnProperty('message'))
-            message = error.message
-        else if (error.hasOwnProperty('error'))
-            message = error.error
-
-        console.error(error)
     }
 }
 export default Request

@@ -58,10 +58,9 @@ customElements.define('pd-page',
                             const instance = new module.default()
 
                             Template.process(this, instance)
-                                .then(instance.process.bind(instance))
                         })
                 } else {
-                    Template.replace(this)
+                    Template.setContent(this)
                 }
             })
         }

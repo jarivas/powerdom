@@ -1,8 +1,8 @@
-class Home extends PD.Template {
+class Home {
     async process() {
         this.controller = 'personalData'
 
-        return PD.Request.get(`${this.controller}/read`, {}, PD.Request.handleError)
+        return PD.Request.get(`${this.controller}/read`, {}, PD.RequestHelper.handleError)
             .then(r => {
                 if(typeof r !== "object") return
 
@@ -27,7 +27,7 @@ class Home extends PD.Template {
             }
         }
 
-        PD.Request.post(`${this.controller}/save`, data, PD.Request.handleError, {token: PD.Modules.Auth.token})
+        PD.Request.post(`${this.controller}/save`, data, PD.RequestHelper.handleError, {token: PD.Auth.token})
             .then(console.log)
     }
 }

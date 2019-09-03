@@ -12,7 +12,8 @@ class Auth {
             username: username,
             password: password
         }
-        return PD.Request.post('auth/login', data, PD.Request.handleError)
+
+        return PD.Request.post('auth/login', data, PD.RequestHelper.handleError)
             .then(this.handleResponse.bind(this))
     }
 

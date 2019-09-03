@@ -5,14 +5,18 @@ function loopHelper(item, index, tpl) {
 }
 
 class Template {
-    static replace(element){
+    static setContent(element, replace) {
         const template = select('template', element)
         const content = template.content
 
-        PD.$(element).replace(content.childNodes)
+        if (typeof replace === 'undefined') {
+            PD.$(element).setContent(content.children)
+        } else {
+            PD.$(element).replace(content.children)
+        }
     }
 
-    static async process(element, module) {
+    static async process(element, module, replace) {
         const template = select('template', element)
         const content = template.content
 
@@ -23,7 +27,15 @@ class Template {
 
                 Template._listen(module, content)
 
-                PD.$(element).replace(content.childNodes)
+                if (typeof replace === 'undefined') {
+                    PD.$(element).setContent(content.children)
+                } else {
+                    PD.$(element).replace(content.children)
+                }
+
+                if (typeof module.process !== 'undefined') {
+                    module.process()
+                }
             }
         )
     }
@@ -48,7 +60,7 @@ class Template {
         let html = ''
         let tpl = ''
 
-        if(items instanceof Promise) {
+        if (items instanceof Promise) {
             await items.then(result => items = result)
         }
 
@@ -95,7 +107,7 @@ class Template {
     static _listenHelper(strListener, el, instance) {
         const [event, callback] = strListener.split(':')
 
-        PD.$(el).listen(event, instance[callback])
+        PD.$(el).listen(event, instance[callback].bind(instance))
     }
 }
 

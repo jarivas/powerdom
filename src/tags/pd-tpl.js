@@ -1,4 +1,3 @@
-import {PowerDom as PD} from "../modules/PowerDom"
 import Request from "../modules/Request"
 import Template from "../modules/Template"
 
@@ -16,9 +15,13 @@ customElements.define('pd-tpl',
 
                 if (this.dataset.hasOwnProperty('module')) {
                     import(this.dataset.module)
-                        .then(module => Template.process(this, new module.default()))
+                        .then(module => {
+                            const instance = new module.default()
+
+                            Template.process(this, instance, true)
+                        })
                 } else {
-                    Template.replace(this)
+                    Template.setContent(this, true)
                 }
             })
         }

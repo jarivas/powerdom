@@ -1,26 +1,26 @@
-class FormBuilderSocial extends PD.Template {
+class FormBuilderPost {
     getInputs() {
-        this.controller = 'social'
+        this.controller = 'post'
         return [
             {
                 type: "text",
-                placeholder: "Url",
+                placeholder: "Title",
                 required: 'required',
-                _: "url",
+                _: "title",
+                _listen: "keypress:listenEnter"
+            },
+            {
+                textarea: true,
+                placeholder: "Body",
+                required: 'required',
+                _: "body",
                 _listen: "keypress:listenEnter"
             },
             {
                 type: "text",
-                placeholder: "Text",
+                placeholder: "Tags",
                 required: 'required',
-                _: "text",
-                _listen: "keypress:listenEnter"
-            },
-            {
-                type: "text",
-                placeholder: "Icon",
-                required: 'required',
-                _: "icon",
+                _: "tags",
                 _listen: "keypress:listenEnter"
             }
         ]
@@ -33,8 +33,8 @@ class FormBuilderSocial extends PD.Template {
     }
 
     saveForm(){
-        PD.Modules.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
+        PD.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
     }
 }
 
-export default FormBuilderSocial
+export default FormBuilderPost

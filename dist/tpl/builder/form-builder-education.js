@@ -1,26 +1,19 @@
-class FormBuilderPosition extends PD.Template {
+class FormBuilderEducation {
     getInputs() {
-        this.controller = 'position'
+        this.controller = 'education'
         return [
             {
                 type: "text",
-                placeholder: "Company",
+                placeholder: "Notes",
                 required: 'required',
-                _: "company",
+                _: "notes",
                 _listen: "keypress:listenEnter"
             },
             {
                 type: "text",
-                placeholder: "Name",
+                placeholder: "SchoolName",
                 required: 'required',
-                _: "name",
-                _listen: "keypress:listenEnter"
-            },
-            {
-                type: "test",
-                placeholder: "Description",
-                required: 'required',
-                _: "description",
+                _: "school_name",
                 _listen: "keypress:listenEnter"
             },
             {
@@ -47,8 +40,8 @@ class FormBuilderPosition extends PD.Template {
     }
 
     saveForm(){
-        PD.Modules.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
+        PD.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
     }
 }
 
-export default FormBuilderPosition
+export default FormBuilderEducation

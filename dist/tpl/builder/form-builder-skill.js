@@ -1,6 +1,6 @@
-class FormBuilderLanguage extends PD.Template {
+class FormBuilderSkill {
     getInputs() {
-        this.controller = 'language'
+        this.controller = 'skill'
         return [
             {
                 type: "text",
@@ -10,10 +10,10 @@ class FormBuilderLanguage extends PD.Template {
                 _listen: "keypress:listenEnter"
             },
             {
-                type: "text",
-                placeholder: "Level",
+                type: "number",
+                placeholder: "Percentage",
                 required: 'required',
-                _: "level",
+                _: "percentage",
                 _listen: "keypress:listenEnter"
             }
         ]
@@ -26,8 +26,8 @@ class FormBuilderLanguage extends PD.Template {
     }
 
     saveForm(){
-        PD.Modules.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
+        PD.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
     }
 }
 
-export default FormBuilderLanguage
+export default FormBuilderSkill

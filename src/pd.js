@@ -1,7 +1,6 @@
 import Config from "./modules/Config"
-import Request from "./modules/Request"
-import Template from "./modules/Template"
 import {select, selectAll, PowerDom} from "./modules/PowerDom"
+import RequestHelper from "./modules/Request"
 
 import './tags/pd-tpl'
 import './tags/pd-modal'
@@ -10,15 +9,11 @@ import './tags/pd-page'
 const PD = {
     $: PowerDom.$,
     Config,
-    Request,
-    Template,
+    RequestHelper,
     select,
     selectAll,
-    PowerDom,
-    Modules: {
-        Auth: {
-            isAuth: () => {return true}
-        }
+    Auth: {
+        isAuth: () => {return true}
     }
 }
 

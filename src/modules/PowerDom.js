@@ -5,7 +5,7 @@ const helper = {
     POSITION_AFTER_BEGIN: 'afterbegin',
     POSITION_BEFORE_END: 'beforeend',
     POSITION_AFTER_END: 'afterend',
-    insertAdjacent: function(element, position, html) {
+    insertAdjacent: function (element, position, html) {
         if (typeof html == 'string') {
             element.insertAdjacentHTML(position, html)
         } else if (html instanceof NodeList) {
@@ -13,6 +13,10 @@ const helper = {
                 if (n.nodeType === ELEMENT_NODE)
                     element.insertAdjacentElement(position, n)
             })
+        } else if (html instanceof HTMLCollection) {
+            while (html.length) {
+                element.insertAdjacentElement(position, html.item(0))
+            }
         } else {
             element.insertAdjacentElement(position, html)
         }
@@ -23,8 +27,8 @@ const helper = {
 class PowerDom {
 
     /**
-     * A shortcut to instantiate 
-     * @param {string|Document|DocumentFragment|Element} selector
+     * A shortcut to instantiate
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
      * @param {Document|DocumentFragment|Element} [element]
      * @returns {PowerDom}
      */
@@ -62,15 +66,15 @@ class PowerDom {
     }
 
     /**
-     * 
-     * @param {Element[]|NodeList} elements 
+     *
+     * @param {Element[]|NodeList} elements
      */
     constructor(elements) {
         this.elements = elements
     }
 
     /**
-     * @param {string|Document|DocumentFragment|Element} html 
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} html
      * @returns {PowerDom} this
      */
     setContent(html) {
@@ -86,7 +90,7 @@ class PowerDom {
     }
 
     /**
-     * Return a string or strings with the contents 
+     * Return a string or strings with the contents
      * @returns {string|string[]}
      */
     getContent() {
@@ -99,7 +103,7 @@ class PowerDom {
 
     /**
      * Set the property value
-     * @param {string|number} value 
+     * @param {string|number} value
      * @returns {PowerDom} this
      */
     setValue(value) {
@@ -122,7 +126,7 @@ class PowerDom {
 
     /**
      * Replace element(s) with a html string
-     * @param {string|Document|DocumentFragment|Element} html 
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} html
      */
     replace(html) {
         this.elements.forEach(element => {
@@ -136,7 +140,7 @@ class PowerDom {
 
     /**
      * Inserts the resulting nodes into the DOM tree inside the element, before its first child.
-     * @param {string|Document|DocumentFragment|Element} html 
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} html
      * @returns {PowerDom} this
      */
     prepend(html) {
@@ -149,7 +153,7 @@ class PowerDom {
 
     /**
      * Inserts the resulting nodes into the DOM tree inside the element, after its last child.
-     * @param {string|Document|DocumentFragment|Element} html 
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} html
      * @returns {PowerDom} this
      */
     append(html) {
@@ -161,7 +165,7 @@ class PowerDom {
 
     /**
      * Inserts the resulting nodes into the DOM tree before the element itself
-     * @param {string|Document|DocumentFragment|Element} html 
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} html
      * @returns {PowerDom} this
      */
     insertBefore(html) {
@@ -174,7 +178,7 @@ class PowerDom {
 
     /**
      * Inserts the resulting nodes into the DOM tree after the element itself
-     * @param {string|Document|DocumentFragment|Element} html 
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} html
      * @returns {PowerDom} this
      */
     insertAfter(html) {
@@ -186,7 +190,7 @@ class PowerDom {
     }
 
     /**
-     * Returns an string or string[] with the copies  
+     * Returns an string or string[] with the copies
      * @returns {string|string[]}
      */
     getHtml() {
@@ -217,7 +221,7 @@ class PowerDom {
             while (element.hasChildNodes())
                 element.removeChild(element.lastChild)
 
-            if(element.parentElement)
+            if (element.parentElement)
                 element.parentElement.removeChild(element)
         })
 
@@ -238,7 +242,7 @@ class PowerDom {
 
     /**
      * Invokes the function previous set for this event
-     * @param {string} event 
+     * @param {string} event
      */
     fire(event) {
         this.elements.forEach(element => element.dispatchEvent(new CustomEvent(event)))
@@ -261,7 +265,7 @@ class PowerDom {
     /**
      * Add specified class values. If these classes already exist in attribute of the element,
      * then they are ignored.
-     * @param {string} cssClass 
+     * @param {string} cssClass
      */
     addClass(cssClass) {
         this.elements.forEach(element => element.classList.add(cssClass))
@@ -271,7 +275,7 @@ class PowerDom {
 
     /**
      * Remove specified class values. Removing a class that does not exist does NOT throw an error.
-     * @param {string} cssClass 
+     * @param {string} cssClass
      */
     removeClass(cssClass) {
         this.elements.forEach(element => element.classList.remove(cssClass))
@@ -290,7 +294,7 @@ class PowerDom {
 
     /**
      * If the class is present will be removed and viceversa
-     * @param {string} cssClass 
+     * @param {string} cssClass
      */
     toggleClass(cssClass) {
         this.elements.forEach(element => element.classList.toggle(cssClass))
@@ -300,8 +304,8 @@ class PowerDom {
 
     /**
      * Sets an attribute with its value
-     * @param {string} index 
-     * @param {string} value 
+     * @param {string} index
+     * @param {string} value
      * @returns {PowerDom} this
      */
     setAttribute(index, value) {
@@ -312,7 +316,7 @@ class PowerDom {
 
     /**
      * removes an attribute
-     * @param {string} index 
+     * @param {string} index
      * @returns {PowerDom} this
      */
     removeAttribute(index) {
@@ -347,8 +351,8 @@ class PowerDom {
 
     /**
      * Sets a new member on the elements dataset
-     * @param {string} index 
-     * @param {string} value 
+     * @param {string} index
+     * @param {string} value
      * @returns {PowerDom} this
      */
     setData(index, value) {
@@ -359,7 +363,7 @@ class PowerDom {
 
     /**
      * Get the value or values
-     * @param {string} index 
+     * @param {string} index
      * @returns {string|string[]}
      */
     getData(index) {
@@ -385,20 +389,20 @@ class PowerDom {
         this.elements.forEach(element => {
             const node = select(selector, element)
 
-            if(node)
+            if (node)
                 data.push(node)
         })
 
         return (data.length > 1) ? data : data[0]
     }
-    
+
     selectAll(selector) {
         let data = []
 
         this.elements.forEach(element => {
             const nodeList = selectAll(selector, element)
-            
-            if(nodeList.length > 0)
+
+            if (nodeList.length > 0)
                 data = data.concat(nodeList)
         })
 
@@ -430,7 +434,7 @@ function selectAll(selector, element) {
     return element.querySelectorAll(selector)
 }
 
-export { PowerDom, select, selectAll }
+export {PowerDom, select, selectAll}
 /**
  * @callback errorCallback
  * @param {object} error

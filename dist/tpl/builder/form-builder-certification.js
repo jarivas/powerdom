@@ -1,4 +1,4 @@
-class FormBuilderCertification extends PD.Template {
+class FormBuilderCertification {
     getInputs() {
         this.controller = 'certification'
         return [
@@ -33,7 +33,7 @@ class FormBuilderCertification extends PD.Template {
     }
 
     saveForm(){
-        PD.Modules.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
+        PD.FormBuilderHelper.saveForm(this._, this._.id.getValue(), this.controller)
     }
 }
 

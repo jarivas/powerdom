@@ -6,13 +6,13 @@ class Login {
         }
 
         import('/js/modules/TableBuilderHelper.js')
-            .then(module => PD.Modules.TableBuilderHelper = module.default)
+            .then(module => PD.TableBuilderHelper = module.default)
 
         import('/js/modules/FormBuilderHelper.js')
-            .then(module => PD.Modules.FormBuilderHelper = module.default)
+            .then(module => PD.FormBuilderHelper = module.default)
 
         return import('/js/modules/Auth.js').then(module => {
-            PD.Modules.Auth = new module.default()
+            PD.Auth = new module.default()
         })
     }
 
@@ -27,7 +27,7 @@ class Login {
         const p = this._.password.getValue()
 
         if (u != '' && p != '') {
-            PD.Modules.Auth.login(u, p).then(this.afterLogin)
+            PD.Auth.login(u, p).then(this.afterLogin)
         }
     }
 

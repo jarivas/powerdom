@@ -57,7 +57,7 @@ class TableBuilderHelper {
     static delete(controller, id) {
         PD.Modal.close()
         PD.Loading.show()
-        PD.Request.delete(`${controller}/deleteOne`, {id: id}, PD.Request.handleError, {token: PD.Modules.Auth.token})
+        PD.Request.delete(`${controller}/deleteOne`, {id: id}, PD.RequestHelper.handleError, {token: PD.Auth.token})
             .then(result => {
                 PD.Loading.close()
 

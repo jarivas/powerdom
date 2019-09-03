@@ -16,10 +16,10 @@ class FormBuilderHelper {
 
         PD.Loading.show();
         if(id == '') {
-            PD.Request.post(`${controller}/create`, data, PD.Request.handleError, {token: PD.Modules.Auth.token})
+            PD.Request.post(`${controller}/create`, data, PD.RequestHelper.handleError, {token: PD.Auth.token})
                 .then(FormBuilderHelper.handleResponse)
         } else {
-            PD.Request.put(`${controller}/updateOne`, {id: id}, data, PD.Request.handleError, {token: PD.Modules.Auth.token})
+            PD.Request.put(`${controller}/updateOne`, {id: id}, data, PD.RequestHelper.handleError, {token: PD.Auth.token})
             .then(FormBuilderHelper.handleResponse)
         }
     }

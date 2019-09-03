@@ -1,24 +1,20 @@
-import {PowerDom as PD} from "../modules/PowerDom"
+const loadingHtml = '<div class="center"><span class="load"></span></div>'
+const closeBtn = '<span class="close">&times;</span>'
+let modal = null
+let modalBody = null
 
-function show(modal) {
+function show() {
     modal.style.display = "block";
 }
 
-function close(modal) {
+function close() {
     modal.style.display = "none";
 }
-
-const closeBtn = '<span class="close">&times;</span>'
 
 /**
  * Displays a text as a notification
  */
 class Notification {
-    constructor(modal, modalBody) {
-        this.modal = modal
-        this.modalBody = modalBody
-    }
-
     /**
      * Displays the text for a period of time, default 2 seconds
      * @param {string} message
@@ -28,13 +24,11 @@ class Notification {
         if (typeof displayTime == 'undefined')
             displayTime = 2000
 
-        this.modalBody.setContent(message)
+        modalBody.setContent(`<div class="center">${message}</div>`)
 
-        show(this.modal)
+        show()
 
-        setTimeout(() => {
-            close(this.modal)
-        }, displayTime)
+        setTimeout(close, displayTime)
     }
 }
 
@@ -42,24 +36,17 @@ class Notification {
  * Displays a spinner
  */
 class Loading {
-    constructor(modal, modalBody) {
-        this.modal = modal
-        this.modalBody = modalBody
-    }
-
     /**
      * Displays a spinner for a period of time
      * @param {int} displayTime milliseconds
      */
     show(displayTime) {
-        this.modalBody.setContent('<span class="load"></span>')
+        modalBody.setContent(loadingHtml)
 
-        show(this.modal)
+        show()
 
         if (typeof displayTime != 'undefined') {
-            setTimeout(() => {
-                close(this.modal)
-            }, displayTime)
+            setTimeout(close, displayTime)
         }
     }
 
@@ -67,7 +54,7 @@ class Loading {
      * Hides the spinner and the UI is usable again
      */
     close() {
-        close(this.modal)
+        close()
     }
 }
 
@@ -75,9 +62,7 @@ class Loading {
  * Displays an HTML in a pop up blocking the rest of the UI
  */
 class Modal {
-    constructor(modal, modalBody) {
-        this.modal = modal
-        this.modalBody = modalBody
+    constructor() {
         this.row = null
     }
 
@@ -88,12 +73,12 @@ class Modal {
      */
     setContent(content, addCloseBtn) {
         if(typeof addCloseBtn != 'undefined' && addCloseBtn) {
-            this.row = PD.$('.row', this.modal)
+            this.row = PD.$('.row', modal)
             this.row.prepend(closeBtn)
-            PD.$('span.close', this.modal).listen('click', this.close.bind(this))
+            PD.$('span.close', modal).listen('click', this.close.bind(this))
         }
 
-        this.modalBody.setContent(content)
+        modalBody.setContent(content)
     }
 
     /**
@@ -101,7 +86,7 @@ class Modal {
      * blocking the rest of the UI
      */
     show() {
-        show(this.modal)
+        show()
     }
 
     /**
@@ -109,11 +94,11 @@ class Modal {
      */
     close() {
         if (this.row != null) {
-            PD.$('span.close', this.modal).remove()
+            PD.$('span.close', modal).remove()
             this.row = null
         }
 
-        close(this.modal)
+        close()
     }
 }
 
@@ -141,12 +126,11 @@ customElements.define('pd-modal',
             }
 
             // UI tools
-            const modalBody = PD.$('.modal-body')
+            modal = this
+            modalBody = PD.$('.modal-body', this)
 
-            this.notification = new Notification(this, modalBody)
-            this.loading = new Loading(this, modalBody)
-            this.modal = new Modal(this, modalBody)
-
-            PD.UI = this
+            PD.Notification = new Notification()
+            PD.Loading = new Loading()
+            PD.Modal = new Modal()
         }
     })
