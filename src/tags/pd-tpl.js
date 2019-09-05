@@ -6,15 +6,15 @@ customElements.define('pd-tpl',
         constructor() {
             super()
 
-            if (!this.dataset.hasOwnProperty('template')) {
+            if (!this.hasAttribute('template')) {
                 throw 'Template tag without data-template property'
             }
 
-            Request.getRemoteText(this.dataset.template).then(html => {
+            Request.getRemoteText(this.getAttribute('template')).then(html => {
                 PD.$(this).setContent(html)
 
-                if (this.dataset.hasOwnProperty('module')) {
-                    import(this.dataset.module)
+                if (this.hasAttribute('module')) {
+                    import(this.getAttribute('module'))
                         .then(module => {
                             const instance = new module.default()
 

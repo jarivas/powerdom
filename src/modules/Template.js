@@ -1,6 +1,6 @@
 import {selectAll, select, PowerDom as PD} from "./PowerDom"
 
-function loopHelper(item, index, tpl) {
+function evalHelper(item, index, tpl) {
     return eval('`' + tpl + '`')
 }
 
@@ -20,9 +20,10 @@ class Template {
         const template = select('template', element)
         const content = template.content
 
-        module.loopHelper = loopHelper
+        module.evalHelper = evalHelper
 
         return Template._loop(module, content).then(() => {
+            Template._if(module, content).then(() => {
                 Template._elements(content, module)
 
                 Template._listen(module, content)
@@ -36,8 +37,8 @@ class Template {
                 if (typeof module.process !== 'undefined') {
                     module.process()
                 }
-            }
-        )
+            })
+        })
     }
 
     static async _loop(module, content) {
@@ -56,26 +57,64 @@ class Template {
 
     static async loopHelper(el, module) {
         const dataAttr = el.getAttribute('items')
-        let items = (typeof module[dataAttr] === 'function') ? module[dataAttr]() : module[dataAttr]
-        let html = ''
-        let tpl = ''
 
-        if (items instanceof Promise) {
-            await items.then(result => items = result)
+        if (dataAttr == null) {
+            return
         }
+
+        let items = (typeof module[dataAttr] === 'function') ? module[dataAttr]() : module[dataAttr]
 
         el.removeAttribute('items')
         el.removeAttribute('pd-loop')
 
-        tpl = el.outerHTML.trim()
-
-        if (!Array.isArray(items)) {
-            throw 'Items is not an array'
+        if (items instanceof Promise) {
+            return items.then(result => this.loopFinalHelper(el, result, dataAttr, module))
         }
 
-        items.forEach((item, index) => html += module.loopHelper(item, index, tpl))
+        this.loopFinalHelper(el, items, dataAttr, module)
+    }
+
+    static loopFinalHelper(el, items, dataAttr, module) {
+        const tpl = el.outerHTML.trim()
+        let html = ''
+
+        if (!Array.isArray(items)) {
+            throw `Items ${dataAttr} is not an array`
+        }
+
+        if(tpl.includes('${')) {
+            items.forEach((item, index) => html += module.evalHelper(item, index, tpl))
+        } else {
+            items.forEach(item => html += item)
+        }
+
 
         PD.$(el).replace(html)
+    }
+
+    static async _if(module, content) {
+        const promises = []
+
+        selectAll('[pd-if]', content).forEach(el => {
+            if (!el.hasAttribute('condition')) {
+                PD.$(el).remove()
+            } else {
+                promises.push(Template._ifHelper(el))
+            }
+        })
+
+        await Promise.all(promises)
+    }
+
+    static async _ifHelper(el) {
+        const condition = el.getAttribute('condition')
+
+        el.removeAttribute('condition')
+        el.removeAttribute('pd-if')
+
+        if (condition === 'undefined' || condition === 'null' || !new Boolean(condition)) {
+            PD.$(el).remove()
+        }
     }
 
     /**

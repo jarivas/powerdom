@@ -14,7 +14,8 @@ class FormBuilderHelper {
             }
         }
 
-        PD.Loading.show();
+        PD.Loading.show()
+
         if(id == '') {
             PD.Request.post(`${controller}/create`, data, PD.RequestHelper.handleError, {token: PD.Auth.token})
                 .then(FormBuilderHelper.handleResponse)

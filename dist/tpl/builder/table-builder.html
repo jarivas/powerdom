@@ -1,19 +1,17 @@
-<div class="row">
-    <div class="section">
-        <table>
-            <thead>
-                <tr>
-                    <template loop-array items="getHeaders()">
-                        <th>${item}</th>
-                    </template>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <template loop-array items="getRows()">
-                    <tr>${item}</tr>
-                </template>
-            </tbody>
-        </table>
+<template>
+    <div class="row">
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th pd-loop items="getHeaders">${item}</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr pd-loop items="getRows"></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</template>
