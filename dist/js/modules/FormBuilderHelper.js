@@ -28,7 +28,7 @@ class FormBuilderHelper {
     static handleResponse(result){
         PD.Loading.close()
 
-        if(result === true) return PD.Pages.go(FormBuilderHelper.prototype.controller)
+        if(result === true) return PD.Page.go(FormBuilderHelper.prototype.controller)
 
         console.error(result)
     }

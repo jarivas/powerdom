@@ -49,8 +49,8 @@ class TableBuilderHelper {
     static showDelete(e, callbackDelete) {
         const id = e.target.dataset.id
 
-        PD.Modal.setContent(`<button class="btn solid red">Delete</button>`, true)
-        PD.$('dialog button.red').listen('click', () => callbackDelete(id))
+        PD.Modal.setContent(`<div class="center">This action can not be undone <button class="btn solid red">Delete</button></div>`, true)
+        PD.$('pd-modal button.red').listen('click', () => callbackDelete(id))
         PD.Modal.show()
     }
 
@@ -61,7 +61,7 @@ class TableBuilderHelper {
             .then(result => {
                 PD.Loading.close()
 
-                if (result === true) return PD.Pages.go(controller)
+                if (result === true) return PD.Page.go(controller)
 
                 console.error(result)
             })
