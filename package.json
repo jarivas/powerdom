@@ -6,11 +6,11 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "sass": "node-sass --include-path node_modules/vital-css/dist/scss src/scss -o dist/css --output-style compressed",
     "build": "rollup --config --watch",
     "esdoc": "./node_modules/.bin/esdoc",
-    "dev": "cd dist && php -S localhost:8000"
+    "demo-admin": "cd dist/demo/admin && php -S localhost:8000",
+    "demo-cv": "cd dist/demo/cv && php -S localhost:8000"
   },
   "repository": {
     "type": "git",

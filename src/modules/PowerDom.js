@@ -208,8 +208,6 @@ class PowerDom {
         this.elements.forEach(element => {
             while (element.hasChildNodes())
                 element.removeChild(element.lastChild)
-
-            element.remove()
         })
     }
 

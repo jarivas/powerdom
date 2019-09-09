@@ -10,6 +10,10 @@ customElements.define('pd-tpl',
                 throw 'Template tag without data-template property'
             }
 
+            this.loadContent()
+        }
+
+        loadContent() {
             Request.getRemoteText(this.getAttribute('template')).then(html => {
                 PD.$(this).setContent(html)
 
@@ -18,11 +22,17 @@ customElements.define('pd-tpl',
                         .then(module => {
                             const instance = new module.default()
 
-                            Template.process(this, instance, true)
+                            Template.process(this, instance)
                         })
                 } else {
-                    Template.setContent(this, true)
+                    Template.setContent(this)
                 }
             })
+        }
+
+        refresh() {
+            PD.$(this).empty()
+
+            this.loadContent()
         }
     })

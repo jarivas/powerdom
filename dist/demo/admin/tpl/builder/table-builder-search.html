@@ -1,0 +1,39 @@
+<template>
+    <div class="row">
+        <div class="section">
+            <div id="form-search" class="full-width-forms">
+                <div>
+                    <label><input type="text" placeholder="Search" _="search"></label>
+                </div>
+                <div class="clear"></div>
+                <div class="col-1-4">
+                    <label><input type="number" placeholder="Max Rows" value="50" _="limit" required></label>
+                </div>
+                <div class="col-1-4">
+                    <label><input type="number" placeholder="Page" value="1" _="page" required></label>
+                </div>
+                <div class="col-1-4">
+                    <label><button class="btn solid orange" _="searchBtn" _listen="click:search">Search</button></label>
+                </div>
+                <div class="col-1-4">
+                    <label><button class="btn solid yellow" _="searchBtn" _listen="click:refresh">Reset</button></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="section">
+            <table>
+                <thead>
+                <tr>
+                    <th pd-loop items="getHeaders"></th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr pd-loop items="getRows"></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

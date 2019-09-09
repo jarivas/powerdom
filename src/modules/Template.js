@@ -85,9 +85,9 @@ class Template {
         if(tpl.includes('${')) {
             items.forEach((item, index) => html += module.evalHelper(item, index, tpl))
         } else {
-            items.forEach(item => html += item)
+            const tag = el.tagName
+            items.forEach(item => html += `<${tag}>${item}</${tag}>`)
         }
-
 
         PD.$(el).replace(html)
     }
