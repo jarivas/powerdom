@@ -58,6 +58,13 @@ export default {
             title: "Social",
             navigation: true,
             auth: true
+        },
+        settings: {
+            template: "/pages/settings.html",
+            module: "/pages/settings.js",
+            title: "Settings",
+            navigation: true,
+            auth: true
         }
     }
 }
