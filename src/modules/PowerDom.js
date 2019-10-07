@@ -301,6 +301,31 @@ class PowerDom {
     }
 
     /**
+     *
+     * @param index
+     * @returns {boolean}
+     */
+    hasAttribute(index) {
+        if (this.elements.length > 1) {
+            return this.elements.every(el => el.hasAttribute(index))
+        }
+        return this.elements[0].hasAttribute(index)
+    }
+
+    /**
+     * get an attribute
+     * @param {string} index
+     * @returns {string|string[]} this
+     */
+    getAttribute(index) {
+        const values = []
+
+        this.elements.forEach(element => values.push(element.getAttribute(index)))
+
+        return (values.length > 1) ? values : values[0]
+    }
+
+    /**
      * Sets an attribute with its value
      * @param {string} index
      * @param {string} value
@@ -321,6 +346,18 @@ class PowerDom {
         this.elements.forEach(element => element.removeAttribute(index))
 
         return this
+    }
+
+    /**
+     *
+     * @param index
+     * @returns {boolean}
+     */
+    hasProperty(index) {
+        if (this.elements.length > 1) {
+            return this.elements.every(el => el.hasOwnProperty(index))
+        }
+        return this.elements[0].hasOwnProperty(index)
     }
 
     /**
@@ -381,6 +418,30 @@ class PowerDom {
         return (elements.length > 1) ? elements : elements[0]
     }
 
+    /**
+     * method traverses parents (heading toward the document root) of the Element until it finds a node that matches the provided selectorString.
+     * Will return itself or the matching ancestor. If no such element exists, it returns [].
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
+     * @returns {[]}
+     */
+    ancestor(selector) {
+        const data = []
+
+        this.elements.forEach(element => {
+            const node = element.closest(selector)
+
+            if (node)
+                data.push(node)
+        })
+
+        return (data.length > 1) ? data : data[0]
+    }
+
+    /**
+     *
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
+     * @returns {Element[]|NodeList}
+     */
     select(selector) {
         const data = []
 
@@ -394,6 +455,11 @@ class PowerDom {
         return (data.length > 1) ? data : data[0]
     }
 
+    /**
+     *
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
+     * @returns {Element[]|NodeList}
+     */
     selectAll(selector) {
         let data = []
 

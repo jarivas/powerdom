@@ -131,11 +131,14 @@ class Request {
         if(typeof headers == 'undefined')
             headers = {}
 
-        headers['Content-Type'] = 'application/json'
+        path += '?'
+
+        for(let [param,value] of Object.entries(data)) {
+            path += `${param}=${encodeURIComponent(value)}&`
+        }
 
         return fetch(this.url + path, {
             method: 'delete',
-            body: data ? JSON.stringify(data) : null,
             mode: 'cors',
             headers: new Headers(headers)
         })

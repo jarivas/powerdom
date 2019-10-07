@@ -64,18 +64,19 @@ class Template {
 
         let items = (typeof module[dataAttr] === 'function') ? module[dataAttr]() : module[dataAttr]
 
-        el.removeAttribute('items')
         el.removeAttribute('pd-loop')
+        el.removeAttribute('items')
 
         if (items instanceof Promise) {
-            return items.then(result => this.loopFinalHelper(el, result, dataAttr, module))
+            return items.then(promisedItems => Template.loopReplace(el, promisedItems, dataAttr, module))
         }
 
-        this.loopFinalHelper(el, items, dataAttr, module)
+        Template.loopReplace(el, items, dataAttr, module)
     }
 
-    static loopFinalHelper(el, items, dataAttr, module) {
-        const tpl = el.outerHTML.trim()
+    static loopReplace(el, items, dataAttr, module) {
+        const subEl = select('[pd-sub-loop]', el)
+        let tpl = el.outerHTML.trim()
         let html = ''
 
         if (!Array.isArray(items)) {
@@ -83,13 +84,36 @@ class Template {
         }
 
         if(tpl.includes('${')) {
-            items.forEach((item, index) => html += module.evalHelper(item, index, tpl))
+            const dataAttrSub = (subEl != null && subEl.hasAttribute('items'))
+                ? subEl.getAttribute('items') : null
+
+            items.forEach((item, index) => {
+                if (item.hasOwnProperty(dataAttrSub)) {
+                    tpl = Template.loopSubItems(el, subEl, item[subEl.getAttribute('items')], module)
+                }
+
+                html += module.evalHelper(item, index, tpl)
+            })
         } else {
             const tag = el.tagName
             items.forEach(item => html += `<${tag}>${item}</${tag}>`)
         }
 
         PD.$(el).replace(html)
+    }
+
+    static loopSubItems(el, subEl, subItems, module) {
+        subEl.removeAttribute('pd-sub-loop')
+        subEl.removeAttribute('items')
+
+        const tpl = subEl.outerHTML.trim()
+        let html = ''
+
+        subItems.forEach((subItem, index) => html += module.evalHelper(subItem, index, tpl))
+
+        PD.$(subEl).replace(html)
+
+        return el.outerHTML.trim()
     }
 
     static async _if(module, content) {
@@ -135,7 +159,7 @@ class Template {
         selectAll('[_listen]', content).forEach(el => {
             const strListeners = el.getAttribute('_listen')
 
-            if (strListeners.length > 0) {
+            if (strListeners !== 'undefined' && strListeners.length > 0) {
                 strListeners.split(",").forEach(strListener => Template._listenHelper(strListener, el, module))
             }
 

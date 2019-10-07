@@ -342,6 +342,31 @@ class PowerDom {
     }
 
     /**
+     *
+     * @param index
+     * @returns {boolean}
+     */
+    hasAttribute(index) {
+        if (this.elements.length > 1) {
+            return this.elements.every(el => el.hasAttribute(index))
+        }
+        return this.elements[0].hasAttribute(index)
+    }
+
+    /**
+     * get an attribute
+     * @param {string} index
+     * @returns {string|string[]} this
+     */
+    getAttribute(index) {
+        const values = [];
+
+        this.elements.forEach(element => values.push(element.getAttribute(index)));
+
+        return (values.length > 1) ? values : values[0]
+    }
+
+    /**
      * Sets an attribute with its value
      * @param {string} index
      * @param {string} value
@@ -362,6 +387,18 @@ class PowerDom {
         this.elements.forEach(element => element.removeAttribute(index));
 
         return this
+    }
+
+    /**
+     *
+     * @param index
+     * @returns {boolean}
+     */
+    hasProperty(index) {
+        if (this.elements.length > 1) {
+            return this.elements.every(el => el.hasOwnProperty(index))
+        }
+        return this.elements[0].hasOwnProperty(index)
     }
 
     /**
@@ -422,6 +459,30 @@ class PowerDom {
         return (elements.length > 1) ? elements : elements[0]
     }
 
+    /**
+     * method traverses parents (heading toward the document root) of the Element until it finds a node that matches the provided selectorString.
+     * Will return itself or the matching ancestor. If no such element exists, it returns [].
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
+     * @returns {[]}
+     */
+    ancestor(selector) {
+        const data = [];
+
+        this.elements.forEach(element => {
+            const node = element.closest(selector);
+
+            if (node)
+                data.push(node);
+        });
+
+        return (data.length > 1) ? data : data[0]
+    }
+
+    /**
+     *
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
+     * @returns {Element[]|NodeList}
+     */
     select(selector) {
         const data = [];
 
@@ -435,6 +496,11 @@ class PowerDom {
         return (data.length > 1) ? data : data[0]
     }
 
+    /**
+     *
+     * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
+     * @returns {Element[]|NodeList}
+     */
     selectAll(selector) {
         let data = [];
 
@@ -613,16 +679,112 @@ class Request {
         if(typeof headers == 'undefined')
             headers = {};
 
-        headers['Content-Type'] = 'application/json';
+        path += '?';
+
+        for(let [param,value] of Object.entries(data)) {
+            path += `${param}=${encodeURIComponent(value)}&`;
+        }
 
         return fetch(this.url + path, {
             method: 'delete',
-            body: data ? JSON.stringify(data) : null,
             mode: 'cors',
             headers: new Headers(headers)
         })
             .then(response => response.json())
             .catch(errorCb)
+    }
+}
+
+function stateMap() {
+    if (!State.prototype.hasOwnProperty('map'))
+        State.prototype.map = new Map();
+
+    return State.prototype.map
+}
+
+/**
+ * A Class to hold states and its callbacks
+ */
+class State {
+    /**
+     * set the listener
+     * @param {string} state
+     * @param {function} callback
+     */
+    static listen(state, callback) {
+        const map = stateMap();
+
+        if (map.has(state)) {
+            const callbacks = map.get(state);
+
+            callbacks.push(callback);
+        } else {
+            map.set(state, [callback]);
+        }
+    }
+
+    /**
+     * Triggers the listener
+     * @param {string} state
+     * @param {object} data
+     */
+    static fire(state, data) {
+        const map = stateMap();
+
+        if (!map.has(state))
+            return
+
+        map.get(state).forEach(callback => callback(data));
+        map.delete(state);
+    }
+}
+
+function cdMap() {
+    if (!Countdown.prototype.hasOwnProperty('map'))
+        Countdown.prototype.map = new Map();
+
+    return Countdown.prototype.map
+}
+
+/**
+ * It is used to trigger a callback after a numer of times is called
+ */
+class Countdown {
+
+    /**
+     * Set the Countdown
+     * @param {string} key
+     * @param {int} length
+     * @param {function} callback
+     */
+    static set(key, length, callback) {
+        const map = cdMap();
+
+        if (map.has(key))
+            return
+
+        map.set(key, {l: length, cb: callback});
+    }
+
+    /**
+     * Reduce the number of times to be called in one
+     * @param {string} key
+     */
+    static decrease(key) {
+        const map = cdMap();
+
+        if (!map.has(key))
+            return
+
+        const state = map.get(key);
+
+        if(state.l > 0){
+            --state.l;
+            map.set(key, state);
+
+            if(state.l == 0)
+                state.cb();
+        }
     }
 }
 
@@ -690,18 +852,19 @@ class Template {
 
         let items = (typeof module[dataAttr] === 'function') ? module[dataAttr]() : module[dataAttr];
 
-        el.removeAttribute('items');
         el.removeAttribute('pd-loop');
+        el.removeAttribute('items');
 
         if (items instanceof Promise) {
-            return items.then(result => this.loopFinalHelper(el, result, dataAttr, module))
+            return items.then(promisedItems => Template.loopReplace(el, promisedItems, dataAttr, module))
         }
 
-        this.loopFinalHelper(el, items, dataAttr, module);
+        Template.loopReplace(el, items, dataAttr, module);
     }
 
-    static loopFinalHelper(el, items, dataAttr, module) {
-        const tpl = el.outerHTML.trim();
+    static loopReplace(el, items, dataAttr, module) {
+        const subEl = select('[pd-sub-loop]', el);
+        let tpl = el.outerHTML.trim();
         let html = '';
 
         if (!Array.isArray(items)) {
@@ -709,13 +872,36 @@ class Template {
         }
 
         if(tpl.includes('${')) {
-            items.forEach((item, index) => html += module.evalHelper(item, index, tpl));
+            const dataAttrSub = (subEl != null && subEl.hasAttribute('items'))
+                ? subEl.getAttribute('items') : null;
+
+            items.forEach((item, index) => {
+                if (item.hasOwnProperty(dataAttrSub)) {
+                    tpl = Template.loopSubItems(el, subEl, item[subEl.getAttribute('items')], module);
+                }
+
+                html += module.evalHelper(item, index, tpl);
+            });
         } else {
             const tag = el.tagName;
             items.forEach(item => html += `<${tag}>${item}</${tag}>`);
         }
 
         PowerDom.$(el).replace(html);
+    }
+
+    static loopSubItems(el, subEl, subItems, module) {
+        subEl.removeAttribute('pd-sub-loop');
+        subEl.removeAttribute('items');
+
+        const tpl = subEl.outerHTML.trim();
+        let html = '';
+
+        subItems.forEach((subItem, index) => html += module.evalHelper(subItem, index, tpl));
+
+        PowerDom.$(subEl).replace(html);
+
+        return el.outerHTML.trim()
     }
 
     static async _if(module, content) {
@@ -761,7 +947,7 @@ class Template {
         selectAll('[_listen]', content).forEach(el => {
             const strListeners = el.getAttribute('_listen');
 
-            if (strListeners.length > 0) {
+            if (strListeners !== 'undefined' && strListeners.length > 0) {
                 strListeners.split(",").forEach(strListener => Template._listenHelper(strListener, el, module));
             }
 
@@ -1020,6 +1206,8 @@ const PD$1 = {
     RequestHelper: Request,
     select,
     selectAll,
+    State,
+    Countdown,
     Auth: {
         isAuth: () => {return true}
     }
