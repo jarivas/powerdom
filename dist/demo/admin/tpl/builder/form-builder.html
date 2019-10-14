@@ -8,14 +8,14 @@
                                placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}"/>
                     </label>
                     <label pd-if condition="${item.textarea}">
-                            <textarea type="${item.type}" _="${item._}" id="${item.placeholder}"
+                            <textarea _="${item._}" id="${item.placeholder}"
                                       placeholder="${item.placeholder}" ${item.required}
                                       _listen="${item._listen}"></textarea>
                     </label>
                     <label pd-if condition="${item.select}">
-                        <select type="${item.type}" _="${item._}" id="${item.placeholder}"
+                        <select _="${item._}" id="${item.placeholder}" ${item.multiple}
                                 placeholder="${item.placeholder}" ${item.required} _listen="${item._listen}">
-                                <option loop-array items="${item.options}" value="{item.value}">${item.text}</option>
+                            <option pd-sub-loop items="options" value="${item.value}">${item.text}</option>
                         </select>
                     </label>
                 </div>

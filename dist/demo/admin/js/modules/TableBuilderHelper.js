@@ -1,10 +1,16 @@
 class TableBuilderHelper {
     static getRows(controller, headers) {
         const params = JSON.parse(sessionStorage.getItem('getRows')) || {}
+        const foreignKeysColNames = JSON.parse(sessionStorage.getItem('foreignKeysColNames')) || []
+        const foreignKeysValues = JSON.parse(sessionStorage.getItem('foreignKeysValues')) || {}
 
-        return PD.Request.get(`${controller}/read`, params, TableBuilderHelper.errorHandler)
+        return PD.Request.get(`${controller}/read`, params, TableBuilderHelper.errorHandler, {token: PD.Auth.token})
             .then(r => {
-                let result = []
+                if (!r) {
+                    return
+                }
+
+                const result = []
 
                 if (!Array.isArray(r) || r.length == 0) return result
 
@@ -12,8 +18,25 @@ class TableBuilderHelper {
                     let r = ''
 
                     headers.forEach(col => {
-                        row[col] = row[col].replace(' 00:00:00', '')
-                        r += `<td>${row[col]}</td>`
+
+                        if (foreignKeysColNames.includes(col)) {
+                            let value = row[col]
+
+                            if (value.includes(',')) {
+                                const values = value.split(',')
+
+                                r += '<td>'
+
+                                values.forEach(v => r += foreignKeysValues[col][v] + ', ')
+
+                                r += '</td>'
+                            } else {
+                                r += `<td>${foreignKeysValues[col][value]}</td>`
+                            }
+                        } else {
+                            row[col] = row[col].replace(' 00:00:00', '')
+                            r += `<td>${row[col]}</td>`
+                        }
                     })
 
                     r += `<td><button class="btn solid blue" _listen="click:edit" data-row="${encodeURIComponent(JSON.stringify(row))}">Edit</button>
@@ -30,7 +53,7 @@ class TableBuilderHelper {
         console.log(data)
     }
 
-    static getForm(headers){
+    static getForm(headers) {
         const formEl = PD.select('#form-builder')
         const form = {}
 
@@ -44,7 +67,13 @@ class TableBuilderHelper {
         const row = JSON.parse(decodeURIComponent(e.target.dataset.row))
 
         for (let [id, value] of Object.entries(row)) {
-            form[id].setValue(value)
+            const input = form[id]
+
+            if (PD.FormBuilderHelper.isSelect(input)) {
+                PD.FormBuilderHelper.setSelectedOptions(input, value)
+            } else {
+                input.setValue(value)
+            }
         }
     }
 
@@ -60,17 +89,7 @@ class TableBuilderHelper {
         PD.Modal.close()
         PD.Loading.show()
         PD.Request.delete(`${controller}/deleteOne`, {id: id}, PD.RequestHelper.handleError, {token: PD.Auth.token})
-            .then(result => {
-                PD.Loading.close()
-
-                if (result === true) {
-                    PD.select('#form-builder > input[type="hidden"]').value = ''
-
-                    return TableBuilderHelper.refresh()
-                }
-
-                console.error(result)
-            })
+            .then(PD.FormBuilderHelper.handleResponse)
     }
 
     static refresh() {

@@ -2,7 +2,7 @@ class Login {
     async process(){
         if(PD.Config.get('dev')) {
             this._.username.setValue('jose')
-            this._.password.setValue('p4ssw0rt')
+            this._.password.setValue('adios')
         }
 
         import('/js/modules/TableBuilderHelper.js')

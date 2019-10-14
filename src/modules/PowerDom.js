@@ -361,6 +361,18 @@ class PowerDom {
     }
 
     /**
+     * Sets a property with its value
+     * @param {string} index
+     * @param {string} value
+     * @returns {PowerDom} this
+     */
+    setProperty(index, value) {
+        this.elements.forEach(element => element[index] = value)
+
+        return this
+    }
+
+    /**
      * Gets the value or values of the property
      * @param {string} index
      * @returns {string|string[]}
@@ -405,6 +417,18 @@ class PowerDom {
         const data = []
 
         this.elements.forEach(element => data.push(element.dataset[index]))
+
+        return (data.length > 1) ? data : data[0]
+    }
+
+    /**
+     * Get the files selected on the input
+     * @returns {FileList|FileList[]}
+     */
+    getFiles(){
+        const data = []
+
+        this.elements.forEach(element => data.push(element.files))
 
         return (data.length > 1) ? data : data[0]
     }
