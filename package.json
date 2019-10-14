@@ -1,16 +1,16 @@
 {
   "name": "powerdom",
   "version": "1.0.0",
-  "description": "The low complexity and lightweigth Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
+  "description": "The low complexity and lightweight Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "dev": "webpack-dev-server",
     "sass": "node-sass --include-path node_modules/vital-css/dist/scss src/scss -o dist/css --output-style compressed",
-    "esdoc": "./node_modules/.bin/esdoc"
+    "watch": "rollup --config --watch",
+    "esdoc": "./node_modules/.bin/esdoc",
+    "demo-admin": "cd dist/demo/admin && php -S localhost:8000",
+    "demo-cv": "cd dist/demo/cv && php -S localhost:8000"
   },
   "repository": {
     "type": "git",
@@ -32,9 +32,6 @@
   "devDependencies": {
     "dialog-polyfill": "^0.5.0",
     "node-sass": "^4.11.0",
-    "vital-css": "^2.2.1",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
+    "vital-css": "^2.2.1"
   }
 }
