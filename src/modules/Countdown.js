@@ -6,7 +6,7 @@ function cdMap() {
 }
 
 /**
- * It is used to trigger a callback after a numer of times is called
+ * It is used to trigger a callback after a number of times is called
  */
 class Countdown {
 

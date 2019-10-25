@@ -484,7 +484,7 @@ class PowerDom {
     }
 
     /**
-     * method traverses parents (heading toward the document root) of the Element until it finds a node that matches the provided selectorString.
+     * Traverses parents (heading toward the document root) of the Element until it finds a node that matches the provided selectorString.
      * Will return itself or the matching ancestor. If no such element exists, it returns [].
      * @param {string|Document|DocumentFragment|Element|HTMLCollection} selector
      * @returns {[]}
@@ -771,7 +771,7 @@ function cdMap() {
 }
 
 /**
- * It is used to trigger a callback after a numer of times is called
+ * It is used to trigger a callback after a number of times is called
  */
 class Countdown {
 
