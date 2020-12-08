@@ -2,13 +2,8 @@
   "name": "powerdom",
   "version": "1.0.0",
   "description": "The low complexity and lightweight Single Page Application framework that you were needing, with all the fancy stuff that all the popular includes but without the hassle",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
-    "sass": "node-sass --include-path node_modules/vital-css/dist/scss src/scss -o dist/css --output-style compressed",
-    "watch": "rollup --config --watch",
-    "esdoc": "./node_modules/.bin/esdoc"
+    "watch": "rollup --config --watch"
   },
   "repository": {
     "type": "git",
@@ -22,13 +17,5 @@
   "bugs": {
     "url": "https://github.com/jarivas/powerdom/issues"
   },
-  "homepage": "https://github.com/jarivas/powerdom#readme",
-  "dependencies": {
-    "esdoc": "^1.1.0",
-    "esdoc-standard-plugin": "^1.0.0"
-  },
-  "devDependencies": {
-    "node-sass": "^4.11.0",
-    "vital-css": "^2.2.1"
-  }
+  "homepage": "https://github.com/jarivas/powerdom#readme"
 }
