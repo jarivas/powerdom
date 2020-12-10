@@ -1,3 +1,5 @@
+import {PowerDom as PD} from "../modules/PowerDom.js"
+
 customElements.define('pd-modal',
     class extends HTMLElement {
         constructor() {

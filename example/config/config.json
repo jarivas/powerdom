@@ -1,0 +1,14 @@
+{
+    "title": "Page Title",
+    "apiUrl": "http://localhost:8080/",
+    "mainElementSelector": ".page-content",
+    "pages": {
+        "default": {
+            "template": "pages/default.html",
+            "title": "Default",
+            "navigation": false,
+            "auth": false
+        }
+    },
+    "dev": true
+}

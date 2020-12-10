@@ -4,13 +4,6 @@
 class Request {
 
     /**
-     * Set and instance to PD.Request so can be used globally to access the API
-     */
-    static setConfigUrl() {
-        PD.Request = new Request(PD.Config.get('apiUrl'))
-    }
-
-    /**
      * It gets whatever as plain text
      * @param {string} url
      */
